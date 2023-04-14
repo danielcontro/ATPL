@@ -1,0 +1,72 @@
+\subsection{}
+
+Prove by structural induction:
+\[
+	\text{if }x \notin \fv{M}\text{ then }M\SUBST{x}{N} = M
+\]
+By structural induction on $M$\\
+Base cases:
+\begin{itemize}
+	\item $M = n$:\\
+	      $x \notin \fv{n} = \emptyset$, $n\SUBST{x}{N} = n$\qed
+	\item $M = true$:\\
+	      $x \notin \fv{true}= \emptyset$, $true\SUBST{x}{N} = true$\qed
+	\item $M = false$:\\
+	      $x \notin \fv{false}= \emptyset$, $false\SUBST{x}{N} = false$\qed
+	\item $M = y$:\\
+	      $x \notin \fv{y}= \{y\}$ hence $x \ne y$ thus $y\SUBST{x}{N} = y$\qed
+\end{itemize}
+Inductive cases:
+\begin{itemize}
+	\item $M = \SUM{M_1}{M_2}$:\\
+	      if $x \notin \fv{M} = \fv{M_1} \cup \fv{M_2}$, then $x \notin \fv{M_1}$ and $x \notin \fv{M_2}$.\\
+	      Hence by applying the inductive hypothesis $M_1\SUBST{x}{N} = M_1$ and $M_2\SUBST{x}{N} = M_2$.\\
+	      Thus
+	      \begin{align*}
+		      M\SUBST{x}{N} & = (\SUM{M_1}{M_2})\SUBST{x}{N}           \\
+		                    & = \SUM{M_1\SUBST{x}{N}}{M_2\SUBST{x}{N}} \\
+		                    & = \SUM{M_1}{M_2}                         \\
+		                    & = M
+	      \end{align*}
+	      \qed
+	\item $M = \IF{M_1}{M_2}{M_3}$:\\
+	      if $x \notin \fv{M} = \fv{M_1} \cup \fv{M_2} \cup \fv{M_3}$\\
+	      then $x \notin \fv{M_1}$, $x \notin \fv{M_2}$ and $x \notin \fv{M_3}$.\\
+	      Applying the inductive hypothesis $M_1\SUBST{x}{N} = M_1$, $M_2\SUBST{x}{N} = M_2$\\
+	      and $M_3\SUBST{x}{N} = M_3$.\\
+	      Thus
+	      \begin{align*}
+		      M\SUBST{x}{N} & = (\IF{M_1}{M_2}{M_3})\SUBST{x}{N}                       \\
+		                    & = \IF{M_1\SUBST{x}{N}}{M_2\SUBST{x}{N}}{M_3\SUBST{x}{N}} \\
+		                    & = \IF{M_1}{M_2}{M_3}                                     \\
+		                    & = M
+	      \end{align*}
+	      \qed
+	\item $M = \FN{y}{M_1}$:\\
+	      if $x \notin \fv{M} = \fv{M_1}\setminus \{ y \}$ then $x \notin \fv{M_1}$\\
+	      Applying the inductive hypothesis $M_1\SUBST{x}{N} = M_1$\\
+	      Thus
+	      \begin{align*}
+		      M\SUBST{x}{N} & = (\FN{y}{M_1})\SUBST{x}{N}                         \\
+		                    & = \FN{y}{M_1\SUBST{x}{N}} \text{if }y \notin \fv{N} \\
+		                    & = \FN{y}{M_1}                                       \\
+		                    & = M
+	      \end{align*}
+	      \qed
+	\item $M = \FN{x}{M_1}$:\\
+	      by $\alpha$-equivalence $M =_\alpha \FN{y}{M_1} = M'$\\
+	      as previously proved $M'\SUBST{x}{N} = M'$ and by
+	      $\alpha$-equivalence once again $M' =_\alpha M$
+	      \qed
+	\item $M = \APP{M_1}{M_2}$:\\
+	      if $x \notin \fv{M} = \fv{M_1} \cup \fv{M_2}$ then $x \notin \fv{M_1}$ and $x \notin \fv{M_2}$.\\
+	      Applying the inductive hypothesis $M_1\SUBST{x}{N} = M_1$ and $M_2\SUBST{x}{N} = M_2$\\
+	      Thus
+	      \begin{align*}
+		      M\SUBST{x}{N} & = (\APP{M_1}{M_2})\SUBST{x}{N}           \\
+		                    & = \APP{M_1\SUBST{x}{N}}{M_2\SUBST{x}{N}} \\
+		                    & = \APP{M_1}{M_2}                         \\
+		                    & = M
+	      \end{align*}
+	      \qed
+\end{itemize}
