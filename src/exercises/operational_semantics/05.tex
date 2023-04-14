@@ -1,0 +1,61 @@
+\subsection{}
+
+\begin{enumerate}
+	\item Add to the language $\mathcal{L}$ a subtraction operation.
+	      What needs to be changed, the syntax of terms? The semantics?
+	      The syntax of values? The notion of free-variables and substitution?
+	\item Define the reduction relation so that integer operations occur with a
+	      right-to-left strategy.
+	\item The given reduction relation defines an efficient strategy for the
+	      evaluation of the if-then-else term, i.e. allowing only the branch chosen
+	      by the evaluation of the Boolean guard to be evaluated. Redefine the
+	      operational semantics of the language so that it adopts an inefficient
+	      strategy for the if-then-else construct, evaluating both branches of the
+	      conditional construct before selecting one of them. Is the relationship
+	      thus defined ambiguous (nondeterministic)?
+	      What is the semantics of the term $\IF{false}{\SUM{3}{true}}{7}$?
+\end{enumerate}
+
+\begin{enumerate}
+	\item In order to add the subtraction operation to $\mathcal{L}$ the syntax
+	      of the terms must be extended by adding the term $M_1 - M_2$, the
+	      semantics must be extended as follows
+	      \[
+		      \infer[n = n_1 -_\mathbb{Z} n_2]{n_1 - n_2 \to n}{}
+	      \]
+	      \[
+		      \infer[\text{\small{(SUB-L)}}]{M_1 - M_2 \to M_1' - M_2}{M_1 \to M_1'}
+		      \qquad
+		      \infer[\text{\small{(SUB-R)}}]{v - M \to v - M'}{M \to M'}
+	      \]
+	      The syntax of values remains unchanged since $n$ are integer constants,
+	      while the notions of free-variables and substitution must be enlarged
+	      with the newly added term as follows
+	      \begin{align*}
+		       & \fv{M_1 - M_2} = \fv{M_1} \cup \fv{M_2}                     \\
+		       & (M_1 - M_2)\SUBST{x}{N} = M_1\SUBST{x}{N} - M_2\SUBST{x}{N}
+	      \end{align*}
+	\item The SUM-LEFT and SUM-RIGHT rules will be replaced respectively by the rules\\
+	      SUM-LEFT' and SUM-RIGHT' defined as follows:\\
+	      \[
+		      \infer[\text{\small{SUM-RIGHT'}}]{\SUM{M_1}{M_2} \to \SUM{M_1}{M_2'}}{M_2 \to M_2'}
+		      \qquad
+		      \infer[\text{\small{SUM-LEFT'}}]{\SUM{M}{v} \to \SUM{M'}{v}}{M \to M'}
+	      \]
+	\item The IF-TRUE and IF-FALSE axioms must be replaced by the followings:\\
+	      \[
+		      \infer[\text{\small{IF-TRUE'}}]{\IF{true}{v_1}{v_2} \to v_1}{}
+		      \qquad
+		      \infer[\text{\small{IF-FALSE'}}]{\IF{false}{v_1}{v_2} \to v_2}{}
+	      \]
+	      And the following two rules must be added:\\
+	      \[
+		      \infer[\text{IF-L}]{\IF{v}{M_1}{M_2} \to \IF{v}{M_1'}{M_2}}{M_1 \to M_1'}
+	      \]
+	      \[
+		      \infer[\text{IF-R}]{\IF{v}{v_1}{M} \to \IF{v}{v_1}{M'}}{M \to M'}
+	      \]
+	      The relationship as defined would still be deterministic and the term
+	      $\IF{false}{\SUM{3}{true}}{7}$ would be stuck since the left branch
+	      isn't a value and can't be further reduced by the given operational semantics.
+\end{enumerate}
