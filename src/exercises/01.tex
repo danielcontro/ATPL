@@ -1,0 +1,23 @@
+\subsection{}
+
+Prove that $\forall\, e \in Exp.\, \SIZE{e} > 0 \AND \DEPTH{e} > 0$\\\\
+The proof will proceed by structural induction on $e$:\\
+Base cases:
+\begin{itemize}
+	\item $e = n$:\\
+	      $\SIZE{ n } = 1 \ge 0$ and $\DEPTH{ n } = 1 > 0$
+	\item $e = x$:\\
+	      $\SIZE{ x } = 1 \ge 0$ and $\DEPTH{ x } = 1 > 0$
+\end{itemize}
+Inductive cases:
+\begin{itemize}
+	\item $e = e_1 + e_2$:\\
+	      $\SIZE{e_1}, \DEPTH{e_1} > 0$ and $\SIZE{e_2}, \DEPTH{e_2} > 0$\\
+	      $\SIZE{e} = 1 + \SIZE{e_1} + \SIZE{e_2} > 0$ since sum of positive numbers\\
+	      $\DEPTH{e} = 1 + \max(\DEPTH{e_1} + \DEPTH{e_2}) > 0$
+	\item $e = e_1 * e_2$:\\
+	      $\SIZE{e_1}, \DEPTH{e_1} > 0$ and $\SIZE{e_2}, \DEPTH{e_2} > 0$\\
+	      $\SIZE{e} = 1 + \SIZE{e_1} + \SIZE{e_2} > 0$ since sum of positive numbers\\
+	      $\DEPTH{e} = 1 + \max(\DEPTH{e_1} + \DEPTH{e_2}) > 0$
+\end{itemize}
+\qed

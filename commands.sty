@@ -1,0 +1,27 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{commands}[2023/03/17 Package providing custom commands for the document]
+
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\La}{\Leftarrow}
+\newcommand{\LRa}{\Leftrightarrow}
+
+\newcommand{\SUM}[2]{#1+#2}
+\newcommand{\IF}[3]{\texttt{if}\;#1\;\texttt{then}\;#2\;\texttt{else}\;#3}
+\newcommand{\FN}[2]{fn\;#1.\,#2}
+\newcommand{\APP}[2]{#1\;#2}
+
+\newcommand{\fv}[1]{fv(#1)}
+
+\newcommand{\SIZE}[1]{size(#1)}
+\newcommand{\DEPTH}[1]{depth(#1)}
+\newcommand{\SUBST}[3]{#1\!\{#2\,:=\,#3\}}
+
+\newcommand{\TYPE}[1]{\!:\,#1}
+\newcommand{\TNAT}{\TYPE{Nat}}
+\newcommand{\TBOOL}{\TYPE{Bool}}
+\newcommand{\TARROW}[2]{\TYPE{#1\to#2}}
+
+\newcommand{\qed}{$\hfill\square$}
