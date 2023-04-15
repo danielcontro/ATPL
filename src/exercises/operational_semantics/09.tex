@@ -1,0 +1,34 @@
+\subsection{}
+
+Write the transition rules corresponding to the call-by-name strategy, and
+evaluate the previous term according to this strategy.\\
+
+To obtain a call-by-name strategy the rule (APP 2) must be removed and the
+(BETA) rule has to be replaced with the following
+\[
+	\infer[\text{\small{BETA'}}]
+	{
+		\APP{(\FN{x}{M_1})}{M_2} \to M_1\SUBST{x}{M_2}
+	}
+	{}
+\]
+The evaluation of the term
+$\APP{(\APP{(\FN{x}{3})}{(\FN{y}{y})})}{(\APP{(\FN{z}{\IF{z}{1}{0}})}{(false)})}$
+with the newly defined semantics would proceed as follows
+\[
+	\infer[\text{\small{APP 1}}]
+	{
+		\APP{(\APP{(\FN{x}{3})}{(\FN{y}{y})})}{(\APP{(\FN{z}{\IF{z}{1}{0}})}{(false)})} \to
+		\APP{3}{(\APP{(\FN{z}{\IF{z}{1}{0}})}{(false)})}
+	}
+	{
+		\infer[\text{\small{BETA'}}]
+		{
+			\APP{(\FN{x}{3})}{(\FN{y}{y})} \to 3
+		}
+		{}
+	}
+\]
+\[
+	\APP{3}{(\APP{(\FN{z}{\IF{z}{1}{0}})}{(false)})} \not\to
+\]
