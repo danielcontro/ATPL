@@ -1,0 +1,63 @@
+\subsection{}
+
+Show the evaluation of the term
+$\APP{(\APP{(\FN{x}{3})}{(\FN{y}{y})})}{(\APP{(\FN{z}{\IF{z}{1}{0}})}{(false)})}$.
+Define a variant of the evaluation rules so that, by keeping a call-by-value
+strategy, the previous term evolves to a stuck term in fewer reduction steps.
+\[
+	\infer[\text{\small{APP 1}}]
+	{
+		\APP{(\APP{(\FN{x}{3})}{(\FN{y}{y})})}{(\APP{(\FN{z}{\IF{z}{1}{0}})}{(false)})} \to
+		\APP{3}{(\APP{(\FN{z}{\IF{z}{1}{0}})}{(false)})}
+	}
+	{
+		\infer[\text{\small{BETA}}]
+		{
+			\APP{(\FN{x}{3})}{(\FN{y}{y})} \to 3
+		}
+		{}
+	}
+\]
+\\
+\[
+	\infer[\text{\small{APP 2}}]
+	{
+		\APP{3}{(\APP{(\FN{z}{\IF{z}{1}{0}})}{(false)})} \to
+		\APP{3}{(\IF{false}{1}{0})}
+	}
+	{
+		\infer[\text{\small{BETA}}]
+		{
+			\APP{(\FN{z}{\IF{z}{1}{0}})}{(false)} \to \IF{false}{1}{0}
+		}
+		{}
+	}
+\]
+\\
+\[
+	\infer[\text{\small{APP 2}}]
+	{
+		\APP{3}{(\IF{false}{1}{0})} \to
+		\APP{3}{0}
+	}
+	{
+		\infer[\text{\small{IF FALSE}}]
+		{
+			\IF{false}{1}{0} \to 0
+		}
+		{}
+	}
+\]
+\\
+\[
+	\APP{3}{0} \not\to
+\]
+To let the term evolve to a stuck one earlier the (APP 2) rule could be substituted with the following
+\[
+	\infer[\text{\small{APP 2'}}]
+	{
+		\APP{(\FN{x}{M_1})}{M_2} \to \APP{(\FN{x}{M_1})}{M_2'}
+	}
+	{M_2 \to M_2'}
+\]
+with this semantics it would take one step instead of three to reach a stuck term.
