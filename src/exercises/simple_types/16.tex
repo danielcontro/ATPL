@@ -1,0 +1,18 @@
+\subsection{}
+
+Is the judgement $\Gamma \vdash \APP{x}{x}: T$ derivable? If yes show a
+derivation, otherwise prove that it's not derivable.\\~\\
+Assume that the judgement $\Gamma \vdash \APP{x}{x}: T$ is derivable,
+then there exists a derivation tree of the judgement
+\begin{align*}
+	\infer[\text{\small{T-APP}}]
+	{\Gamma \vdash \APP{x}{x}: T}
+	{
+	\infer[\text{\small{T-VAR}}]{\Gamma \vdash x: T_1 \to T}{} &
+		\infer[\text{\small{T-VAR}}]{\Gamma \vdash x: T_1}{}
+	}
+\end{align*}
+As shown by the tree the judgement is derivable if
+$x: T_1, x: T_1 \to T \in \Gamma$ for some $T_1, T$, but since $\Gamma$
+contains a list of distinct variables it can't be the case, thus the
+initial judgement isn't derivable.
