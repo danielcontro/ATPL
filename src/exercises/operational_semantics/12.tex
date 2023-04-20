@@ -1,0 +1,23 @@
+\subsection{}
+
+Consider the logical construct \texttt{x\&\&y} commonly used in the programming
+languages, which only evaluates the second argument if $x$ is true:
+\begin{itemize}
+	\item define a term $M_\texttt{\&}$ in the language $\mathcal{L}$ that
+	      behaves as $x\texttt{\&\&y}$. Does the term $M_\texttt{\&}$ respect
+	      the intended semantics of the construct $x\texttt{\&\&}y$ only with
+	      the call-by-value evaluation strategy, only with the call-by-name
+	      strategy, with both?\\~\\
+	      $M_\texttt{\&} = \FN{x}{(\FN{y}{\IF{x}{y}{false}})}$\\
+	      The statement respects  the intended semantics only in a call-by-name
+	      strategy since with a call-by-value evaluation strategy $y$ will be
+	      evaluated before applying the (BETA) rule to the term
+	      $\FN{y}{\IF{x}{y}{false}}$ regardless of the value of $x$.
+	\item Define in Scala a function and that behaves as the logical construct
+	      $x\texttt{\&\&}y$
+	      \begin{align*}
+		       & \texttt{def and(x: => Bool, y: => Bool): Bool =} \\
+		       & \qquad\texttt{if }x\texttt{ then }y              \\
+		       & \qquad\texttt{else }false
+	      \end{align*}
+\end{itemize}
