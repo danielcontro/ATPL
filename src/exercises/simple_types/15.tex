@@ -1,0 +1,19 @@
+\subsection{}
+
+Find a context $\Gamma$ such that $\Gamma \vdash \APP{\APP{z}{x}}{y}: Bool$ is
+derivable.\\~\\
+Let $\Gamma = y: Bool, x: Bool \to Bool, z: (Bool \to Bool) \to (Bool \to Bool)$
+\begin{align*}
+	\infer[\text{\small{T-APP}}]
+	{
+		\Gamma \vdash \APP{\APP{z}{x}}{y}: Bool
+	}
+	{
+		\infer[\text{\small{T-APP}}]
+		{\Gamma \vdash \APP{z}{x} : Bool \to Bool}
+	{ \infer[\text{\small{T-VAR}}]{\Gamma \vdash z : (Bool \to Bool) \to (Bool \to Bool)}{} &
+			\infer[\text{\small{T-VAR}}]{ \Gamma \vdash x : Bool \to Bool}{}
+	}                                                                                       &
+		\infer[\text{\small{T-VAR}}]{\Gamma \vdash y : Bool}{}
+	}
+\end{align*}
