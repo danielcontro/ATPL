@@ -1,0 +1,29 @@
+\subsection{}
+
+Prove that the term
+$\FN{x: Bool \to Nat}{\FN{y: Bool}{\IF{y}{1}{\SUM{x}{y}}}}$ is not well-typed.\\~\\
+Assume that the term is well-typed, hence the judgement\\
+$\Gamma \vdash \FN{x: Bool \to Nat}{\FN{y: Bool}{\IF{y}{1}{\SUM{x}{y}}}} : T$
+is derivable.\\
+By Inversion Lemma:\\
+$\exists\, T_2.\, T = (Bool \to Nat) \to T_2$ and\\
+$\Gamma, x: (Bool \to Nat) \vdash \FN{y: Bool}{\IF{y}{1}{\SUM{x}{y}}}: T_2$ is derivable.\\
+By Inversion Lemma:\\
+$\exists\, T_3.\, T_2 = Bool \to T_3$ and\\
+$\Gamma, x: (Bool \to Nat), y: Bool \vdash IF{y}{1}{\SUM{x}{y}}: T_3$ is derivable.\\
+By Inversion Lemma:
+\begin{enumerate}
+	\item $\Gamma, x: (Bool \to Nat), y: Bool \vdash y: Bool$
+	\item $\Gamma, x: (Bool \to Nat), y: Bool \vdash 1: T_3$
+	\item $\Gamma, x: (Bool \to Nat), y: Bool \vdash \SUM{x}{y}: T_3$
+\end{enumerate}
+are derivable.
+By Inversion Lemma on 3:
+\begin{enumerate}
+	\item $T_3 = Nat$
+	\item $\Gamma, x: (Bool \to Nat), y: Bool \vdash x: Nat$
+	\item $\Gamma, x: (Bool \to Nat), y: Bool \vdash y: Nat$
+\end{enumerate}
+are derivable, but $\Gamma, x: (Bool \to Nat), y: Bool \vdash x: Nat$ isn't
+derivable which is a\\
+contradiction, thus the initial term isn't well-typed.\qed
