@@ -1,0 +1,15 @@
+\subsection{}
+
+Consider the term $M = \APP{\FN{x: Nat}{true}}{false}$. Is it a well-typed
+term? Is it a term whose execution produces a runtime error?\\~\\
+The term $M$ is well-typed if $\exists\, \Gamma, T.\, \Gamma \vdash M: T$ is
+derivable.\\
+Assume $\Gamma \vdash \APP{\FN{x: Nat}{true}}{false}:T$ derivable, then by
+Inversion Lemma $\exists\, T_1.\, \Gamma \vdash \FN{x: Nat}{true} : T_1 \to T$
+and $\Gamma \vdash false : T_1$ are derivable. By Inversion Lemma once again
+$T_1 = Bool$, hence $\Gamma \vdash \FN{x: Nat}{true} : Bool \to T$ is
+derivable, but $Nat \ne Bool$ thus the term isn't well-typed.\\~\\
+The term has the following evaluation sequence:
+\begin{align*}
+	\infer[\text{\small{BETA}}]{ \APP{\FN{x: Nat}{true}}{false} \to true}{}
+\end{align*}
