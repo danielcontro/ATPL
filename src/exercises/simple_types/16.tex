@@ -13,6 +13,6 @@ then there exists a derivation tree of the judgement
 	}
 \end{align*}
 As shown by the tree the judgement is derivable if
-$x: T_1, x: T_1 \to T \in \Gamma$ for some $T_1, T$, but since $\Gamma$
-contains a list of distinct variables it can't be the case, thus the
-initial judgement isn't derivable.
+$x: T_1, x: T_1 \to T \in \Gamma$ for some $T_1, T$.
+By Unicity of Typing $T_1 = T_1 \to T$ which is a recursive type that isn't
+supported by the type syntax, thus the initial judgement isn't derivable.
