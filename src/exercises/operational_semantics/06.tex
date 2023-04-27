@@ -1,0 +1,24 @@
+\subsection{}
+
+Examine how the semantics of the language would change by replacing the
+(SUM-RIGHT) rule with the following one:
+\[
+	\infer[\text{\small{(SUM-RIGHT-NEW)}}]
+	{\SUM{M_1}{M_2} \to \SUM{M_1}{M_2'}}
+	{M_2 \to M_2'}
+\]
+Is this new modified semantics deterministic? Is it possible for a term $M$ to
+evolve to two different (final) values? If a program reduces to a value or a
+stuck term, respectively, in the original semantics, does it now reduce to
+the same value or stuck term?\\~\\
+The modified semantics is no longer deterministic, for example the term
+$\SUM{(\SUM{3}{4})}{(\SUM{2}{5})}$ can be reduced by applying either the
+(SUM-LEFT) or the (SUM-RIGHT') rule.\\
+If a term reduces to a value in the original semantics then it will reduce the
+same one in the updated one since the number of (SUM-LEFT) and (SUM-RIGHT-NEW)
+will be the same of the original semantics.
+Instead if a term reduces to a stuck term in the original semantics it could
+reduce to a different stuck term in the updated semantics, because if the
+stuck subterm is on the left side of the sum the right side could be partially
+or totally reduced according to the (SUM-RIGHT-NEW) rule, thus leading to a
+different stuck term once the left side will be reduced.
