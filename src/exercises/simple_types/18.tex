@@ -1,0 +1,74 @@
+\subsection{}
+
+Prove that every subterm of a well-typed term is well-typed. Start by
+precisely formalizing the statement to be proved.\\~\\
+The property that has to be proved is the following:\\
+if $\Gamma \vdash M:T$ is derivable then
+$\forall\,M_i \in st(M).\,\exists\,\Gamma_i, T_i.\, \Gamma_i \vdash M_i: T_i$
+is derivable.\\
+The proof will proceed by induction on the height of the derivation
+tree of the judgement $\Gamma \vdash M: T$.
+
+\subsubsection*{Base cases $h = 1$:}
+The base cases of $h = 1$ are the ones where the derivation tree is
+an axiom:
+\begin{itemize}
+	\item (T-TRUE): if $\Gamma \vdash true: Bool$ is derivable then\\
+	      $\forall\,M_i \in st(true).\,\exists\,T_i.\, \Gamma \vdash M_i: T_i$
+	      vacuously true ($st(true) = \emptyset$)
+	\item (T-FALSE): if $\Gamma \vdash false: Bool$ is derivable then\\
+	      $\forall\,M_i \in st(false).\,\exists\,T_i.\, \Gamma \vdash M_i: T_i$
+	      vacuously true ($st(false) = \emptyset$)
+	\item (T-INT): if $\Gamma \vdash n: Nat$ is derivable then\\
+	      $\forall\,M_i \in st(n).\,\exists\,T_i.\, \Gamma \vdash M_i: T_i$
+	      vacuously true ($st(n) = \emptyset$)
+	\item (T-TRUE): if $\Gamma \vdash x: T$ is derivable then\\
+	      $\forall\,M_i \in st(x).\,\exists\,T_i.\, \Gamma \vdash M_i: T_i$
+	      vacuously true ($st(x) = \emptyset$)
+\end{itemize}
+
+\subsubsection*{Inductive cases $h = h_0 + 1$:}
+The inductive hypothesis is that for any judgement $\Gamma \vdash M: T$
+of height at most $h_0$ if\\ $\Gamma \vdash M: T$ is derivable then
+$\forall\,M' \in st(M).\,\exists\,T', \Gamma'.\, \Gamma' \vdash M': T'$ is
+derivable.\\
+The cases will be distinguished on the last typing rule applied to the
+term $M$ in the derivation tree of $\Gamma \vdash M: T$ of height $h = h_0 + 1$:
+\begin{itemize}
+	\item (T-SUM): $M = \SUM{M_1}{M_2}$, $st(M) = \{ M_1, M_2 \} \cup st(M_1) \cup st(M_2)$ if
+	      $\Gamma \vdash \SUM{M_1}{M_2}: T$ is derivable then by Inversion Lemma:
+	      \begin{itemize}
+		      \item $T = Nat$
+		      \item $\Gamma \vdash M_1: Nat$ derivable (with height $h_0$)
+		      \item $\Gamma \vdash M_2: Nat$ derivable (with height $h_0$)
+	      \end{itemize}
+	      by inductive hypothesis applied to $M_1$ and $M_2$, the property is verified in the
+	      (T-SUM) case\qed
+	\item (T-IFTHENELSE): $M = \IF{M_1}{M_2}{M_3}$,\\
+	      $st(M) = \{ M_1, M_2, M_3 \} \cup st(M_1) \cup st(M_2) \cup st(M_3)$
+	      by Inversion Lemma:
+	      \begin{itemize}
+		      \item $\Gamma \vdash M_1: Bool$ derivable (with height $h_0$)
+		      \item $\Gamma \vdash M_2: T$ derivable (with height $h_0$)
+		      \item $\Gamma \vdash M_2: T$ derivable (with height $h_0$)
+	      \end{itemize}
+	      by inductive hypothesis applied to $M_1$, $M_2$ and $M_3$, the property is verified
+	      in the (T-IFTHENELSE) case\qed
+	\item (T-FUN): $M = \FN{x: T_1}{M_1}$, $st(M) = \{ x, M_1 \} \cup st(M_1)$
+	      by Inversion Lemma:
+	      \begin{itemize}
+		      \item $\exists\, T_2.\,T = T_1 \to T_2$
+		      \item $\Gamma, x: T_1 \vdash M: T_2$ derivable (with height $h_0$)
+	      \end{itemize}
+	      by inductive hypothesis applied to $x$ and $M_1$, the property is verified
+	      in the (T-FUN) case\qed
+	\item (T-APP): $M = \APP{M_1}{M_2}$, $st(M) = \{ M_1, M_2 \} \cup st(M_1) \cup st(M_2)$
+	      by Inversion Lemma $\exists\, T_1$ such that:
+	      \begin{itemize}
+		      \item $\Gamma \vdash M_1: T_1 \to T$ derivable (with height $h_0$)
+		      \item $\Gamma \vdash M_2: T_1$ derivable (with height $h_0$)
+	      \end{itemize}
+	      by inductive hypothesis applied to $M_1$ and $M_2$, the property is verified in the
+	      (T-APP) case\qed
+\end{itemize}
+

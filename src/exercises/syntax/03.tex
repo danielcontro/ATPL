@@ -3,12 +3,13 @@
 Give a formal definition of the notion of \emph{subterms} of a term $M$ of the language $\mathcal{L}$.\\\\
 Let $st$ be a function over the terms $M$ of the language $\mathcal{L}$ defined as follows:
 \begin{align*}
-	 & st(n)                  & =\; & \emptyset                                      \\
-	 & st(true)               & =\; & \emptyset                                      \\
-	 & st(false)              & =\; & \emptyset                                      \\
-	 & st(x)                  & =\; & \emptyset                                      \\
-	 & st(\SUM{M_1}{M_2})     & =\; & \{ M_1, M_2, st(M_1), st(M_2) \}               \\
-	 & st(\IF{M_1}{M_2}{M_3}) & =\; & \{ M_1, M_2, M_3, st(M_1), st(M_2), st(M_3) \} \\
-	 & st(\FN{x}{M})          & =\; & \{ x, M, st(M) \}                              \\
-	 & st(\APP{M_1}{M_2})     & =\; & \{ M_1, M_2, st(M_1), st(M_2) \}               \\
+	 & st(n)                  & =\; & \emptyset                                                  \\
+	 & st(true)               & =\; & \emptyset                                                  \\
+	 & st(false)              & =\; & \emptyset                                                  \\
+	 & st(x)                  & =\; & \emptyset                                                  \\
+	 & st(\SUM{M_1}{M_2})     & =\; & \{ M_1, M_2 \} \cup st(M_1) \cup st(M_2)                   \\
+	 & st(\IF{M_1}{M_2}{M_3}) & =\; & \{ M_1, M_2, M_3 \} \cup st(M_1) \cup st(M_2) \cup st(M_3) \\
+	 & st(\FN{x}{M})          & =\; & \{ x, M \} \cup st(M)                                      \\
+	 & st(\APP{M_1}{M_2})     & =\; & \{ M_1, M_2 \} \cup st(M_1) \cup st(M_2)                   \\
 \end{align*}
+
