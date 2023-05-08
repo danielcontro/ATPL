@@ -5,7 +5,7 @@ $\fv{M} \subseteq Dom(\Gamma)$.\\~\\
 The proof will proceed by induction on the height of the derivation tree of the judgement
 $\Gamma \vdash M: T$.
 
-\paragraph*{Base cases: $h = 1$}
+\paragraph*{Base cases: $h = 1$:\\}
 
 The base cases are those where the last typing rule is an axiom:
 
@@ -21,9 +21,9 @@ The base cases are those where the last typing rule is an axiom:
 	      $\fv{x} = \{x \} \subseteq Dom(\Gamma)$ holds
 \end{itemize}
 
-\paragraph*{Inductive cases: $h = h_0 + 1$}
+\paragraph*{Inductive cases: $h = h_0 + 1$:\\}
 
-The inductive hypothesis is that for any judgement $\Gamma vdash M: T$ of height $h \le h_0$
+The inductive hypothesis is that for any judgement $\Gamma \vdash M: T$ of height $h \le h_0$
 $\fv{M} \subseteq Dom(\Gamma)$. The inductive cases will be distinguished based on the last
 typing rule applied to the derivation tree:
 
@@ -56,7 +56,7 @@ typing rule applied to the derivation tree:
 		      \item $\exists\, T_2.\, T = T_1 \to T_2$
 		      \item $\Gamma, x: T_1 \vdash M_1 : T_2$ derivable
 	      \end{itemize}
-	      $\fv{M}=\fv{M}\setminus \{x\}$, since $M_1$ have a derivation tree of height $h_0$
+	      $\fv{M}=\fv{M_1}\setminus \{x\}$, since $M_1$ have a derivation tree of height $h_0$
 	      the inductive hypothesis can be applied, thus $\fv{M_1}\subseteq Dom(\Gamma,x:T_1)$.
 	      Moreover $\fv{M}=\fv{M_1}\setminus\{x\}$ hence $\fv{M}\subseteq Dom(\Gamma)$ holds
 	\item (T-APP): $M = \APP{M_1}{M_2}$
@@ -70,4 +70,5 @@ typing rule applied to the derivation tree:
 	      the inductive hypothesis can be applied, and since subsets are closed under union
 	      $\fv{M}=\fv{M_1}\cup\fv{M_2} \subseteq Dom(\Gamma)$ holds
 \end{itemize}
+
 
