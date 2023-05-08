@@ -1,0 +1,110 @@
+\subsection{}
+
+Think of a possible Strengthening Lemma which, in contrast to the Weakening
+Lemma, strengthens the contextual assumptions.
+
+If $\Gamma, x: T' \vdash M: T$ is a derivable judgement and $x \notin \fv{M}$ then
+$\Gamma \vdash M: T$ is derivable.\\
+The proof will proceed by induction on the derivation tree of the judgement
+$\Gamma, x: T' \vdash M: T$:
+
+\paragraph*{Base cases: $h = 1$:\\}
+
+The base cases are those where the last typing rule is an axiom:
+\begin{itemize}
+	\item (T-TRUE):
+	      if $\Gamma, x: T' \vdash true: Bool$ is derivable and
+	      $x \notin \fv{true} = \emptyset$, $\Gamma \vdash true: Bool$ derivable by T-TRUE typing rule
+	\item (T-FALSE):
+	      if $\Gamma, x: T' \vdash false: Bool$ is derivable and
+	      $x \notin \fv{false} = \emptyset$, $\Gamma \vdash false: Bool$ derivable by T-FALSE typing rule
+	\item (T-INT):
+	      if $\Gamma, x: T' \vdash n: Nat$ is derivable and
+	      $x \notin \fv{n} = \emptyset$, $\Gamma \vdash n: Nat$ derivable by T-INT typing rule
+	\item (T-VAR):
+	      if $\Gamma, x: T' \vdash y: T$ is derivable and
+	      $x \notin \fv{y} = \{y\}$, then $x \ne y$ hence
+	      $y \in Dom(\Gamma) \subseteq Dom(\Gamma, x: T')$ thus $\Gamma \vdash y: T$ derivable by
+	      T-VAR typing rule
+\end{itemize}
+
+\paragraph*{Inductive cases: $h = h_0 + 1$:\\}
+
+The inductive hypothesis is that for any derivable judgement\\
+$\Gamma, x: T' \vdash M: T$ of height $h \le h_0$ if $x \notin \fv{M}$ then $\Gamma \vdash M: T$.
+The inductive cases will be distinguished based on the last typing rule applied to the
+derivation tree:
+\begin{itemize}
+	\item (T-SUM): $M = \SUM{M_1}{M_2}$
+	      if $\Gamma, x: T' \vdash M: T$ is derivable and $x \notin \fv{M} = \fv{M_1}\cup\fv{M_2}$,
+	      then $x \notin \fv{M_1}, \fv{M_2}$ and by Inversion Lemma:
+	      \begin{itemize}
+		      \item $\Gamma, x: T' \vdash M_1 : Nat$ derivable
+		      \item $\Gamma, x: T' \vdash M_2 : Nat$ derivable
+	      \end{itemize}
+	      and since their derivation trees have height $h_0$ the inductive hypothesis can be applied;
+	      hence
+	      \begin{itemize}
+		      \item $\Gamma \vdash M_1 : Nat$ derivable
+		      \item $\Gamma \vdash M_2 : Nat$ derivable
+	      \end{itemize}
+	      Thus by T-SUM rule $\Gamma \vdash M: T$ is derivable
+	\item (T-IFTHENELSE): $M = \IF{M_1}{M_2}{M_3}$
+	      if $\Gamma, x: T' \vdash M: T$ is derivable and
+	      $x \notin \fv{M} = \fv{M_1}\cup\fv{M_2}\cup\fv{M_3}$, then
+	      $x \notin \fv{M_1}, \fv{M_2}, \fv{M_3}$ and by Inversion Lemma:
+	      \begin{itemize}
+		      \item $\Gamma, x: T' \vdash M_1 : Bool$ derivable
+		      \item $\Gamma, x: T' \vdash M_2 : T$ derivable
+		      \item $\Gamma, x: T' \vdash M_2 : T$ derivable
+	      \end{itemize}
+	      and since their derivation trees have height $h_0$ the inductive hypothesis can be applied;
+	      hence
+	      \begin{itemize}
+		      \item $\Gamma \vdash M_1 : Bool$ derivable
+		      \item $\Gamma \vdash M_2 : T$ derivable
+		      \item $\Gamma \vdash M_2 : T$ derivable
+	      \end{itemize}
+	      Thus by T-IF rule $\Gamma \vdash M: T$ is derivable
+	\item (T-FUN): $M = \FN{y: T_1}{M_1}$
+	      if $\Gamma, x: T' \vdash M: T$ is derivable and $x \notin \fv{M} = \fv{M_1}\setminus\{x\}$.
+	      (In case that $y = x$ it can be chosen an $\alpha$-equivalent term
+	      $\FN{y: T_1}{M_1} =_{\alpha} \FN{z: T_1}{M_1\SUBST{y}{z}}$ such that
+	      $z \notin Dom(\Gamma,x: T')$)\\
+	      Then $x \notin \fv{M_1}$ and by Inversion Lemma $\exists\, T_2$ such that:
+	      \begin{itemize}
+		      \item $T= T_1 \to T_2$
+		      \item $\Gamma, x: T', y: T_1 \vdash M_1: T_2$ derivable
+	      \end{itemize}
+	      and since it's derivation tree has height $h_0$ the inductive hypothesis can be applied;
+	      hence\\ $\Gamma, y: T_1 \vdash M_1: T_2$ derivable, thus by T-FUN rule
+	      $\Gamma \vdash M: T$ derivable
+	\item (T-APP): $M = \APP{M_1}{M_2}$
+	      if $\Gamma, x: T' \vdash M: T$ is derivable and $x \notin \fv{M} = \fv{M_1}\cup\fv{M_2}$,
+	      then $x \notin \fv{M_1}, \fv{M_2}$ and by Inversion Lemma $\exists\, T_1$ such that:
+	      \begin{itemize}
+		      \item $\Gamma, x: T' \vdash M_1 : T_1 \to T$ derivable
+		      \item $\Gamma, x: T' \vdash M_2 : T_1$ derivable
+	      \end{itemize}
+	      and since their derivation trees have height $h_0$ the inductive hypothesis can be applied;
+	      hence
+	      \begin{itemize}
+		      \item $\Gamma \vdash M_1 : T_1 \to T$ derivable
+		      \item $\Gamma \vdash M_2 : T$ derivable
+	      \end{itemize}
+	      Thus by T-APP rule $\Gamma \vdash M: T$ is derivable
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
