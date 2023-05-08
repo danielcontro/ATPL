@@ -1,0 +1,73 @@
+\subsection{}
+
+Prove that if $\Gamma \vdash M: T$ is a derivable judgement, then
+$\fv{M} \subseteq Dom(\Gamma)$.\\~\\
+The proof will proceed by induction on the height of the derivation tree of the judgement
+$\Gamma \vdash M: T$.
+
+\paragraph*{Base cases: $h = 1$}
+
+The base cases are those where the last typing rule is an axiom:
+
+\begin{itemize}
+	\item (T-TRUE): if $\Gamma \vdash true: Bool$ is derivable then\\
+	      $\fv{true} = \emptyset \subseteq Dom(\Gamma)$ holds
+	\item (T-FALSE): if $\Gamma \vdash false: Bool$ is derivable then\\
+	      $\fv{true} = \emptyset \subseteq Dom(\Gamma)$ holds
+	\item (T-INT): if $\Gamma \vdash n: Nat$ is derivable then\\
+	      $\fv{n} = \emptyset \subseteq Dom(\Gamma)$ holds
+	\item (T-VAR): if $\Gamma \vdash x: T$ is derivable then\\
+	      by side condition $x : T \in \Gamma$ thus $x \in Dom(\Gamma)$, hence
+	      $\fv{x} = \{x \} \subseteq Dom(\Gamma)$ holds
+\end{itemize}
+
+\paragraph*{Inductive cases: $h = h_0 + 1$}
+
+The inductive hypothesis is that for any judgement $\Gamma vdash M: T$ of height $h \le h_0$
+$\fv{M} \subseteq Dom(\Gamma)$. The inductive cases will be distinguished based on the last
+typing rule applied to the derivation tree:
+
+\begin{itemize}
+	\item (T-SUM): $M = \SUM{M_1}{M_2}$,
+	      if $\Gamma \vdash M: T$
+	      by Inversion Lemma:
+	      \begin{itemize}
+		      \item $\Gamma \vdash M_1 : Nat$ derivable
+		      \item $\Gamma \vdash M_2 : Nat$ derivable
+	      \end{itemize}
+	      $\fv{M}=\fv{M_1}\cup\fv{M_2}$, since $M_1, M_2$ have a derivation tree of height $h_0$
+	      the inductive hypothesis can be applied, and since subsets are closed under union
+	      $\fv{M}=\fv{M_1}\cup\fv{M_2} \subseteq Dom(\Gamma)$ holds
+	\item (T-IFTHENELSE): $M = \IF{M_1}{M_2}{M_3}$
+	      if $\Gamma \vdash M: T$
+	      by Inversion Lemma:
+	      \begin{itemize}
+		      \item $\Gamma \vdash M_1 : Bool$ derivable
+		      \item $\Gamma \vdash M_2 : T$ derivable
+		      \item $\Gamma \vdash M_3 : T$ derivable
+	      \end{itemize}
+	      $\fv{M}=\fv{M_1}\cup\fv{M_2}\cup\fv{M_3}$, since $M_1, M_2, M_3$ have a derivation tree of height $h_0$
+	      the inductive hypothesis can be applied, and since subsets are closed under union
+	      $\fv{M}=\fv{M_1}\cup\fv{M_2}\cup\fv{M_3} \subseteq Dom(\Gamma)$ holds
+	\item (T-FUN): $M = \FN{x: T_1}{M_1}$
+	      if $\Gamma \vdash M: T$
+	      by Inversion Lemma:
+	      \begin{itemize}
+		      \item $\exists\, T_2.\, T = T_1 \to T_2$
+		      \item $\Gamma, x: T_1 \vdash M_1 : T_2$ derivable
+	      \end{itemize}
+	      $\fv{M}=\fv{M}\setminus \{x\}$, since $M_1$ have a derivation tree of height $h_0$
+	      the inductive hypothesis can be applied, thus $\fv{M_1}\subseteq Dom(\Gamma,x:T_1)$.
+	      Moreover $\fv{M}=\fv{M_1}\setminus\{x\}$ hence $\fv{M}\subseteq Dom(\Gamma)$ holds
+	\item (T-APP): $M = \APP{M_1}{M_2}$
+	      if $\Gamma \vdash M: T$
+	      by Inversion Lemma:
+	      \begin{itemize}
+		      \item $\Gamma \vdash M_1 : Nat$ derivable
+		      \item $\Gamma \vdash M_2 : Nat$ derivable
+	      \end{itemize}
+	      $\fv{M}=\fv{M_1}\cup\fv{M_2}$, since $M_1, M_2$ have a derivation tree of height $h_0$
+	      the inductive hypothesis can be applied, and since subsets are closed under union
+	      $\fv{M}=\fv{M_1}\cup\fv{M_2} \subseteq Dom(\Gamma)$ holds
+\end{itemize}
+
