@@ -1,0 +1,16 @@
+\subsection{}
+
+Is the opposite of Subject Reduction true? i.e. If $\Gamma \vdash M': T$ and $M \to M'$, then
+$\Gamma \vdash M: T$ (called Subject Expansion) Either prove it or show a counter-example.
+
+Let $M' = 1$ then by (T-INT) $\Gamma \vdash 1: Nat$ is derivable.
+Let then $M = \IF{true}{1}{false}$ such that $M \to M'$ by the (IF-TRUE) rule.
+Assume $\Gamma \vdash \IF{true}{1}{false}: T$ derivable, then by Inversion Lemma:
+\begin{itemize}
+	\item $\Gamma \vdash true: Bool$
+	\item $\Gamma \vdash 1: T$
+	\item $\Gamma \vdash false: T$
+\end{itemize}
+But applying the Inversion Lemma once again to the second and third terms would lead to $T = Nat$
+and $T = Bool$ which is a contraddiction, hence $\Gamma \vdash \IF{true}{1}{false}: T$ isn't
+derivable; thus a counter-example of the Subject Expansion, which doesn't hold, has been shown.
