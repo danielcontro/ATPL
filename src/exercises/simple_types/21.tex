@@ -1,0 +1,90 @@
+\subsection{}
+
+Prove the Subject Reduction theorem by induction on the height of the
+derivation of the judgement $\Gamma \vdash M: T$
+
+The Subject Reduction theorem states that if $\Gamma \vdash M: T$ is derivable and $M \to M'$
+then $\Gamma \vdash M': T$ is derivable.\\
+The proof will proceed by induction on the height of the derivation tree of the judgement
+$\Gamma \vdash M: T$
+
+\paragraph*{Base cases: $h = 1$:\\}
+
+The base cases are those where the last typing rule is an axiom:
+\begin{itemize}
+	\item (T-TRUE): $true \not\to$ thus vacuously true
+	\item (T-FALSE): $false \not\to$ thus vacuously true
+	\item (T-INT): $n \not\to$ thus vacuously true
+	\item (T-VAR): $x \not\to$ thus vacuously true
+\end{itemize}
+
+\paragraph*{Inductive cases: $h = h_0 + 1$:\\}
+
+The inductive hypothesis is that for any derivable judgement $\Gamma \vdash M: T$ of height
+$h \le h_0$ if $M \to M'$ then $\Gamma \vdash M': T$ is derivable.\\
+The inductive cases will be distinguished based on the last typing rule applied to the
+derivation tree:
+
+\begin{itemize}
+	\item (T-SUM): $\Gamma \vdash M: Nat$ derivable with $M = \SUM{M_1}{M_2}$;
+	      by Inversion Lemma:
+	      \begin{itemize}
+		      \item $\Gamma \vdash M_1: Nat$ derivable
+		      \item $\Gamma \vdash M_2: Nat$ derivable
+	      \end{itemize}
+	      if $M \to M'$ to get $M'$ it was applied one of the following operational semantics rules:
+	      \begin{itemize}
+		      \item (SUM): $M = \SUM{n_1}{n_2} \to n = M'$, thus by (T-INT) rule
+		            $\Gamma \vdash n: Nat$ derivable
+		      \item (SUM-LEFT): $M \to \SUM{M_1'}{M_2} = M'$,
+		            since $\Gamma \vdash M_1: Nat$ derivable
+		            by Inv. Lemma with height $h_0$ the inductive hypothesis can be applied, hence
+		            $\Gamma \vdash M_1': Nat$ derivable. Thus by (T-SUM) rule $\Gamma \vdash M': Nat$
+		            derivable
+		      \item (SUM-RIGHT): $M \to \SUM{v}{M_2'}$, since $\Gamma \vdash M_2: Nat$ derivable
+		            by Inv. Lemma with height $h_0$ the inductive hypothesis can be applied, hence
+		            $\Gamma \vdash M_2': Nat$ derivable. Thus by (T-SUM) rule $\Gamma \vdash M': Nat$
+		            derivable
+	      \end{itemize}
+	\item (T-IFTHENELSE): $\Gamma \vdash M: T$ derivable with $M = \IF{M_1}{M_2}{M_3}$;
+	      by Inversion Lemma:
+	      \begin{itemize}
+		      \item $\Gamma \vdash M_1: Bool$ derivable
+		      \item $\Gamma \vdash M_2: T$ derivable
+		      \item $\Gamma \vdash M_3: T$ derivable
+	      \end{itemize}
+	      if $M \to M'$ to get $M'$ it was applied one of the following operational semantics rules:
+	      \begin{itemize}
+		      \item (IF-TRUE): $\IF{true}{M_2}{M_3} \to M_2 = M'$ with $\Gamma \vdash M': T$
+		            derivable by Inversion Lemma
+		      \item (IF-FALSE): $\IF{false}{M_2}{M_3} \to M_3 = M'$ with $\Gamma \vdash M': T$
+		            derivable by Inversion Lemma
+		      \item (IF): $M \to \IF{M_1'}{M_2}{M_3} = M'$ since $\Gamma \vdash M_1: Bool$ derivable
+		            by Inv. Lemma with height $h_0$ the inductive hypothesis can be applied, hence
+		            $\Gamma \vdash M_1': Bool$ derivable. Thus by (T-IFTHENELSE) rule
+		            $\Gamma \vdash M': T$ derivable
+	      \end{itemize}
+	\item (T-FUN): $M = \FN{x: T_1}{M_1} \not\to$ thus vacuously true
+	\item (T-APP): $\Gamma \vdash M: T$ derivable with $M = \APP{M_1}{M_2}$;
+	      by Inversion Lemma $\exists\,T_1$ such that:
+	      \begin{itemize}
+		      \item $\Gamma \vdash M_1: T_1 \to T$ derivable
+		      \item $\Gamma \vdash M_2: T_1$ derivable
+	      \end{itemize}
+	      if $M \to M'$ to get $M'$ it was applied one of the following operational semantics rules:
+	      \begin{itemize}
+		      \item (BETA): $M = \APP{(\FN{x: T_1}{M_{1_1}})}{v} \to M\SUBST{x}{v}$, by Inversion
+		            Lemma\\
+		            $\Gamma \vdash \FN{x:T_1}{M_{1_1}}: T_1 \to T$ and $\Gamma \vdash v: T_1$.
+		            By Inversion Lemma once again on $M_1$ $\Gamma, x: T_1 \vdash M_{1_1}: T$.
+		            Now by Substitution Lemma $\Gamma \vdash M\SUBST{x}{v}\;(= M'): T$
+		      \item (APP1): $M \to \APP{M_1'}{M_2} = M'$ since $\Gamma \vdash M_1: T_1 \to T$
+		            derivable by Inv. Lemma with height $h_0$ the inductive hypothesis can be applied,
+		            hence $\Gamma \vdash M_1': T_1 \to T$ derivable. Thus by (T-APP) rule
+		            $\Gamma \vdash M': T$ derivable
+		      \item (APP2) $M \to \APP{v}{M_2'} = M'$ since $\Gamma \vdash M_2: T_1$ derivable by
+		            Inv. Lemma with height $h_0$ the inductive hypothesis can be applied,
+		            hence $\Gamma \vdash M_2': T_1$ derivable. Thus by (T-APP) rule
+		            $\Gamma \vdash M': T$ derivable
+	      \end{itemize}
+\end{itemize}
