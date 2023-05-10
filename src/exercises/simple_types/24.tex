@@ -1,0 +1,48 @@
+\subsection{}
+
+If instead of the rules (T-APP) and (T-FUN) the following rules were defined,
+would the safety theorem still be true?
+\[
+	\infer[\text{\small{(APP')}}]
+	{\Gamma \vdash \APP{M}{N}: T}
+	{
+		\Gamma \vdash M: T \to T &
+		\Gamma \vdash N: T
+	}
+	\qquad
+	\infer[\text{\small{(FUN')}}]
+	{\Gamma \vdash \FN{x: T_1}{M}: T \to T}
+	{\Gamma, x: T_1 \vdash M: T}
+\]
+
+Let $M = \APP{(\FN{x:Bool}{\IF{x}{1}{0}})}{5}$
+
+\[
+	\infer[\text{\small{(APP')}}]
+	{\emptyset \vdash \APP{(\FN{x:Bool}{\IF{x}{1}{0}})}{5}: Nat}
+	{
+		\infer[\text{\small{(FUN')}}]
+		{ \emptyset \vdash \FN{x:Bool}{\IF{x}{1}{0}}: Nat \to Nat }
+		{
+			\infer[\text{\small{(T-IF)}}]
+			{ \emptyset, x: Bool \vdash \IF{x}{1}{0}: Nat }
+			{
+				\infer[\text{\small{(T-VAR)}}]{ \emptyset, x: Bool \vdash x: Bool }{} &
+				\infer[\text{\small{(T-INT)}}]{ \emptyset, x: Bool \vdash 1: Nat }{} &
+				\infer[\text{\small{(T-INT)}}]{ \emptyset, x: Bool \vdash 0: Nat }{}
+			}
+		}
+		&
+		\infer[\text{\small{T-INT}}]{ \emptyset \vdash 5: Nat }{}
+	}
+\]
+
+Thus $M$ is a closed and well-typed term, but
+\[
+	\infer[\text{\small{(BETA)}}]
+	{\APP{(\FN{x:Bool}{\IF{x}{1}{0}})}{5} \to \IF{5}{1}{0}}{}
+	\qquad
+	\infer[]{\IF{5}{1}{0} \not\to}{}
+\]
+
+A counterexample of the Safety Theorem, which no longer holds, has been shown.\qed
