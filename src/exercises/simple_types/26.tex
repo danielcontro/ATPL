@@ -1,0 +1,31 @@
+\subsection{}
+
+If the following rule was added to the typing system, where would the proof of the safety theorem fail?
+\[
+	\infer[\text{\small{(IF')}}]
+	{\Gamma \vdash \IF{M_1}{M_2}{M_3}: T}
+	{
+		\Gamma \vdash M_1: Bool &
+		\Gamma \vdash M_2: T_2 &
+		\Gamma \vdash M_3: T_3
+	}
+\]
+
+With the (IF') typing rule the Subject Reduction Theorem no longer holds, for example let\\
+$M = \IF{true}{1}{false}$.
+\[
+	\infer[\text{\small{(IF')}}]
+	{\emptyset \vdash \IF{true}{1}{false}: Bool}
+	{
+		\infer{\emptyset \vdash true: Bool}{\text{\small{(T-BOOL)}}} &
+		\infer{\emptyset \vdash 1: Nat}{\text{\small{(T-INT)}}} &
+		\infer{\emptyset \vdash false: Bool}{\text{\small{(T-BOOL)}}}
+	}
+	\qquad
+	\infer{\IF{true}{1}{false} \to 1}{\text{\small{(IF-TRUE)}}}
+\]
+but
+\[
+	\infer{\emptyset \vdash 1: Nat}{\text{\small{(T-INT)}}}
+\]
+with $Nat \ne Bool$ hence this is a counterexample of the Subject Reduction Theorem.
