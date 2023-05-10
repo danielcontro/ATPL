@@ -43,7 +43,7 @@ The inductive hypothesis can be applied to the first judgement thus:
 
 \subsubsection*{Substitution Lemma:}
 
-If $\Gamma, x: S \vdash M: T$ and $\Gamma \vdash N: S$ then $\Gamma, x: S \vdash M\SUBST{x}{N}: T$
+If $\Gamma, x: S \vdash M: T$ and $\Gamma \vdash N: S$ then $\Gamma \vdash M\SUBST{x}{N}: T$
 By induction on the height of the derivation of $\Gamma, x: S \vdash M: T$:
 
 \paragraph*{Base cases:\\}
@@ -52,7 +52,7 @@ Analogous to the original proof
 \paragraph*{Inductive cases $h = h_0 + 1$:\\}
 
 The inductive hypothesis is that for all the derivations of height $h \le h_0$ if
-$\Gamma, x: S \vdash M: T$ and $\Gamma \vdash N: S$ then $\Gamma, x: S \vdash M\SUBST{x}{N}: T$
+$\Gamma, x: S \vdash M: T$ and $\Gamma \vdash N: S$ then $\Gamma \vdash M\SUBST{x}{N}: T$
 is derivable.
 The only case which differs is if the last rule in the derivation is (T-APP') with
 $M = \APP{M_1}{M_2}$ thus the conclusion of the rule is $\Gamma, x: S \vdash \APP{M_1}{M_2}: T$,
