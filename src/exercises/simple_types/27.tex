@@ -1,0 +1,160 @@
+\subsection{}
+
+Show that the following terms are well-typed:
+\begin{itemize}
+	\item $\FN{x: T_1}{(\FN{y: T_2}{\IF{y}{x}{true}})}$
+	\item $\FN{x: Nat \to Bool}{x}$
+	\item $\FN{f: T}{(\FN{x: T'}{\APP{f}{\IF{true}{x}{\APP{f}{x}}}})}$
+	\item $\FN{f: T_1}{(\FN{g: T_2}{\IF{(\APP{f}{(\APP{g}{true})})}{\APP{f}{(\FN{x:T_3}{true})}}{\APP{f}{(\FN{x: T_4}{x})}}})}$
+\end{itemize}
+
+\subsubsection*{$\FN{x: T_1}{(\FN{y: T_2}{\IF{y}{x}{true}})}$:}
+
+Let $T_1 = T_2 = Bool$ and $T = Bool \to Bool \to Bool$
+\[
+	\infer[\text{\small{(T-FUN)}}]
+	{\emptyset \vdash \FN{x: Bool}{(\FN{y: Bool}{\IF{y}{x}{true}})}: Bool \to Bool \to Bool}
+	{
+		\infer[\text{\small{(T-FUN)}}]
+		{ \emptyset, x: Bool \vdash \FN{y: Bool}{\IF{y}{x}{true}}: Bool \to Bool }
+		{
+			\infer[\text{\small{(T-IF)}}]
+			{\emptyset, x: Bool, y: Bool \vdash \IF{y}{x}{true}: Bool}
+			{
+				\infer{\emptyset, x: Bool, y: Bool \vdash y: Bool}{\text{\small{(T-VAR)}}} &
+				\infer{\emptyset, x: Bool, y: Bool \vdash x: Bool}{\text{\small{(T-VAR)}}} &
+				\infer{\emptyset, x: Bool, y: Bool \vdash true: Bool}{\text{\small{(T-BOOL)}}}
+			}
+		}
+	}
+\]
+
+\subsubsection*{$\FN{x: Nat \to Bool}{x}$:}
+
+Let $T = (Nat \to Bool) \to (Nat \to Bool)$
+
+\[
+	\infer[\text{\small{(T-FUN)}}]
+	{\emptyset \vdash \FN{x: Nat \to Bool}{x}: (Nat \to Bool) \to (Nat \to Bool)}
+	{
+		\infer{ \emptyset, x: Nat \to Bool \vdash x: Nat \to Bool }{\text{\small{(T-VAR)}}}
+	}
+\]
+
+\subsubsection*{$\FN{f: T}{(\FN{x: T'}{\APP{f}{(\IF{true}{x}{\APP{f}{x}})}})}$:}
+
+Let $T = Nat \to Nat, T' = Nat$ and $\Gamma = f: T, x: T'$
+
+\[
+	\infer[\text{\small{(T-FUN)}}]
+	{\emptyset \vdash \FN{f: T}{(\FN{x: T'}{\APP{f}{(\IF{true}{x}{\APP{f}{x}})}})}: T \to T' \to T'}
+	{
+		\infer[\text{\small{(T-FUN)}}]
+		{ \emptyset, f: T \vdash \FN{x: T'}{\APP{f}{(\IF{true}{x}{\APP{f}{x}})}}: T' \to T' }
+		{
+			\infer[\text{\small{(T-APP)}}]
+			{ \emptyset, f: T, x: T' \vdash \APP{f}{(\IF{true}{x}{\APP{f}{x}})}: T' }
+			{
+				\infer{\Gamma \vdash f: T}{\text{\small{(T-VAR)}}} &
+				\infer[\text{\small{(T-IF)}}]{\Gamma \vdash \IF{true}{x}{\APP{f}{x}}: T'}
+				{
+					\infer{\Gamma \vdash true: Bool}{\text{\small{(T-BOOL)}}} &
+					\infer{\Gamma \vdash x: T'}{\text{\small{(T-VAR)}}} &
+					\infer[\text{\small{(T-APP)}}]
+					{ \Gamma \vdash \APP{f}{x}: T' }
+					{
+						\infer{\Gamma \vdash f: T}{\text{\small{(T-VAR)}}} &
+						\infer{\Gamma \vdash x: T'}{\text{\small{(T-VAR)}}}
+					}
+				}
+			}
+		}
+	}
+\]
+
+\subsubsection*{$\FN{f: T_1}{(\FN{g: T_2}{\IF{(\APP{f}{(\APP{g}{true})})}{\APP{f}{(\FN{x:T_3}{true})}}{\APP{f}{(\FN{x: T_4}{x})}}})}$:}
+
+Let $T_1 = (Bool \to Bool) \to Bool, T_2 = Bool \to (Bool \to Bool), T_3 = T_4 = Bool, \Gamma = f: T_1, g: T_2$
+\[
+	\infer[\text{\small{(T-FUN)}}]
+	{
+		\emptyset \vdash \FN{f: T_1}{(\FN{g: T_2}{\IF{(\APP{f}{(\APP{g}{true})})}{\APP{f}{(\FN{x:T_3}{true})}}{\APP{f}{(\FN{x: T_4}{x})}}})}: T_1 \to T_2 \to Bool
+	}
+	{
+		\infer[\text{\small{(T-FUN)}}]
+		{
+			f: T_1 \vdash \FN{g: T_2}{\IF{(\APP{f}{(\APP{g}{true})})}{\APP{f}{(\FN{x:T_3}{true})}}{\APP{f}{(\FN{x: T_4}{x})}}}: T_2 \to Bool
+		}
+		{
+			\infer[\text{\small{(T-IF)}}]
+			{
+				f: T_1, g: T_2 \vdash \IF{(\APP{f}{(\APP{g}{true})})}{\APP{f}{(\FN{x:T_3}{true})}}{\APP{f}{(\FN{x: T_4}{x})}}: Bool
+			}
+			{
+				\infer[\text{\small{(T-APP)}}]
+				{\Gamma \vdash \APP{f}{(\APP{g}{true})}: Bool}
+				{
+					\vdots
+				} &
+				\infer[\text{\small{(T-APP)}}]
+				{
+					\Gamma \vdash \APP{f}{(\FN{x: T_3}{true})}: Bool
+				}
+				{
+					\vdots
+				} &
+				\infer[\text{\small{(T-APP)}}]
+				{
+					\Gamma \vdash \APP{f}{(\FN{x: T_4}{x})}: Bool
+				}
+				{
+					\vdots
+				}
+			}
+		}
+	}
+\]
+
+\[
+	\infer[\text{\small{(T-APP)}}]
+	{\Gamma \vdash \APP{f}{(\APP{g}{true})}: Bool}
+	{
+		\infer{\Gamma \vdash f: T_A \to Bool}{\text{\small{(T-VAR)}}} &
+		\infer[\text{\small{(T-APP)}}]
+		{\Gamma \vdash \APP{g}{true}: T_A}
+		{
+			\infer{\Gamma \vdash g: Bool \to T_A}{\text{\small{(T-VAR)}}} &
+			\infer{\Gamma \vdash true: Bool}{\text{\small{(T-BOOL)}}}
+		}
+	}
+\]
+
+\[
+	\infer[\text{\small{(T-APP)}}]
+	{
+		\Gamma \vdash \APP{f}{(\FN{x: T_3}{true})}: Bool
+	}
+	{
+		\infer{\Gamma \vdash f: (T_3 \to Bool) \to Bool}{\text{\small{(T-VAR)}}} &
+		\infer[\text{\small{(T-FUN)}}]
+		{\Gamma \vdash \FN{x: T_3}{true}: T_3 \to Bool}
+		{
+			\infer{\Gamma, x: T_3 \vdash true: Bool}{\text{\small{(T-BOOL)}}}
+		}
+	}
+\]
+
+\[
+	\infer[\text{\small{(T-APP)}}]
+	{
+		\Gamma \vdash \APP{f}{(\FN{x: T_4}{x})}: Bool
+	}
+	{
+		\infer{\Gamma \vdash f: (T_4 \to T_4) \to Bool}{\text{\small{(T-VAR)}}} &
+		\infer[\text{\small{(T-FUN)}}]
+		{\Gamma \vdash \FN{x: T_4}{x}: T_4 \to T_4}
+		{\infer{\Gamma, x: T_4 \vdash x: T_4}{\text{\small{(T-VAR)}}}}
+	}
+\]
+
+with $T_A = Bool \to Bool$
