@@ -1,0 +1,122 @@
+\subsection{}
+
+If instead of the rule (T-APP) the following rule was defined, would the safety
+theorem still be true?
+\[
+	\infer[\text{\small{(APP')}}]
+	{\Gamma \vdash \APP{M}{N}: T}
+	{
+		\Gamma \vdash M: T \to T &
+		\Gamma \vdash N: T
+	}
+\]
+
+The Safety Theorem states that if $\emptyset \vdash M: T$ and $M \to^\ast M'.\, M' \not\to$ then
+$M'$  is a value.
+In order to prove it we have to prove the Progress Theorem and the the corollary of the
+Subject Reduction Theorem with the updated typing rules.
+
+\subsubsection*{Progress Theorem:}
+
+If $\emptyset \vdash M: T$ then $M$ is a value or $\exists\, M'.\, M \to M'$
+By induction on the height of the derivation tree of $\emptyset \vdash M: T$:
+
+\paragraph*{Base cases:\\}
+Analogous to the original proof
+
+\paragraph*{Inductive cases $h = h_0 + 1$:\\}
+
+The inductive hypothesis is that for all the derivations of height $h \le h_0$ if
+$\emptyset \vdash M: T$ then $M$ is a value or $\exists\, M'.\, M \to M'$. The only case which
+differs is if the last rule in the derivation is (T-APP') with $M = \APP{M_1}{M_2}$ thus the
+conclusion of the rule is $\emptyset \vdash \APP{M_1}{M_2}: T$, and the premises are
+$\emptyset \vdash M_1 : T \to T$ and $\emptyset \vdash M_2: T$ both of height at most $h_0$.
+The inductive hypothesis can be applied to the first judgement thus:
+\begin{itemize}
+	\item $M_1$ value: by the lemma of Canonical Forms $M_1 = \FN{x:T}{M_{1_1}}$ hence
+	      $M = \APP{\FN{x:T}{M_{1_1}}}{M_2}$. By applying the inductive hypothesis to the second
+	      judgement either $M_2$ is a value $v_2$ hence the (BETA) rule can be applied obtaining
+	      $M \to M_{1_1}\SUBST{x}{v_2}$ or (APP2) applies obtaining
+	      $M \to \APP{\FN{x:T}{M_{1_1}}}{M_2'}$
+	\item $M_1 \to M1'$: (APP1) applies, thus $M \to \APP{M_1'}{M_2}$
+\end{itemize}
+
+\subsubsection*{Substitution Lemma:}
+
+If $\Gamma, x: S \vdash M: T$ and $\Gamma \vdash N: S$ then $\Gamma, x: S \vdash M\SUBST{x}{N}: T$
+By induction on the height of the derivation of $\Gamma, x: S \vdash M: T$:
+
+\paragraph*{Base cases:\\}
+Analogous to the original proof
+
+\paragraph*{Inductive cases $h = h_0 + 1$:\\}
+
+The inductive hypothesis is that for all the derivations of height $h \le h_0$ if
+$\Gamma, x: S \vdash M: T$ and $\Gamma \vdash N: S$ then $\Gamma, x: S \vdash M\SUBST{x}{N}: T$
+is derivable.
+The only case which differs is if the last rule in the derivation is (T-APP') with
+$M = \APP{M_1}{M_2}$ thus the conclusion of the rule is $\Gamma, x: S \vdash \APP{M_1}{M_2}: T$,
+and the premises are:
+\begin{itemize}
+	\item $\Gamma, x: S \vdash M_1 : T \to T$
+	\item $\Gamma, x: S \vdash M_2: T$
+\end{itemize}
+
+The inductive hypothesis can be applied to both the premises obtaining
+\begin{itemize}
+	\item $\Gamma \vdash M_1\SUBST{x}{N}: T \to T$
+	\item $\Gamma \vdash M_2\SUBST{x}{N}: T$
+\end{itemize}
+hence the (T-APP') rule can be applied obtaining
+$\Gamma \vdash \APP{M_1\SUBST{x}{N}}{M_2\SUBST{x}{N}}: T$\qed
+
+\subsubsection*{Subject Reduction Theorem:}
+
+If $\Gamma \vdash M: T$ and $M \to M'$ then $\Gamma \vdash M': T$.
+By induction on the height of the derivation of $\Gamma \vdash M: T$:
+
+\paragraph*{Base cases:\\}
+
+Analogous to the original proof
+
+\paragraph*{Inductive cases $h = h_0 + 1$:\\}
+The inductive hypothesis is that for all the derivations of height $h \le h_0$ if
+$\Gamma \vdash M: T$ and $M \to M'$ then $\Gamma \vdash M':T$ is derivable. The only case which
+differs is if the last rule in the derivation is (T-APP') with $M = \APP{M_1}{M_2}$ thus the
+conclusion of the rule is $\Gamma \vdash \APP{M_1}{M_2}: T$, and the premises are
+\begin{itemize}
+	\item $\Gamma \vdash M_1 : T \to T$
+	\item $\Gamma \vdash M_2: T$
+\end{itemize}
+if $M \to M'$ to get $M'$ it was applied one of the following operational semantics rules:
+\begin{itemize}
+	\item (BETA): $M = \APP{(\FN{x: T}{M_{1_1}})}{v} \to M\SUBST{x}{v}$, by Inversion
+	      Lemma'\\
+	      $\Gamma \vdash \FN{x:T}{M_{1_1}}: T \to T$ and $\Gamma \vdash v: T$.
+	      By Inversion Lemma' once again on $M_1$ $\Gamma, x: T \vdash M_{1_1}: T$.
+	      Now by Substitution Lemma' $\Gamma \vdash M\SUBST{x}{v}\;(= M'): T$
+	\item (APP1): $M \to \APP{M_1'}{M_2} = M'$ since $\Gamma \vdash M_1: T \to T$
+	      derivable by Inv. Lemma' with height $h_0$ the inductive hypothesis can be applied,
+	      hence $\Gamma \vdash M_1': T \to T$ derivable. Thus by (T-APP') rule
+	      $\Gamma \vdash M': T$ derivable
+	\item (APP2) $M \to \APP{v}{M_2'} = M'$ since $\Gamma \vdash M_2: T$ derivable by
+	      Inv. Lemma with height $h_0$ the inductive hypothesis can be applied,
+	      hence $\Gamma \vdash M_2': T$ derivable. Thus by (T-APP') rule
+	      $\Gamma \vdash M': T$ derivable
+\end{itemize}
+
+\subsubsection*{Corollary of Subject Reduction Theorem:}
+
+If $\emptyset \vdash M: T$ and $M \to M'$ then $\emptyset \vdash M': T$
+By induction on the number of the reduction steps $k$ in $M \to M'$.
+
+\paragraph*{$k = 0$:} $M' = M$ thus immediate
+\paragraph*{$k = k_0 + 1$:\\}
+$M \to^{k+1} M'$ then $M \to^k M_1 \to M'$ by induction hypothesis $\emptyset \vdash M_1: T$,
+thus by Subject Reduction Theorem $\Gamma \vdash M': T$.\qed
+
+\subsubsection*{Safety Theorem:}
+
+By Corollary of the Subject Reduction Theorem $\emptyset \vdash M': T$, by the Progress Theorem
+either $M'$ value or $\exists\, M".\, M' \to M"$ but since by hypothesis $M' \not\to$ $M' value$.
+\qed
