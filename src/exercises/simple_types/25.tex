@@ -1,0 +1,34 @@
+\subsection{}
+
+If the following two axioms were added to the typing system, would the safety
+theorem still be true?
+\[
+	\infer{\Gamma \vdash true: Nat}{\text{\small{(TRUE')}}}
+  \qquad
+	\infer{\Gamma \vdash false: Nat}{\text{\small{(FALSE')}}}
+\]
+
+Let $M = \IF{true}{1+true}{0}$
+
+\[
+  \infer[\text{\small{(T-IF)}}]
+  {\emptyset \vdash \IF{true}{1+true}{0}: Nat}
+  {
+    \infer{\emptyset \vdash true: Bool}{\text{\small{(T-BOOL)}}} &
+    \infer[\text{\small{(T-SUM)}}]{\emptyset \vdash 1+true: Nat}{
+      \infer{\emptyset \vdash 1: Nat}{\text{\small{(T-INT)}}} &
+      \infer{\emptyset \vdash true: Nat}{\text{\small{(TRUE')}}}
+    } &
+    \infer{\emptyset \vdash 0: Nat}{\text{\small{(T-INT)}}}
+  }
+\]
+
+Thus $M$ is a closed and well-typed term, but
+
+\[
+  \infer{\IF{true}{\SUM{1}{true}}{0} \to \SUM{1}{true}}{\text{\small{(IF-TRUE)}}}
+  \qquad
+  \infer{\SUM{1}{true} \not\to}{}
+\]
+
+hence it's a counterexample of the Safety Theorem, which no longer holds.\qed

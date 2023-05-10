@@ -27,13 +27,13 @@ Let $M = \APP{(\FN{x:Bool}{\IF{x}{1}{0}})}{5}$
 			\infer[\text{\small{(T-IF)}}]
 			{ \emptyset, x: Bool \vdash \IF{x}{1}{0}: Nat }
 			{
-				\infer[\text{\small{(T-VAR)}}]{ \emptyset, x: Bool \vdash x: Bool }{} &
-				\infer[\text{\small{(T-INT)}}]{ \emptyset, x: Bool \vdash 1: Nat }{} &
-				\infer[\text{\small{(T-INT)}}]{ \emptyset, x: Bool \vdash 0: Nat }{}
+				\infer{ \emptyset, x: Bool \vdash x: Bool }{\text{\small{(T-VAR)}}} &
+				\infer{ \emptyset, x: Bool \vdash 1: Nat }{\text{\small{(T-INT)}}} &
+				\infer{ \emptyset, x: Bool \vdash 0: Nat }{\text{\small{(T-INT)}}}
 			}
 		}
 		&
-		\infer[\text{\small{T-INT}}]{ \emptyset \vdash 5: Nat }{}
+		\infer{ \emptyset \vdash 5: Nat }{\text{\small{T-INT}}}
 	}
 \]
 
@@ -45,4 +45,4 @@ Thus $M$ is a closed and well-typed term, but
 	\infer[]{\IF{5}{1}{0} \not\to}{}
 \]
 
-A counterexample of the Safety Theorem, which no longer holds, has been shown.\qed
+hence it's a counterexample of the Safety Theorem, which no longer holds.\qed
