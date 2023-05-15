@@ -1,0 +1,18 @@
+\subsection{}
+
+Update the proofs of Progress Theorem, Type Preservation Theorem and Substitution Lemma in order
+to consider the language $\mathcal{L}$ extended with the term \unit.
+
+\paragraph*{Substitution Lemma:\\}
+Only the base cases need to be updated since the (T-UNIT) typing rule has been added; in which
+case the judgement is $\Gamma, x: S \vdash \unit: Unit$,
+thus $M\SUBST{x}{N} = \unit\SUBST{x}{N} = \unit$, then $\Gamma \vdash \unit: Unit$ can be derived
+by the (T-UNIT) rule.
+
+\paragraph*{Type Preservation:} Since no semantic rules have been added the proof is left
+unchanged.
+
+\paragraph*{Progress Theorem:\\}
+Only the base cases need to be updated since the (T-UNIT) typing rule has been added.
+If the last rule used in the derivation tree is (T-UNIT) hence $M = \unit$ which is a value thus
+the property holds.
