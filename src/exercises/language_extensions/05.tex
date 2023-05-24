@@ -1,0 +1,91 @@
+\subsection{}
+Update the proofs of the theorems of progress, type preservation and the substitution lemma by
+considering the extended language with pair terms.
+
+\subsubsection*{Progress theorem:}
+
+The base cases are left unchanged, only the inductive ones has to be extended with the newly
+added typing rules:
+\begin{itemize}
+	\item (T-PAIR): $M = \PAIR{M_1}{M_2}$ since $M_1, M_2$ derivation trees have height
+	      $\le k_0$ then the inductive hypothesis can be applied hence $\emptyset \vdash M_1 : T_1$
+	      and $\emptyset \vdash M_2 : T_2$ are derivable, thus the (T-PAIR) rule can be applied;
+	\item (T-PROJECT 1): $M = \FST{M_1}$, since $M_1$'s derivation tree has height $\le k_0$
+	      the inductive hyp. can be applied hence $\emptyset \vdash M_1: T_1 \ast T_2$, thus the
+	      (T-PROJECT 1) rule can be applied;
+	\item (T-PROJECT 2): $M = \SND{M_1}$, since $M_1$'s derivation tree has height $\le k_0$
+	      the inductive hyp. can be applied hence $\emptyset \vdash M_1: T_1 \ast T_2$, thus the
+	      (T-PROJECT 2) rule can be applied;
+\end{itemize}
+
+\subsubsection*{Substitution Lemma:}
+
+The base cases are left unchanged, only the inductive ones has to be extended with the newly
+added typing rules:
+\begin{itemize}
+	\item (T-PAIR): $M = \PAIR{M_1}{M_2}$, if $\Gamma, x: S \vdash M: T$ then by Inv. lemma'
+	      $\Gamma \vdash M_1: T_1$ and $\Gamma \vdash M_2: T_2$, which derivation trees have
+	      height $\le k_0$ thus the inductive hyp. can be applied. The (T-PAIR) rule can be
+	      applied to the $M_1\SUBST{x}{N}$ and $M_2\SUBST{x}{N}$ obtaining\\
+	      $\Gamma \vdash \PAIR{M_1\SUBST{x}{N}}{M_2\SUBST{x}{N}} = M\SUBST{x}{N} : T_1 * T_2$
+	\item (T-PROJECT 1): $M = \FST{M'}$, $\Gamma, x:S \vdash \FST{M'} : T_1$ then by
+	      Inv. Lemma $\Gamma \vdash M' : T_1 \ast T_2$ derivation tree has height
+	      $\le k_0$ thus the inductive hyp. can be applied, hence\\
+	      $\Gamma \vdash M'\SUBST{x}{N}: T_1 \ast T_2$ so the (T-PROJECT 1) rule can be applied
+	      obtaining\\
+	      $\Gamma \vdash \FST{M'\SUBST{x}{N}} = M\SUBST{x}{N}: T_1$
+	\item (T-PROJECT 2): $M = \SND{M'}$, $\Gamma, x:S \vdash \SND{M'} : T_2$ then by
+	      Inv. Lemma $\Gamma \vdash M' : T_1 \ast T_2$ derivation tree has height
+	      $\le k_0$ thus the inductive hyp. can be applied, hence\\
+	      $\Gamma \vdash M'\SUBST{x}{N}: T_1 \ast T_2$ so the (T-PROJECT 2) rule can be applied
+	      obtaining\\
+	      $\Gamma \vdash \SND{M'\SUBST{x}{N}} = M\SUBST{x}{N}: T_2$
+\end{itemize}
+
+\subsubsection*{Type preservation:}
+If $\Gamma \vdash M: T$ and $M \to M'$ then $\Gamma \vdash M': T$. By induction on the height of
+the derivation of $\Gamma \vdash M: T$:
+
+The base cases are analogous to the original proof, only the inductive ones has to be expanded
+with the newly added typing rules.
+
+\begin{itemize}
+	\item (T-PAIR):
+	      if $M \to M'$ then it is an instance of one of the following operational semantic rules:
+	      \begin{itemize}
+		      \item (EVAL-PAIR 1): $M = \PAIR{M_1}{M_2} \to \PAIR{M_1'}{M_2} = M'$, by Inv. Lemma
+		            $\Gamma \vdash M_1: T_1$ with height $\le k_0$ and by premises of (EVAL-PAIR 1)
+		            $M_1 \to M_1'$ thus the inductive hyp. can be applied obtaining
+		            $\Gamma \vdash M_1': T_1$ hence the (T-PAIR) rule can be applied deriving
+		            $\Gamma \vdash \PAIR{M_1'}{M_2} = M': T$
+		      \item (EVAL-PAIR 2): $M = \PAIR{v}{M_2} \to \PAIR{v}{M_2'} = M'$, by Inv. Lemma
+		            $\Gamma \vdash M_2: T_2$ with height $\le k_0$ and by premises of (EVAL-PAIR 2)
+		            $M_2 \to M_2'$ thus the inductive hyp. can be applied obtaining
+		            $\Gamma \vdash M_2': T_2$ hence the (T-PAIR) rule can be applied deriving
+		            $\Gamma \vdash \PAIR{v}{M_2'} = M': T$
+	      \end{itemize}
+	\item (T-PROJECT 1):
+	      if $M \to M'$ then it is an instance of one of the following operational semantic rules:
+	      \begin{itemize}
+		      \item (PAIR 1): $M = \FST{\PAIR{v_1}{v_2}} \to v_1 = M'$, $\Gamma \vdash M: T_1$ by
+		            Inv. Lemma' $\Gamma \vdash \PAIR{v_1}{v_2}: T_1 \ast T_2$ and by Inv. Lemma'
+		            once again $\Gamma \vdash v_1 = M': T_1$
+		      \item (PROJECT 1): $M = \FST{M_1} \to \FST{M_1'} = M'$, $\Gamma \vdash M: T_1$ by
+		            Inv. Lemma' $\Gamma \vdash \FST{M_1}: T_1 \ast T_2$ and by the premises of
+		            (PROJECT 1) $M_1 \to M_1'$ thus the inductive hypothesis can be applied obtaining
+		            $\Gamma \vdash M_1': T_1 \ast T_2$ hence the (T-PROJECT 1) rule can be
+		            applied resulting in $\Gamma \vdash \FST{M_1'} = M': T_1$
+	      \end{itemize}
+	\item (T-PROJECT 2):
+	      if $M \to M'$ then it is an instance of one of the following operational semantic rules:
+	      \begin{itemize}
+		      \item (PAIR 2): $M = \SND{\PAIR{v_1}{v_2}} \to v_2 = M'$, $\Gamma \vdash M: T_2$ by
+		            Inv. Lemma' $\Gamma \vdash \PAIR{v_1}{v_2}: T_1 \ast T_2$ and by Inv. Lemma'
+		            once again $\Gamma \vdash v_2 = M': T_2$
+		      \item (PROJECT 2): $M = \SND{M_1} \to \SND{M_1'} = M'$, $\Gamma \vdash M: T_2$ by
+		            Inv. Lemma' $\Gamma \vdash \SND{M_1}: T_1 \ast T_2$ and by the premises of
+		            (PROJECT 2) $M_1 \to M_1'$ thus the inductive hypothesis can be applied obtaining
+		            $\Gamma \vdash M_1': T_1 \ast T_2$ hence the (T-PROJECT 2) rule can be
+		            applied resulting in $\Gamma \vdash \SND{M_1'} = M': T_2$
+	      \end{itemize}
+\end{itemize}
