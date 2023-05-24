@@ -1,0 +1,28 @@
+\subsection{}
+
+Extend the definition of free variables and substitution to the new terms introduced in the
+language.
+
+\subsubsection*{Free variables:}
+
+The following cases has to be added to the original definition of $\fv{M}$
+
+\begin{align*}
+	 & \fv{\unit}                       & =\; & \emptyset                     \\
+	 & \fv{\PAIR{M_1}{M_2}}             & =\; & \fv{M_1} \cup \fv{M_2}        \\
+	 & \fv{\FST{M}}                     & =\; & \fv{M}                        \\
+	 & \fv{\SND{M}}                     & =\; & \fv{M}                        \\
+	 & \fv{\REC{l_i = M_i^{i\in 1..n}}} & =\; & \bigcup_{i \in 1..n} \fv{M_i} \\
+	 & \fv{\SEL{M}{l}}                  & =\; & \fv{M}
+\end{align*}
+
+\subsubsection*{substitution:}
+
+\begin{align*}
+	 & \unit\SUBST{x}{N}                       & =\; & \unit                                     \\
+	 & \PAIR{M_1}{M_2}\SUBST{x}{N}             & =\; & \PAIR{(M_1\SUBST{x}{N})}{M_2\SUBST{x}{N}} \\
+	 & \FST{M}\SUBST{x}{N}                     & =\; & \FST{(M\SUBST{x}{N})}                     \\
+	 & \SND{M}\SUBST{x}{N}                     & =\; & \SND{(M\SUBST{x}{N})}                     \\
+	 & \REC{l_i = M_i^{i\in 1..n}}\SUBST{x}{N} & =\; & \REC{l_i = M_i\SUBST{x}{N}^{i\in 1..n}}   \\
+	 & \SEL{M}{l}\SUBST{x}{N}                  & =\; & \SEL{(M\SUBST{x}{N})}{l}
+\end{align*}
