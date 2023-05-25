@@ -1,0 +1,78 @@
+\subsection{}
+
+Prove the safety theorem for the language containing integers, Booleans, functions and records.\\~\\
+In order to prove the Safety Theorem the Progress Theorem, Substitution Lemma and
+Subject Reduction Theorem has to be proved.
+
+\paragraph*{Progress Theorem:\\}
+The proof will proceed by induction on the height of the derivation of $\Gamma \vdash M: T$
+The base cases are left unchanged, only the inductive ones has to be extended with the newly
+added typing rules:
+
+\begin{itemize}
+	\item (TYPE RECORD): $M= \REC{l_i=M_i^{i \in 1..n}}$, $\emptyset \vdash M: T$ then by Inv. Lemma
+	      $\forall\, i \in 1..n.\, \emptyset \vdash M_i: T_i$ with height $\le k_0$, thus for all $M_i$
+	      the inductive hypothe can be applied. Two cases has to be distinguished:
+	      \begin{itemize}
+		      \item $\forall\, i \in 1..n.\, M_i = v_i$: hence $M = \REC{l_i=v_i^{i \in 1..n}}$ thus
+		            $M$ is a value
+		      \item $\exists\, j \in 1..n.\, M_j \to M_j'$: thus the (EVAL RECORD) rule can be applied
+		            obtaining $M'$
+	      \end{itemize}
+	\item (TYPE SELECT): $M = \SEL{M_1}{l_j}: T_j$, $\emptyset \vdash M: T$ then by Inv. Lemma\\
+	      $\exists\, n.\, j \in 1..n \AND \exists\, l_1,..,l_n\ T_1,..,T_n.\, \emptyset \vdash M_1 : \TREC{l_i: T_i^{i \in 1..n}}$,
+	      since the derivation of the type of $M_1$ has height $\le k_0$ the inductive hypothesis
+	      can be applied, hence two cases has to be distinguished:
+	      \begin{itemize}
+		      \item $M_1$ is a value, hence $M_1 = \REC{l_i = v_i^{i \in 1..n}}$ thus the (SELECT)
+		            axiom can be applied with $\SEL{M_1}{l_j} \to v_j = M'$
+		      \item $\exists\, M_1'.\, M_1 \to M_1'$, hence the (EVAL SELECT) rule can be applied
+		            obtaining\\
+                $\SEL{M_1}{l_j} \to \SEL{M_1'}{l_j} = M'$
+	      \end{itemize}
+\end{itemize}
+
+\paragraph*{Substitution Lemma:\\}
+If $\Gamma, x: S \vdash M: T$ and $\Gamma \vdash N: S$ then $\Gamma \vdash M\SUBST{x}{N}: T$.
+The base cases are left unchanged, only the inductive ones has to be extended with the newly
+added typing rules.
+By induction on the height of the derivation of $\Gamma, x: S \vdash M: T$:
+\begin{itemize}
+	\item (TYPE RECORD): by Inv. Lemma $\forall\, i \in 1..n.\, \Gamma, x: S \vdash M_i: T_i$ with height
+	      of the derivation  $\le k_0$ thus the inductive hypothesis can be applied obtaining\\
+	      $\forall\, i \in 1..n.\, \Gamma \vdash M_i\SUBST{x}{N}: T_i$ hence the (TYPE RECORD) rule
+	      can be applied obtaining
+	      $\Gamma \vdash \REC{l_i=M_i\SUBST{x}{N}^{i \in 1..n}}= M\SUBST{x}{N}: T$
+	\item (TYPE SELECT): ($\Gamma, x: S \vdash \SEL{M_1}{l_j}: T_j$) by Inv. Lemma\\
+	      $\exists\, n.\, j \in 1..n \AND \exists\, l_1,..,l_n\ T_1,..,T_n.\, \Gamma, x: S \vdash M_1 : \TREC{l_i: T_i^{i \in 1..n}}$
+	      with height of the derivation $\le k_0$ hence the inductive hyp. can be applied obtaining
+	      $\Gamma \vdash M_1\SUBST{x}{N} : \TREC{l_i: T_i^{i \in 1..n}}$ thus the (TYPE SELECT) rule
+	      can be used in order to get $\Gamma \vdash \SEL{M_1\SUBST{x}{N}}{l_j} = M': T_j$
+\end{itemize}
+
+
+\paragraph*{Subject Reduction Theorem:\\}
+
+If $\Gamma \vdash M: T$ and $M \to M'$ then $\Gamma \vdash M': T$.
+The base cases are left unchanged, only the inductive ones has to be extended with the newly
+added typing rules.
+By induction on the height of the derivation of $\Gamma \vdash M: T$:
+\begin{itemize}
+	\item (TYPE RECORD): by Inv. Lemma $\forall\, i \in 1..n.\, \Gamma \vdash M_i: T_i$ with height
+	      of the derivation $\le k_0$, moreover if $M \to M'$ then the (EVAL RECORD) rule is the
+	      last that has been applied hence $\exists\, j \in 1..n.\, M_j \to M_j'$ thus the inductive
+	      hyp. can be applied obtaining $\Gamma \vdash M_j' : T_j$; finally the (TYPE RECORD) rule
+	      can be used to prove
+	      $\Gamma \vdash \REC{l_i= M_i^{i \in 1..n \setminus j}, l_j = M_j'} = M' : T$
+	\item (TYPE SELECT): ($\Gamma \vdash \SEL{M_1}{l_j}: T_j$) by Inv. Lemma\\
+	      $\exists\, n.\, j \in 1..n \AND \exists\, l_1,..,l_n\ T_1,..,T_n.\, \Gamma \vdash M_1 : \TREC{l_i: T_i^{i \in 1..n}}$
+	      moreover if $M \to M'$ then it was applied as last rule either:
+	      \begin{itemize}
+		      \item (SELECT): by Inv. Lemma on $M_1$ $\forall\, i \in 1..n.\, \Gamma \vdash M_i: T_i$
+		            thus $\Gamma \vdash M_j = v_j = M': T_j$
+		      \item (EVAL SELECT): hence $M_1 \to M_1'$ thus the inductive hyp. can be applied getting\\
+		            $\Gamma \vdash M_1': \TREC{l_i: T_i^{i \in 1..n}}$, now the  (TYPE SELECT) rule
+		            can be applied obtaining\\
+                $\Gamma \vdash \SEL{M_1'}{l_j} = M': T_j$
+	      \end{itemize}
+\end{itemize}
