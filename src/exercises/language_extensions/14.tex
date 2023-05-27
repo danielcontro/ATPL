@@ -1,0 +1,88 @@
+\subsection{}
+
+Define inversion lemmas for the extended language with variant types. Prove the safety theorem
+for the new language.
+
+\subsubsection*{Inversion lemma:}
+
+\begin{itemize}
+	\item If $\Gamma \vdash \VAR{l_j = M}: \TVAR{l_i: T_i^{i \in 1..n}}$ then
+	      $\exists\, j \in 1..n.\, \Gamma \vdash M: T_j$
+	\item If $\Gamma \vdash \MATCH{M}{\CASE{l_i}{x_i}{M_i^{i \in 1..n}}}: T$ then
+	      $\exists\, T_1,..,T_n.\, \Gamma \vdash M: \TVAR{l_i: T_i^{i \in 1..n}}$
+	      and $\forall\, i \in 1..n.\, \Gamma, x_i: T_i \vdash M_i: T$
+\end{itemize}
+
+
+\subsubsection*{Progress Theorem:}
+
+If $\emptyset \vdash M: T$ then $M$ is a value or $\exists\, M'.\, M \to M'$\\
+By induction on the height of the derivation tree of $\emptyset \vdash M: T$:\\
+The base cases are left unchanged, only the inductive ones has to be extended with the newly
+added typing rules.
+\begin{itemize}
+	\item (TYPE VARIANT): if $\emptyset \vdash \VAR{l_j = M_1} = M: \TVAR{l_i:T_i^{i \in 1..n}}$
+	      then by Inv. Lemma $\exists\, j \in 1..n.\, \emptyset \vdash M_1: T_j$ with height of
+	      the derivation $\le k_0$ thus the inductive hypothesis can be applied; if $M_1$ is a
+	      value then $M = \VAR{l_j = v_j}$ is a value, otherwise the VARIANT rule can be applied
+	      obtaining $M' = \VAR{l_j = M_1'}$
+	\item (TYPE MATCH): if $\emptyset \vdash \MATCH{M_{11}}{\CASE{l_i}{x_i}{M_i^{i \in 1..n}}}$ then
+	      by Inv. Lemma $\exists\, T_1,..,T_n.\, \emptyset \vdash M_{11}: \TVAR{l_i: T_i^{i \in 1..n}}$ and
+	      $\forall\, i \in 1..n.\, x_i: T_i \vdash M_i: T$ with height of the derivation
+	      $\le k_0$, hence the inductive hyp. can be applied to $M_{11}$ which is either a value
+	      $\VAR{l_j = v_j}$ in which case the (MATCH) rule can be applied obtaining
+	      $M' = M_j\SUBST{x_j}{v_j}$ or $\exists\, M_{11}'.\, M_{11} \to M_{11}'$ hence the
+	      (RED MATCH) rule can be applied obtaining
+	      $\MATCH{M_{11}'}{\CASE{l_i}{x_i}{M_i^{i \in 1..n}}} = M'$
+\end{itemize}
+
+
+\subsubsection*{Substitution Lemma:}
+
+If $\Gamma, x: S \vdash M: T$ and $\Gamma \vdash N: S$ then $\Gamma \vdash M\SUBST{x}{N}: T$\\
+By induction on the height of the derivation of $\Gamma, x: S \vdash M: T$:\\
+The base cases are left unchanged, only the inductive ones has to be extended with the newly
+added typing rules.
+\begin{itemize}
+	\item (TYPE VARIANT): $\Gamma, x: S \vdash \VAR{l_j = M_1}: \TVAR{l_i: T_i^{i \in 1..n}}$,
+	      by Inv. Lemma $\exists\, j \in 1..n.\, \Gamma, x: S \vdash M_1: T_j$ with height of the
+	      derivation $\le k_0$ hence the inductive hyp. can be applied obtaining
+	      $\Gamma \vdash M_1\SUBST{x}{N}: T_j$ and now the (TYPE VARIANT) rule can be applied
+	      getting $\Gamma \vdash \VAR{l_j = M_1\SUBST{x}{N}} = M\SUBST{x}{N} : T$
+	\item (TYPE MATCH): $\Gamma, x: S \vdash \MATCH{M'}{\CASE{l_i}{x_i}{M_i^{i \in 1..n}}}: T$,
+	      by Inv. Lemma $\exists\, T_1,..,T_n.\, \Gamma, x: S \vdash M': \TVAR{l_i: T_i^{i \in 1..n}}$
+	      and $\forall\, i \in 1..n.\, \Gamma, x: S, x_i: T_i \vdash M_i: T$ with height of the
+	      derivation $\le k_0$ hence the inductive hyp. can be applied to the premises and then
+	      the (TYPE MATCH) rule can be applied obtaining
+	      $\Gamma, x: S \vdash \MATCH{M'\SUBST{x}{N}}{\CASE{l_i}{x_i}{M_i\SUBST{x}{N}^{i \in 1..n}}} = M\SUBST{x}{N}: T$
+\end{itemize}
+
+\subsubsection*{Subject Reduction Theorem:}
+
+If $\Gamma \vdash M: T$ and $M \to M'$ then $\Gamma \vdash M': T$.\\
+By induction on the height of the derivation of $\Gamma \vdash M: T$:\\
+\begin{itemize}
+	\item (TYPE VARIANT): $\Gamma \vdash \VAR{l_j=N}: \TVAR{l_i: T_i^\{i \in 1..n}$ by Inv. Lemma
+	      $\exists\, j \in 1..n.\,\Gamma \vdash N: T_j$ with height of the derivation $\le k_0$,
+	      moreover if $M \to M'$ then the (VARIANT) has been applied thus $N \to N'$ hence the
+	      inductive hyp. can be applied obtaining $\Gamma \vdash N': T_j$ thus the (TYPE VARIANT)
+	      rule can be applied getting $\Gamma \vdash \VAR{l_j=N'} = M': \TVAR{l_i: T_i^\{i \in 1..n}$
+	\item (TYPE MATCH): $\Gamma \vdash \MATCH{N}{\CASE{l_i}{x_i}{M_i^{i \in 1..n}}}: T$ by Inv. Lemma
+	      by Inv. Lemma $\exists\, T_1,..,T_n.\, \Gamma \vdash N: \TVAR{l_i: T_i^{i \in 1..n}}$
+	      and $\forall\, i \in 1..n.\, \Gamma, x_i: T_i \vdash M_i: T$ with height of the
+	      derivation $\le k_0$, moreover if $M \to M'$ it was applied one rule between
+	      \begin{itemize}
+		      \item (MATCH): $N = \VAR{l_j=v_j}$, and by Substitution Lemma
+		            $\Gamma \vdash M_j\SUBST{x_j}{v_j} = M': T$
+		      \item (RED MATCH): hence $N \to N'$ and the inductive hypothesis can be applied to
+		            $N$ obtaining $\Gamma \vdash N': \TVAR{l_i: T_i^{i \in 1..n}}$ thus the
+		            (TYPE MATCH) rule can be applied obtaining
+		            $\Gamma \vdash \MATCH{N'}{\CASE{l_i}{x_i}{M_i^{i \in 1..n}}} = M': T$
+	      \end{itemize}
+\end{itemize}
+
+\subsubsection*{Safety Theorem:}
+
+By Corollary of the Subject Reduction Theorem $\emptyset \vdash M': T$, by the Progress Theorem
+either $M'$ value or $\exists\, M".\, M' \to M"$ but since by hypothesis $M' \not\to$ then
+$M'$ value.\qed
