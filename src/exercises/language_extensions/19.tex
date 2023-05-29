@@ -1,0 +1,14 @@
+\subsection{}
+
+What might be the subtyping relation for variant types?\\~\\
+\begin{align*}
+	\infer[\text{\small{(S-VARIANT WIDTH)}}]
+	{\TVAR{l_i: T_i^{i \in I}} <: \TVAR{l_i: T_i^{i \in I\cup I'}}}
+	{}                              \\
+	\infer[\text{\small{(S-VARIANT DEPTH)}}]
+	{\TVAR{l_i: S_i^{i \in I}} <: \TVAR{l_i: T_i^{i \in I}}}
+	{\forall\, i \in I\ S_i <: T_i} \\
+	\infer[\text{\small{(S-VARIANT PERM)}}]
+	{\TVAR{k_j: S_j^{j \in I}}<:\TVAR{l_i: T_i^{i \in I}}}
+	{\TVAR{k_j: S_j^{j \in I}} \text{ permutation of } \TVAR{l_i: T_i^{i \in I}}}
+\end{align*}
