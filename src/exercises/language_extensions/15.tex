@@ -1,0 +1,29 @@
+\subsection{}
+
+Consider the following variant and rule (TYPE MATCH):
+\[
+	\infer[\text{\small{(TYPE MATCH GEN 1)}}]
+	{ \Gamma \vdash \MATCH{M}{\CASE{l_i}{x_i}{M_i^{i \in 1..n}}}: T }
+	{
+	\Gamma \vdash M: \TVAR{l_i: T_i^{i \in 1..m}} &
+	m \ge n &
+	\forall\, i \in 1..n.\,\Gamma, x_i: T_i \vdash M_i: T
+	}
+\]
+Prove that the safety theorem still holds or give a counterexample.\\~\\
+Let $M = \MATCH{\VAR{l_2 = true}}{\CASE{l_1}{x_1}{0}}$
+\[
+	\infer[\text{\small{(TYPE MATCH GEN 1)}}]
+	{\emptyset \vdash \MATCH{\VAR{l_2 = true}}{\CASE{l_1}{x_1}{0}}: Nat}
+	{
+		\infer
+		{ \emptyset \vdash \VAR{l_2 = true}: \TVAR{l_1: Nat, l_2: Bool} }
+		{ \infer{ \emptyset \vdash true: Bool }{\text{\small{(T-TRUE)}}} } &
+		2 \ge 1 &
+		\infer{ x_1: Nat \vdash 0: Nat }
+		{\text{\small{(T-INT)}}}
+	}
+\]
+Hence $M$ is a closed and well-typed term but it isn't a value nor a reducible term since the side
+condition of the (MATCH) rule isn't satisfied, thus a counterexample to the Progress Theorem has
+been shown, which implies that the Safety Theorem no longer holds.
