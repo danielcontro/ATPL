@@ -1,0 +1,32 @@
+\subsection{}
+
+Show the derivation of the judgements:
+\begin{itemize}
+	\item $\REC{l: \TREC{a: Nat, b: Nat}, l': \TREC{m: Nat}} <: \TREC{l: \TREC{a: Nat}, l': \TREC{m:Nat}}$:
+	      \begin{align*}
+		      \infer[\text{\small{(SUB-DEPTH)}}]
+		      {\REC{l: \TREC{a: Nat, b: Nat}, l': \TREC{m: Nat}} <: \TREC{l: \TREC{a: Nat}, l': \TREC{m:Nat}}}
+		      {
+			      \infer{\REC{l: \TREC{a: Nat, b: Nat}} <: \TREC{l: \TREC{a: Nat}}}
+		      {\text{\small{(SUB-WIDTH)}}} &
+			      \infer{\REC{l': \TREC{m: Nat}} <: \TREC{l': \TREC{m:Nat}}}
+			      {\text{\small{((REFLEX))}}}
+		      }
+	      \end{align*}
+	\item $\REC{l: \TREC{a: Nat, b: Nat}, l': \TREC{m: Nat}} <: \TREC{l: \TREC{b: Nat}}$:
+	      \begin{align*}
+		      \infer[\text{\small{(TRANS)}}]
+		      {\REC{l: \TREC{a: Nat, b: Nat}, l': \TREC{m: Nat}} <: \TREC{l: \TREC{b: Nat}}}
+		      { \vdots & \vdots }          \\
+		      \infer[]
+		      {\REC{l: \TREC{a: Nat, b: Nat}, l': \TREC{m: Nat}} <: \TREC{l: \TREC{a: Nat, b: Nat}}}
+		      {\text{\small{(SUB-WIDTH)}}} \\
+		      \infer[\text{\small{(SUB-DEPTH)}}]
+		      {\REC{l: \TREC{a: Nat, b: Nat}} <: \TREC{l: \TREC{b: Nat}}}
+		      {
+			      \infer[]
+			      {\TREC{a: Nat, b: Nat} <: \TREC{b: Nat}}
+			      {\text{\small{(SUB-WIDTH)}}}
+		      }
+	      \end{align*}
+\end{itemize}
