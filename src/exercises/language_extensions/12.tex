@@ -6,5 +6,5 @@ Define the substitution $M\SUBST{x}{N}$ in the language extended with records an
 	 & \SEL{M'}{l_j}\SUBST{x}{N}                                  & =\; & \SEL{M'\SUBST{x}{N}}{l_j}                                              \\
 	 & \VAR{l=M}\SUBST{x}{N}                                      & =\; & \VAR{l=M'\SUBST{x}{N}}                                                 \\
 	 & (\MATCH{M}{\CASE{l_i}{x_i}{M_i^{i \in 1..n}}})\SUBST{x}{N} & =\; & \MATCH{(M\SUBST{x}{N})}{\CASE{l_i}{x_i}{M_i\SUBST{x}{N}^{i \in 1..n}}} \\
-	 &                                                            &     & \text{if }\forall\, x_i \notin \fv{N}
+	 &                                                            &     & \text{if }\forall\, i \in 1..n.\,x_i \notin \fv{N}, x \ne x_i
 \end{align*}

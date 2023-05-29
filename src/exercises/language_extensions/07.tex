@@ -1,6 +1,6 @@
 \subsection{}
 
-State the inversion lemmas for the language extended with unit, pairs and records.//~//
+State the inversion lemmas for the language extended with unit, pairs and records.
 
 \begin{itemize}
 	\item ...
@@ -12,9 +12,10 @@ State the inversion lemmas for the language extended with unit, pairs and record
 	      $\exists T'.\, \Gamma \vdash M: T \ast T'$ is derivable
 	\item If $\Gamma \vdash \SND{M}: T$ is derivable then
 	      $\exists T'.\, \Gamma \vdash M: T' \ast T$ is derivable
-	\item If $\Gamma \vdash \REC{l_i=M_i^{i \in 1..n}}: \TREC{l_i:T_i^{i \in 1..n}}$ is derivable
-	      then $\forall\, i \in 1..n.\, \Gamma \vdash M_i: T_i$
-	\item If $\Gamma \vdash \SEL{M}{l_j}: T_j$ is derivable then $\exists\, n.\,j \in 1..n$ and
-	      $\exists\, l_1,..,l_n\ T_1,..,T_n.\,\Gamma \vdash M: \TREC{l_i: T_i^{i \in 1..n}}$
+	\item If $\Gamma \vdash \REC{l_i=M_i^{i \in 1..n}}: T$ is derivable
+	      then $\forall\, i \in 1..n \exists\, T_i. \Gamma \vdash M_i: T_i$ and
+	      $T = \TREC{l_i: T_i^{i \in 1..n}}$
+	\item If $\Gamma \vdash \SEL{M}{l_j}: T$ is derivable then $\exists\, n.\,j \in 1..n$ and
+	      $\forall\, i \in 1..n\ \exists\, l_i, T_i.\,\Gamma \vdash M: \TREC{l_i: T_i^{i \in 2..n}}$
+	      and $T = T_j$
 \end{itemize}
-
