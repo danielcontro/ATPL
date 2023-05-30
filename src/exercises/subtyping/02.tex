@@ -1,0 +1,87 @@
+\subsection{}
+
+Show a derivation of the judgement
+$\emptyset \vdash \APP{(\FN{r:\TREC{l: Nat}}{\SEL{r}{l}+2})}{\REC{l=0, l'=1}}: Nat$ that uses an
+instance of the rule (ARROW), and a second derivation of the same judgement that doesn't use that
+rule.
+\paragraph*{1:}
+\[
+	\infer[\text{\small{(APP)}}]
+	{\emptyset \vdash \APP{(\FN{r:\TREC{l: Nat}}{\SEL{r}{l}+2})}{\REC{l=0, l'=1}}: Nat}
+	{ \vdots & \vdots }
+\]
+\[
+  \infer[\text{\small{(TYPE RECORD)}}]
+	{\emptyset \vdash \REC{l=0, l'=1}: \TREC{l: Nat, l': Nat}}
+	{
+	\infer{\emptyset \vdash 0: Nat}{\text{\small{(T-INT)}}} &
+		\infer{\emptyset \vdash 1: Nat}{\text{\small{(T-INT)}}}
+	}
+\]
+\begin{align*}
+	\infer[\text{\small{(Subsumption)}}]
+	{\emptyset \vdash \FN{r:\TREC{l: Nat}}{\SEL{r}{l}+2}: \TREC{l: Nat, l': Nat} \to Nat }
+	{ \vdots & \vdots }\\
+  \infer[\text{\small{(T-Fun)}}]
+  {\emptyset \vdash \FN{r:\TREC{l: Nat}}{\SEL{r}{l}+2}: \TREC{l: Nat} \to Nat}
+  {
+    \infer[\text{\small{(T-SUM)}}]
+    { r:\TREC{l: Nat} \vdash \SEL{r}{l}+2: Nat }
+    {
+      \infer{r:\TREC{l: Nat} \vdash 2: Nat}{\text{\small{(T-INT)}}} &
+      \infer[\text{\small{(Type select)}}]
+      { r:\TREC{l: Nat} \vdash \SEL{r}{l}: Nat }
+      {
+        \infer
+        {r:\TREC{l: Nat} \vdash r:\TREC{l: Nat}}
+        {\text{\small{(T-VAR)}}}
+      }
+    }
+  }\\
+  \infer[\text{\small{(ARROW)}}]
+  {\TREC{l: Nat} \to Nat <: \TREC{l: Nat, l': Nat} \to Nat}
+  {
+    \infer{\TREC{l: Nat, l': Nat} <: \TREC{l: Nat}}{\text{\small{(SUB-WIDTH)}}} &
+    \infer{Nat <: Nat}{\text{\small{(REFLEX)}}}
+  }
+\end{align*}
+
+\paragraph*{2:}
+\[
+	\infer[\text{\small{(APP)}}]
+	{\emptyset \vdash \APP{(\FN{r:\TREC{l: Nat}}{\SEL{r}{l}+2})}{\REC{l=0, l'=1}}: Nat}
+	{ \vdots & \vdots }
+\]
+\[
+  \infer[\text{\small{(Subsumption)}}]
+	{\emptyset \vdash \REC{l=0, l'=1}: \TREC{l: Nat}}
+  {
+    \infer[\text{\small{(TYPE RECORD)}}]
+    {\emptyset \vdash \REC{l=0, l'=1}: \TREC{l: Nat, l': Nat}}
+    {
+      \infer{\emptyset \vdash 0: Nat}{\text{\small{(T-INT)}}} &
+      \infer{\emptyset \vdash 1: Nat}{\text{\small{(T-INT)}}}
+    } &
+    \infer
+    {\TREC{l: Nat, l': Nat} <: \TREC{l: Nat}}
+    {\text{\small{(SUB-WIDTH)}}}
+  }
+\]
+\begin{align*}
+  \infer[\text{\small{(T-Fun)}}]
+  {\emptyset \vdash \FN{r:\TREC{l: Nat}}{\SEL{r}{l}+2}: \TREC{l: Nat} \to Nat}
+  {
+    \infer[\text{\small{(T-SUM)}}]
+    { r:\TREC{l: Nat} \vdash \SEL{r}{l}+2: Nat }
+    {
+      \infer{r:\TREC{l: Nat} \vdash 2: Nat}{\text{\small{(T-INT)}}} &
+      \infer[\text{\small{(Type select)}}]
+      { r:\TREC{l: Nat} \vdash \SEL{r}{l}: Nat }
+      {
+        \infer
+        {r:\TREC{l: Nat} \vdash r:\TREC{l: Nat}}
+        {\text{\small{(T-VAR)}}}
+      }
+    }
+  }
+\end{align*}
