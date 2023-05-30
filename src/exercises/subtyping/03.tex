@@ -1,0 +1,47 @@
+\subsection{}
+
+Is the term $\IF{true}{\REC{a=1,b=0}}{\REC{c=3,a=1}}$ well-typed in the language with subtyping?
+\[
+  \infer[\text{\small{(T-IF)}}]
+  { \emptyset \vdash \IF{true}{\REC{a=1,b=0}}{\REC{c=3,a=1}}: \TREC{a: Nat} }
+  {
+    \vdots &
+    \vdots &
+    \vdots
+  }
+\]
+\[
+  \infer[]
+  { \emptyset \vdash true: Bool}
+  {\text{\small{(T-TRUE)}}}
+\]
+\[
+  \infer[\text{\small{(Subsumption)}}]
+  { \emptyset \vdash \REC{a=1,b=0}: \TREC{a: Nat} }
+  {
+    \infer[]
+    {\emptyset \vdash \REC{a=1,b=0}: \TREC{a: Nat, b: Nat}}
+    {
+      \infer{ \emptyset \vdash 1: Nat}{\text{\small{(T-INT)}}} &
+      \infer{ \emptyset \vdash 0: Nat}{\text{\small{(T-INT)}}}
+    } &
+    \infer[]
+    {\TREC{a: Nat, b: Nat} <: \TREC{a: Nat}}
+    {\text{\small{(SUB-WIDTH)}}}
+  }
+\]
+\[
+  \infer[\text{\small{(Subsumption)}}]
+  { \emptyset \vdash \REC{c=3,a=1}: \TREC{a: Nat} }
+  {
+    \infer[]
+    { \emptyset \vdash \REC{c=3,a=1}: \TREC{c: Nat, a: Nat} }
+    {
+      \infer{ \emptyset \vdash 3: Nat}{\text{\small{(T-INT)}}} &
+      \infer{ \emptyset \vdash 1: Nat}{\text{\small{(T-INT)}}}
+    } &
+    \infer[]
+    {\TREC{c: Nat, a: Nat} <: \TREC{a: Nat}}
+    {\text{\small{(SUB-WIDTH)}}}
+  }
+\]
