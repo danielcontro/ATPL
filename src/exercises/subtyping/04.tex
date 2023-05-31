@@ -1,0 +1,13 @@
+\subsection{}
+
+Is the term $M = \IF{true}{1}{false}$ well-typed in the language with subtyping?\\~\\
+Assume that $M$ is well-typed, which implies $\Gamma \vdash \IF{true}{1}{false}: T$ then by Inv.
+Lemma
+\begin{itemize}
+	\item $\Gamma \vdash true: Bool$
+	\item $\Gamma \vdash 1: T$
+	\item $\Gamma \vdash false: T$
+\end{itemize}
+
+By Inv. Lemma once again $T = Bool$ and $T = Nat$ which is a contradiction, thus it must be the
+case that $M$ isn't well-typed.
