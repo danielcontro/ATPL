@@ -1,0 +1,15 @@
+\subsection{}
+
+For which types the judgement $\emptyset \vdash \REC{l_1 = 1, l_2 = 2, l_3 = 3}: T$ is derivable?\\~\\
+If $\emptyset \vdash \REC{l_1 = 1, l_2 = 2, l_3 = 3}: T$ is derivable then by Inv. Lemma
+$\exists\, S_1,..,S_n.\,\forall\, i \in 1..n.\, \Gamma \vdash M_i: S_i$ and
+$\TREC{l_i: S_i^{i \in 1..n}} <: T$ hence the term is derivable by subtypes of
+$\TREC{l_1: Nat, l_2: Nat, l_3: Nat}$, namely
+\begin{itemize}
+	\item $\TREC{l_1: Nat, l_2: Nat}$
+	\item $\TREC{l_1: Nat, l_3: Nat}$
+	\item $\TREC{l_2: Nat, l_3: Nat}$
+	\item $\TREC{l_1: Nat}$
+	\item $\TREC{l_2: Nat}$
+	\item $\TREC{l_3: Nat}$
+\end{itemize}
