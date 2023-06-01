@@ -1,0 +1,8 @@
+\subsection{}
+
+Is the judgement $\emptyset \vdash \REC{l_1 = 10, l_2 = true + 2}: \REC{l_1: Nat}$ derivable?\\~\\
+Assume that the judgement is derivable, then by Inv. Lemma
+$\exists\, S_1, S_2. \emptyset \vdash 10: S_1 \AND \emptyset \vdash \SUM{true}{2}: S_2$
+by Inv. Lemma once again it's obtained $S_1 = Nat$ and $S_2 = Nat$, but
+$\emptyset \vdash true: Nat$ isn't derivable, a contradiction is reached thus the initial
+assumption of the well-typing of $M$ is wrong.
