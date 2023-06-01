@@ -1,0 +1,28 @@
+\subsection{}
+
+If we had defined the subtyping rules in such a way that $\TREC{l: Nat} <: \TREC{l: Nat, l': Nat}$
+which theorem would no longer be true? Identify it and give a counterexample. If we did not have
+the rule (ARROW), how would the type system change?\\~\\
+If the subtyping relation would hold in a different typing system the Progress Theorem wouldn't
+hold anymore, let $M = \SEL{\REC{l=1}}{l'}$, thus
+\[
+	\infer[\text{\small{(TYPE SELECT)}}]
+	{\emptyset \vdash \SEL{\REC{l=1}}{l'}: Nat}
+	{
+		\infer[\text{\small{(SUBSUMPTION)}}]
+		{\emptyset \vdash \REC{l=1}: \TREC{l: Nat,l': Nat}}
+		{
+			\infer[\text{\small{(TYPE RECORD)}}]
+			{\emptyset \vdash \REC{l=1}: \TREC{l: Nat}}
+			{
+				\infer{\emptyset \vdash 1: Nat}{\text{\small{(T-INT)}}}
+			} &
+			\infer{ \TREC{l: Nat} <: \TREC{l: Nat, l': Nat} }{\vdots}
+		}
+	}
+\]
+But $M$ is neither a value, nor it exists $M'$ such that $M \to M'$.\\
+Removing a typing rule such as (ARROW) reduces the set of well-typed
+programs hence the properties of the type system holds still but for less terms, namely functions
+that returns a supertype of the return type won't be well-typed as in the original typing system
+with subtyping.
