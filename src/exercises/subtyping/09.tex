@@ -1,0 +1,47 @@
+\subsection{}
+
+Define a term $M$ that does not evolve to a stuck term and that is well-typed only in the language
+with subtyping.\\~\\
+Let $M = \APP{\FN{x: \TREC{l_1: Nat}}{\SEL{x}{l_1}}}{\REC{l_1 = 2, l_2 = true}}$, $M$ isn't a stuck term since
+\begin{align*}
+	\APP{\FN{x: \TREC{l_1: Nat}}{\SEL{x}{l_1}}}{\REC{l_1 = 2, l_2 = true}} \to \SEL{\REC{l_1 = 2, l_2 = true}}{l_1} \to 2
+\end{align*}
+and is well-typed in the language with subtyping since
+\[
+	\infer[\text{\small{(T-APP)}}]
+	{ \Gamma \vdash \APP{\FN{x: \TREC{l_1: Nat}}{\SEL{x}{l_1}}}{\REC{l_1 = 2, l_2 = true}}: Nat }
+	{
+		\infer[\text{\small{(T-FUN)}}]
+		{ \Gamma \vdash \FN{x: \TREC{l_1: Nat}}{\SEL{x}{l_1}}: \TREC{l_1: Nat} \to Nat }
+		{
+			\infer[\text{\small{(T-SEL)}}]
+			{ \Gamma, x: \TREC{l_1: Nat} \vdash \SEL{x}{l_1}: Nat }
+			{
+				\infer{ \Gamma, x: \TREC{l_1: Nat} \vdash x: \TREC{l_1: Nat} }{\text{\small{(T-VAR)}}}
+			}
+		} &
+		\vdots
+	}
+\]
+\[
+	\infer[\text{\small{(SUBSUMPTION)}}]
+	{
+		\Gamma \vdash \REC{l_1 = 2, l_2 = true}: \TREC{l_1: Nat}
+	}
+	{
+		\infer[\text{\small{(T-REC)}}]
+		{ \Gamma \vdash \REC{l_1 = 2, l_2 = true}: \TREC{l_1: Nat, l_2: Bool} }
+		{
+			\infer{ \Gamma \vdash 2: Nat }{\text{\small{(T-INT)}}} &
+			\infer{ \Gamma \vdash true: Bool }{\text{\small{(T-BOOL)}}}
+		} &
+		\infer{\TREC{l_1: Nat, l_2: Bool} <: \TREC{l_1: Nat}}{\text{\small{(SUB WIDTH)}}}
+	}
+\]
+hence $M$ is well-typed in the language with subtyping, assume that $M$ is well-typed also in the
+language without subtyping, hence $\exists\, \Gamma, T\ \Gamma \vdash M: T$ is derivable, by
+Inv. Lemma $\exists\, T_1.\, \Gamma \vdash \FN{x: \TREC{l_1: Nat}}{\SEL{x}{l_1}}: T_1 \to T$ and
+$\Gamma \vdash \REC{l_1 = 2, l_2 = true}: T_1$. By Inv. Lemma once again $T_1 = \TREC{L_1: Nat}$
+and $\Gamma, x: \TREC{l_1: Nat} \vdash \SEL{x}{l_1}: T$.
+By Inv. Lemma on the other term instead $\not\exists\, l_2, T_2 \in \TREC{l_1: Nat}$ thus
+$\Gamma \vdash \REC{l_1 = 2, l_2 = true}: T_1$ isn't derivable, hence the term isn't well-typed without subtyping.
