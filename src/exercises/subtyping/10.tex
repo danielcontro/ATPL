@@ -1,0 +1,52 @@
+\subsection{}
+
+Consider the following modification of the rule (ARROW)
+\[
+	\infer[\text{\small{(NEW-ARROW)}}]
+	{S_1 \to S_2 <: T_1 \to T_2}
+	{
+		S_1 <: T_1 &
+		S_2 <: T_2
+	}
+\]
+Prove that the Safety Theorem still holds, or exhibit a counterexample.\\~\\
+\\
+Let $M = \APP{(\FN{x:\TREC{l_1: Nat, l_2: Bool}}{\SEL{x}{l_2}})}{\REC{l_1 = 0}}$, it is a closed and well-typed term
+\[
+	\infer[\text{\small{(T-APP)}}]
+	{\emptyset \vdash \APP{(\FN{x:\TREC{l_1: Nat, l_2: Bool}}{\SEL{x}{l_2}})}{\REC{l_1 = 0}}: Bool}
+	{
+		\vdots &
+		\infer{\emptyset \vdash \REC{l_1 = 0}: \TREC{l_1: Nat}}
+		{ \infer{ \emptyset \vdash 0: Nat }{\text{\small{(T-INT)}}} }
+	}
+\]
+\[
+	\infer[\text{\small{(SUBSUMPTION)}}]
+	{\emptyset \vdash (\FN{x:\TREC{l_1: Nat, l_2: Bool}}{\SEL{x}{l_2}}): \TREC{l_1: Nat} \to Bool}
+	{
+		\infer[\text{\small{(T-FUN)}}]
+		{\emptyset \vdash (\FN{x:\TREC{l_1: Nat, l_2: Bool}}{\SEL{x}{l_2}}): \TREC{l_1: Nat, l_2: Bool} \to Bool}
+		{
+			\infer[\text{\small{(T-SEL)}}]
+			{ x: \TREC{l_1: Nat, l_2: Bool} \vdash {\SEL{x}{l_2}}): Bool }
+			{
+				\infer
+				{ x: \TREC{l_1: Nat, l_2: Bool} \vdash x: \TREC{l_1: Nat, l_2: Bool} }
+				{\text{\small{(T-VAR)}}}
+			}
+		}
+		&
+		\vdots
+	}
+\]
+\[
+	\infer[\text{\small{(NEW-ARROW)}}]
+	{\TREC{l_1: Nat, l_2: Bool} \to Bool <: \TREC{l_1: Nat} \to Bool}
+	{
+		\infer{\TREC{l_1: Nat, l_2: Bool} <: \TREC{l_1: Nat}}{\text{\small{(SUB-WIDTH)}}}
+		\infer{Bool <: Bool}{\text{\small{(REFLEX)}}} &
+	}
+\]
+a counterexample of the Progress Theorem is shown hence it no longer holds, and by consequence
+the safety theorem no longer holds.
