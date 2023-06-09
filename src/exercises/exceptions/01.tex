@@ -1,0 +1,157 @@
+\subsection{}
+
+Show the operational semantics of the following terms, observing how the raising of the exception causes a
+non local jump of the control flow:
+% The rules specified is the topmost of the derivation tree  
+\begin{itemize}
+	\item $M_p = \FN{x: Nat}{(\IF{even(x)}{x/2}{\THROW{x}})}$:\\
+	      it's a value hence it's fully evaluated;
+	\item $\TRY{(\APP{M_p}{3})}{\FN{y}{y+y}}$:
+	      \begin{align*}
+		       & \TRY{(\APP{M_p}{3})}{\FN{y}{y+y}}
+		       & \to_{\text{(TRY)}}                                \\
+		       & \TRY{(\IF{even(3)}{3/2}{\THROW{3}})}{\FN{y}{y+y}}
+		       & \to_{\text{(IF)}}                                 \\
+		       & \TRY{(\IF{false}{3/2}{\THROW{3}})}{\FN{y}{y+y}}
+		       & \to_{\text{(IF-F)}}                               \\
+		       & \TRY{(\THROW{3})}{\FN{y}{y+y}}
+		       & \to_{\text{(TRY-HANDLE)}}                         \\
+		       & \APP{\FN{y}{y+y}}{(\THROW{3})}
+		       & \to_{\text{(BETA)}}                               \\
+		       & 3+3
+		       & \to_{\text{(SUM)}}                                \\
+		       & 6
+	      \end{align*}
+	\item $\TRY{(\APP{\FN{y:Nat}{(\APP{M_p}{y})}}{5})}{\FN{y}{y+y}}$:
+	      \begin{align*}
+		       & \TRY{(\APP{\FN{y:Nat}{(\APP{M_p}{y})}}{5})}{\FN{y}{y+y}}
+		       & \to_{\text{(BETA)}}                                      \\
+		       & \TRY{(\APP{M_p}{5})}{\FN{y}{y+y}}
+		       & \to_{\text{(TRY)}}                                       \\
+		       & \TRY{(\IF{even(5)}{5/2}{\THROW{5}})}{\FN{y}{y+y}}
+		       & \to_{\text{(IF)}}                                        \\
+		       & \TRY{(\IF{false}{5/2}{\THROW{5}})}{\FN{y}{y+y}}
+		       & \to_{\text{(IF-F)}}                                      \\
+		       & \TRY{(\THROW{5})}{\FN{y}{y+y}}
+		       & \to_{\text{(TRY-HANDLE)}}                                \\
+		       & \APP{\FN{y}{y+y}}{(\THROW{5})}
+		       & \to_{\text{(BETA)}}                                      \\
+		       & 5+5
+		       & \to_{\text{(SUM)}}                                       \\
+		       & 10
+	      \end{align*}
+	\item $\TRY{[\APP{\FN{z:Bool}{(\APP{M_p}{(\IF{z}{3}{6})})}}{false}]}{\FN{y}{y+y}}$:
+	      \begin{align*}
+		       & \TRY{[\APP{\FN{z:Bool}{(\APP{M_p}{(\IF{z}{3}{6})})}}{false}]}{\FN{y}{y+y}}
+		       & \to_{\text{(BETA)}}                                                        \\
+		       & \TRY{[(\APP{M_p}{(\IF{false}{3}{6})})]}{\FN{y}{y+y}}
+		       & \to_{\text{(IF-F)}}                                                        \\
+		       & \TRY{[(\APP{M_p}{6})]}{\FN{y}{y+y}}
+		       & \to_{\text{(BETA)}}                                                        \\
+		       & \TRY{(\IF{even(6)}{6/2}{\THROW{6}})}{\FN{y}{y+y}}
+		       & \to_{\text{(IF)}}                                                          \\
+		       & \TRY{(\IF{true}{6/2}{\THROW{6}})}{\FN{y}{y+y}}
+		       & \to_{\text{(IF-T)}}                                                        \\
+		       & \TRY{(6/2)}{\FN{y}{y+y}}
+		       & \to_{\text{(TRY)}}                                                         \\
+		       & \TRY{(3)}{\FN{y}{y+y}}
+		       & \to_{\text{(TRY-VAL)}}                                                     \\
+		       & 3
+	      \end{align*}
+	\item $\TRY{(\APP{\FN{y}{y+2}}{(\APP{M_p}{5})})}{\FN{z}{print(z)}}$:
+	      \begin{align*}
+		       & \TRY{(\APP{\FN{y}{y+2}}{(\APP{M_p}{5})})}{\FN{z}{print(z)}}
+		       & \to_{\text{(BETA)}}                                                         \\
+		       & \TRY{(\APP{\FN{y}{y+2}}{(\IF{even(5)}{5/2}{\THROW{5}})})}{\FN{z}{print(z)}}
+		       & \to_{\text{(IF)}}                                                           \\
+		       & \TRY{(\APP{\FN{y}{y+2}}{(\IF{false}{5/2}{\THROW{5}})})}{\FN{z}{print(z)}}
+		       & \to_{\text{(IF-F)}}                                                         \\
+		       & \TRY{(\APP{\FN{y}{y+2}}{(\THROW{5})})}{\FN{z}{print(z)}}
+		       & \to_{\text{(RAISE APP 2)}}                                                  \\
+		       & \TRY{(\THROW{5})}{\FN{z}{print(z)}}
+		       & \to_{\text{(TRY HANDLE)}}                                                   \\
+		       & \APP{\FN{z}{print(z)}}{(\THROW{5})}
+		       & \to_{\text{(BETA)}}                                                         \\
+		       & print(5)
+	      \end{align*}
+	\item $\TRY{(\APP{\FN{y}{y+2}}{(\APP{M_p}{\THROW{5}})})}{\FN{z}{print(z)}}$:
+	      \begin{align*}
+		       & \TRY{(\APP{\FN{y}{y+2}}{(\APP{M_p}{\THROW{5}})})}{\FN{z}{print(z)}}
+		       & \to_{\text{(RAISE APP 2)}}                                          \\
+		       & \TRY{(\APP{\FN{y}{y+2}}{(\THROW{5})})}{\FN{z}{print(z)}}
+		       & \to_{\text{(RAISE APP 2)}}                                          \\
+		       & \TRY{(\THROW{5})}{\FN{z}{print(z)}}
+		       & \to_{\text{(TRY-HANDLE)}}                                           \\
+		       & \APP{\FN{z}{print(z)}}{(\THROW{5})}
+		       & \to_{\text{(BETA)}}                                                 \\
+		       & print(5)
+	      \end{align*}
+	\item $\TRY{(\APP{(\FN{x:Nat}{\TRY{(\IF{even(x)}{x/2}{\THROW{x}})}{\FN{z}{0}}})}{3})}{\FN{y}{y}}$:
+	      \begin{align*}
+		       & \TRY{(\APP{(\FN{x:Nat}{\TRY{(\IF{even(x)}{x/2}{\THROW{x}})}{\FN{z}{0}}})}{3})}{\FN{y}{y}}
+		       & \to_{\text{(BETA)}}                                                                       \\
+		       & \TRY{(\TRY{(\IF{even(3)}{3/2}{\THROW{3}})}{\FN{z}{0}})}{\FN{y}{y}}
+		       & \to_{\text{(IF)}}                                                                         \\
+		       & \TRY{(\TRY{(\IF{false}{3/2}{\THROW{3}})}{\FN{z}{0}})}{\FN{y}{y}}
+		       & \to_{\text{(IF-F)}}                                                                       \\
+		       & \TRY{(\TRY{(\THROW{3})}{\FN{z}{0}})}{\FN{y}{y}}
+		       & \to_{\text{(TRY-HANDLE)}}                                                                 \\
+		       & \TRY{(\APP{\FN{z}{0}}{(\THROW{3})})}{\FN{y}{y}}
+		       & \to_{\text{(BETA)}}                                                                       \\
+		       & \TRY{(0)}{\FN{y}{y}}
+		       & \to_{\text{(TRY-VAL)}}                                                                    \\
+		       & 0
+	      \end{align*}
+	\item $\TRY{[\APP{\FN{y:Nat}{(\TRY{(\APP{M_p}{y})}{\FN{z}{print(z)}})}}{5}]}{\FN{y}{y+y}}$:
+	      \begin{align*}
+		       & \TRY{[\APP{\FN{y:Nat}{(\TRY{(\APP{M_p}{y})}{\FN{z}{print(z)}})}}{5}]}{\FN{y}{y+y}}
+		       & \to_{\text{(BETA)}}                                                                \\
+		       & \TRY{[(\TRY{(\APP{M_p}{5})}{\FN{z}{print(z)}})]}{\FN{y}{y+y}}
+		       & \to_{\text{(BETA)}}                                                                \\
+		       & \TRY{[(\TRY{(\IF{even(5)}{5/2}{\THROW{5}})}{\FN{z}{print(z)}})]}{\FN{y}{y+y}}
+		       & \to_{\text{(IF)}}                                                                  \\
+		       & \TRY{[(\TRY{(\IF{false}{5/2}{\THROW{5}})}{\FN{z}{print(z)}})]}{\FN{y}{y+y}}
+		       & \to_{\text{(IF-F)}}                                                                \\
+		       & \TRY{[(\TRY{(\THROW{5})}{\FN{z}{print(z)}})]}{\FN{y}{y+y}}
+		       & \to_{\text{(TRY-HANDLE)}}                                                          \\
+		       & \TRY{(print(5))}{\FN{y}{y+y}}
+		       & \to_{\text{(TRY)}}                                                                 \\
+		       & \TRY{()}{\FN{y}{y+y}}
+		       & \to_{\text{(TRY-VAL)}}                                                             \\
+		       & ()
+	      \end{align*}
+	\item $\TRY{(\APP{\FN{y}{y+2}}{(\TRY{(\APP{M_p}{5})}{\FN{z}{z+z}})})}{\FN{z}{print(z)}}$:
+	      \begin{align*}
+		       & \TRY{(\APP{\FN{y}{y+2}}{(\TRY{(\APP{M_p}{5})}{\FN{z}{z+z}})})}{\FN{z}{print(z)}}                 \\
+		       & \to_{\text{(BETA)}}                                                                              \\
+		       & \TRY{(\APP{\FN{y}{y+2}}{(\TRY{(\IF{even(5)}{5/2}{\THROW{5}})}{\FN{z}{z+z}})})}{\FN{z}{print(z)}} \\
+		       & \to_{\text{(IF)}}                                                                                \\
+		       & \TRY{(\APP{\FN{y}{y+2}}{(\TRY{(\IF{false}{5/2}{\THROW{5}})}{\FN{z}{z+z}})})}{\FN{z}{print(z)}}   \\
+		       & \to_{\text{(IF-F)}}                                                                              \\
+		       & \TRY{(\APP{\FN{y}{y+2}}{(\TRY{(\THROW{5})}{\FN{z}{z+z}})})}{\FN{z}{print(z)}}                    \\
+		       & \to_{\text{(TRY-HANDLE)}}                                                                        \\
+		       & \TRY{(\APP{\FN{y}{y+2}}{(\APP{\FN{z}{z+z}}{(\THROW{5})})})}{\FN{z}{print(z)}}                    \\
+		       & \to_{\text{(BETA)}}                                                                              \\
+		       & \TRY{(\APP{\FN{y}{y+2}}{(10 + 10)})}{\FN{z}{print(z)}}                                           \\
+		       & \to_{\text{(SUM)}}                                                                               \\
+		       & \TRY{(\APP{\FN{y}{y+2}}{(20)})}{\FN{z}{print(z)}}                                                \\
+		       & \to_{\text{(BETA)}}                                                                              \\
+		       & \TRY{(20 + 2)}{\FN{z}{print(z)}}                                                                 \\
+		       & \to_{\text{(SUM)}}                                                                               \\
+		       & \TRY{(22)}{\FN{z}{print(z)}}                                                                     \\
+		       & \to_{\text{(TRY-VAL)}}                                                                           \\
+		       & 22
+	      \end{align*}
+	\item $\TRY{(\APP{(\APP{\FN{x}{x}}{\THROW{1}})}{(\TRY{(\APP{M_p}{5})}{\FN{z}{z+z}})})}{\FN{z}{print(z)}}$:
+	      \begin{align*}
+		       & \TRY{(\APP{(\APP{\FN{x}{x}}{\THROW{1}})}{(\TRY{(\APP{M_p}{5})}{\FN{z}{z+z}})})}{\FN{z}{print(z)}}
+		       & \to_{\text{(BETA)}}                                                                               \\
+		       & \TRY{(\APP{(\THROW{1})}{(\TRY{(\APP{M_p}{5})}{\FN{z}{z+z}})})}{\FN{z}{print(z)}}
+		       & \to_{\text{(RAISE APP 1)}}                                                                        \\
+		       & \TRY{(\THROW{1})}{\FN{z}{print(z)}}
+		       & \to_{\text{(TRY-HANDLE)}}                                                                         \\
+		       & \APP{\FN{z}{print(z)}}{(\THROW{1})}
+		       & \to_{\text{(BETA)}}                                                                               \\
+		       & print(1)
+	      \end{align*}
+\end{itemize}
