@@ -1,0 +1,24 @@
+\subsection{}
+
+Define the operational semantics of the language that contains exceptions together with unit,
+records and variants.\\~\\
+\[
+	\infer[\text{\small{(RAISE REC)}}]
+	{\REC{l_i=v_i^{i \in 1..j-1}, l_j = M_j, l_k = M_k^{k \in j+1..n}} \to \THROW{v}}
+	{M_j \to \THROW{v}}
+\]
+\[
+	\infer[\text{\small{(RAISE SEL)}}]
+	{\SEL{M}{l_j} \to \THROW{v}}
+	{M \to \THROW{v}}
+\]
+\[
+	\infer[\text{\small{(RAISE VAR)}}]
+	{\VAR{l = M} \to \THROW{v}}
+	{M \to \THROW{v}}
+\]
+\[
+	\infer[\text{\small{(RAISE MATCH)}}]
+	{\MATCH{M}{\CASE{l_i}{x_i}{M_i^{i\in 1..n}}} \to \THROW{v}}
+	{M \to \THROW{v}}
+\]
