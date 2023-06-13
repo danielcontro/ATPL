@@ -1,0 +1,123 @@
+\subsection{}
+
+Prove that the following terms respect the safety theorem:
+\begin{itemize}
+	\item $M_1 = \APP{(\FN{x: Bool}{x})}{\THROW{0}}$:
+	      \[
+		      \infer[\text{\small{(T-APP)}}]
+		      {\emptyset \vdash \APP{(\FN{x: Bool}{x})}{\THROW{0}}: Bool}
+		      {
+			      \infer[\text{\small{(T-FUN)}}]
+			      {\emptyset \vdash \FN{x: Bool}{x}: Bool \to Bool}
+			      {
+				      \infer
+				      {x: Bool \vdash x: Bool}
+				      {\text{\small{(T-VAR)}}}
+			      } &
+			      \infer[\text{\small{(T-RAISE)}}]
+			      {\emptyset \vdash \THROW{0}: Bool}
+			      {
+				      \infer{\emptyset \vdash 0: Nat}{\text{\small{(T-INT)}}}
+			      }
+		      }
+	      \]
+	      hence it's a closed and well-typed term, moreover
+	      \begin{align*}
+		       & \APP{(\FN{x: Bool}{x})}{\THROW{0}}
+		       & \to_{\text{(BETA)}}                \\
+		       & \THROW{0}
+	      \end{align*}
+	      Which respects the safety theorem.
+	\item $M_2 = \IF{true}{2}{\THROW{0}}$:
+	      \[
+		      \infer[\text{\small{(T-IF)}}]
+		      { \emptyset \vdash \IF{true}{2}{\THROW{0}}: Nat }
+		      {
+			      \infer{ \emptyset \vdash true: Bool}{\text{\small{(T-BOOL)}}} &
+			      \infer{ \emptyset \vdash 2: Nat}{\text{\small{(T-INT)}}} &
+			      \infer[\text{\small{(T-RAISE)}}]
+			      { \emptyset \vdash \THROW{0}: Nat}{
+				      \infer{ \emptyset \vdash 0: Nat}{\text{\small{(T-INT)}}} &
+			      }
+		      }
+	      \]
+	      hence it's a closed and well-typed term, moreover
+	      \begin{align*}
+		      \IF{true}{2}{\THROW{0}} \to_{\text{(IF-T)}} 2
+	      \end{align*}
+	      which is a value, thus the safety theorem is respected.
+	\item $M_3 = \TRY{\SUM{(\APP{(\FN{x: Bool}{\THROW{0}})}{false})}{5}}{\FN{y}{y}}$:
+	      \[
+		      \infer[\text{\small{(T-TRY)}}]
+		      {\emptyset \vdash \TRY{\SUM{(\APP{(\FN{x: Bool}{\THROW{0}})}{false})}{5}}{\FN{y}{y}}: Nat}
+		      {
+			      \infer[\text{\small{(T-SUM)}}]
+			      {\emptyset \vdash \SUM{(\APP{(\FN{x: Bool}{\THROW{0}})}{false})}{5}: Nat}
+			      {
+				      \infer[\text{\small{(T-APP)}}]
+				      {\emptyset \vdash (\APP{(\FN{x: Bool}{\THROW{0}})}{false}): Nat}
+				      {
+					      \infer[\text{\small{(T-FUN)}}]
+					      {\emptyset \vdash \FN{x: Bool}{\THROW{0}}: Bool \to Nat}
+					      {
+						      \infer[\text{\small{(T-RAISE)}}]
+						      {x: Bool \vdash \THROW{0}: Nat}
+						      { \infer{x: Bool \vdash 0: Nat}{\text{\small{(T-INT)}}} }
+					      } &
+					      \infer{\emptyset \vdash false: Bool}{\text{\small{(T-BOOL)}}}
+				      } &
+				      \infer{\emptyset \vdash 5: Nat}{\text{\small{(T-INT)}}}
+			      } &
+			      \vdots
+		      }
+	      \]
+	      \[
+		      \infer[\text{\small{(T-FUN)}}]
+		      {\emptyset \vdash \FN{y}{y}: Nat \to Nat}
+		      {
+			      \infer{ y: Nat \vdash y: Nat }{\text{\small{(T-VAR)}}}
+		      }
+	      \]
+	      hence it's a closed and well-typed term, moreover
+	      \begin{align*}
+		       & \TRY{\SUM{(\APP{(\FN{x: Bool}{\THROW{0}})}{false})}{5}}{\FN{y}{y}}
+		       & \to_{\text{(TRY...)}}                                              \\
+		       & \TRY{\SUM{(\THROW{0})}{5}}{\FN{y}{y}}
+		       & \to_{\text{(TRY...)}}                                              \\
+		       & \TRY{(\THROW{0})}{\FN{y}{y}}
+		       & \to_{\text{(TRY HANDLE)}}                                          \\
+		       & \APP{\FN{y}{y}}{0}
+		       & \to_{\text{(BETA)}}                                                \\
+		       & 0
+	      \end{align*}
+	      which is a value, thus the safety theorem is respected.
+	\item $M_4 = \TRY{(\APP{\THROW{0}}{true})}{\FN{y}{y}}$:
+	      \[
+		      \infer[\text{\small{(T-TRY)}}]
+		      { \emptyset \vdash \TRY{(\APP{\THROW{0}}{true})}{\FN{y}{y}}: Nat }
+		      {
+			      \infer[\text{\small{(T-APP)}}]
+			      { \emptyset \vdash \APP{\THROW{0}}{true}: Nat}
+			      {
+				      \infer[\text{\small{(T-RAISE)}}]
+				      { \emptyset \vdash \THROW{0}: Bool \to Nat}
+				      { \infer{ \emptyset \vdash 0: Nat }{\text{\small{(T-INT)}}} } &
+				      \infer{ \emptyset \vdash true: Bool}{\text{\small{(T-BOOL)}}}
+			      } &
+			      \infer[\text{\small{(T-FUN)}}]
+			      { \emptyset \vdash \FN{y}{y}: Nat \to Nat }
+			      { \infer{ y: Nat \vdash y: Nat }{\text{\small{(T-VAR)}}} }
+		      }
+	      \]
+	      hence it's a closed and well-typed term, moreover
+	      \begin{align*}
+		       & \TRY{(\APP{\THROW{0}}{true})}{\FN{y}{y}}
+		       & \to_{\text{(TRY..)}}                     \\
+		       & \TRY{(\THROW{0})}{\FN{y}{y}}
+		       & \to_{\text{(TRY HANDLE)}}                \\
+		       & \APP{\FN{y}{y}}{0}
+		       & \to_{\text{(BETA)}}                      \\
+		       & 0
+	      \end{align*}
+	      which is a value, thus the safety theorem is respected.
+\end{itemize}
