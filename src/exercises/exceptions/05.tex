@@ -1,0 +1,41 @@
+\subsection{}
+
+Prove the following statement or find a counterexample: Let $\TRY{M}{N}$ be a closed and
+well-typed term, then it surely evolves to a final value $v$.\\~\\
+Let $M = \THROW{0}$ and $N = \FN{x: Nat}{\THROW{0}}$
+\[
+	\infer[\text{\small{(T-TRY)}}]
+	{
+		\emptyset \vdash \TRY{\THROW{0}}{(\FN{x: Nat}{\THROW{0}})}: Nat
+	}
+	{
+		\infer[\text{\small{(T-RAISE)}}]
+		{
+			\emptyset \vdash \THROW{0}: Nat
+		}
+		{
+			\infer{ \emptyset \vdash 0: Nat }{ \text{\small{(T-INT)}} }
+		} &
+		\infer[\text{\small{(T-FUN)}}]
+		{
+			\emptyset \vdash \FN{x: Nat}{\THROW{0}}: Nat \to Nat
+		}
+		{
+			\infer[\text{\small{(T-RAISE)}}]
+			{
+				x: Nat \vdash \THROW{0}: Nat
+			}
+			{
+				\infer{ x: Nat \vdash 0: Nat }{ \text{\small{(T-INT)}} }
+			}
+		}
+	}
+\]
+\begin{align*}
+	 & \TRY{\THROW{0}}{(\FN{x: Nat}{\THROW{0}})}
+	 & \to_{\text{(TRY HANDLE)}}                 \\
+	 & \APP{(\FN{x: Nat}{\THROW{0}})}{0}
+	 & \to_{\text{(BETA)}}                       \\
+	 & \THROW{0}
+	 & \not\to
+\end{align*}
