@@ -10,7 +10,7 @@
 
 \newcommand{\SUM}[2]{#1+#2}
 \newcommand{\IF}[3]{\texttt{if}\;#1\;\texttt{then}\;#2\;\texttt{else}\;#3}
-\newcommand{\FN}[2]{fn\;#1.\,#2}
+\newcommand{\FN}[2]{\texttt{fn }#1.\,#2}
 \newcommand{\APP}[2]{#1\;#2}
 \newcommand{\unit}{\emph{unit}}
 \newcommand{\PAIR}[2]{(#1,\;#2)}
@@ -21,6 +21,12 @@
 \newcommand{\VAR}[1]{\langle #1 \rangle}
 \newcommand{\MATCH}[2]{#1\texttt{ match }\{#2\}}
 \newcommand{\CASE}[3]{\texttt{case }#1 = #2 \Ra #3}
+\newcommand{\TRY}[2]{\texttt{try }#1\texttt{ catch }#2}
+\newcommand{\THROW}[1]{\texttt{throw }#1}
+
+\newcommand{\CLASS}[3]{& \texttt{class }#1\texttt{ extends } #2 \{ & \\ #3 & \\ & \} & \\ }
+\newcommand{\FIELD}[2]{#1\ #2; & \\}
+\newcommand{\CONSTR}[3]{#1(#2)\{ & \\ #3 & \\ & \qquad \}}
 
 \newcommand{\fv}[1]{fv(#1)}
 

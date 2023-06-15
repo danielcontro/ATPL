@@ -1,0 +1,19 @@
+\subsection{}
+
+Observe that a class table can contain mutually recursive class definitions; write an example.\\~\\
+The following class definition defines mutually recursive classes:
+\begin{flalign*}
+	\CLASS{A}{Object}{
+	 & \qquad \FIELD{B}{b}
+	 & \qquad \CONSTR{A}{B\ b}{
+	 & \qquad\qquad super();       & \\
+	 & \qquad\qquad this.b = b;
+		}
+	}
+	\CLASS{B}{Object}{
+	 & \qquad \FIELD{A}{a}
+	 & \qquad \CONSTR{B}{A\ a}{
+	 & \qquad\qquad  super();      & \\
+	 & \qquad\qquad  this.a = a; }
+	}
+\end{flalign*}
