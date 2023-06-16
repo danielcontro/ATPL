@@ -1,0 +1,32 @@
+\subsection{}
+
+Write a program that contains the overriding of a method. Show its evaluation and highlight the
+dynamic binding in the method invocation.\\~\\
+\begin{flalign*}
+	\CLASS{A}{Object}{
+	 & \qquad A()\ \{ super(); \}           & \\
+	 & \qquad A\ m()\ \{\RETURN \NEW A();\}
+	}                                         \\
+	\CLASS{B}{A}{
+	 & \qquad B()\ \{ super(); \}           & \\
+	 & \qquad B\ m()\ \{\RETURN \NEW B();\}
+	}
+\end{flalign*}
+Let the program be $((A)\ (\NEW B())).m()$
+\[
+	\infer[\text{\small{(INVKRECV)}}]
+	{ ((A)\ (\NEW B())).m() \to (\NEW B()).m() }
+	{
+		\infer[\text{\small{(CASTNEW)}}]
+		{ (A)\ (\NEW B()) \to \NEW B() }
+		{ \infer{ B <: A }{ \texttt{class }B\texttt{ extend }A\{..\} } }
+	}
+\]
+\[
+	\infer[\text{\small{(INVKNEW)}}]
+	{ (\NEW B()).m() \to \NEW B()\{this:=  \NEW B()\} }
+	{
+		mbody(m, B) = (\emptyset, \NEW B()) &
+		|\emptyset| = |\emptyset|
+	}
+\]
