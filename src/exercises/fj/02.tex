@@ -1,0 +1,98 @@
+\subsection{}
+
+Define the semantics of the following terms:
+\begin{itemize}
+	\item $\NEW Pair(\NEW A(), \NEW B()).snd$:
+	      \begin{align*}
+		      \infer[\text{\small{(PROJNEW)}}]
+		      {
+			      \NEW Pair(\NEW A(), \NEW B()).snd \to \NEW B()
+		      }
+		      {
+		      fields(Pair) = Object\, fst, Object\, snd &
+			      snd \in fields(Pair)
+		      }
+	      \end{align*}
+	\item $(Pair)\, \NEW Pair(\NEW A(), \NEW B())$:
+	      \begin{align*}
+		      \infer[\text{\small{(CASTNEW)}}]
+		      { (Pair)\, \NEW Pair(\NEW A(), \NEW B()) \to \NEW Pair(\NEW A(), \NEW B()) }
+		      { \infer{ Pair <: Pair }{\text{\small{(REFLEX)}}} }
+	      \end{align*}
+	\item $\NEW Pair(\NEW A(), \NEW B()).setfst(\NEW B())$:
+	      \[
+		      \infer[\text{\small{(INVKNEW)}}]
+		      {
+			      \begin{gathered}
+				      \NEW Pair(\NEW A(), \NEW B()).setfst(\NEW B()) \to \\
+				      \NEW Pair(newfst, this.snd)\{newfst:= \NEW B(), this:= \NEW Pair(\NEW A(), \NEW B()) \}
+			      \end{gathered}
+		      }
+		      {
+			      \infer
+			      { mbody(setfst, Pair) = (newfst, \NEW Pair(newfst, this.snd)) }
+			      { Pair\ setfst(Object\ newfst) \{ \RETURN \NEW Pair(newfst, this.snd); \} } &
+			      |newfst| = |\NEW B()| }
+	      \]
+	\item $((Pair)\, (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst)).snd$:
+	      \[
+		      \infer[\text{\small{(FIELD)}}]
+		      {
+			      \begin{gathered}
+				      ((Pair)\, (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst)).snd \to \\
+				      ((Pair)\, \NEW Pair(\NEW A(), \NEW B())).snd
+			      \end{gathered}
+		      }
+		      {
+			      \infer[\text{\small{(CAST)}}]
+			      { (Pair)\, (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst) \to
+				      (Pair)\, \NEW Pair(\NEW A(), \NEW B())
+			      }
+			      {
+				      \infer[\text{\small{(PROJNEW)}}]
+				      { \NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst \to \NEW Pair(\NEW A(), \NEW B()) }
+				      { fields(Pair) = Object\, fst, Object\, snd & fst \in fields(Pair) }
+			      }
+		      }
+	      \]
+	      \[
+		      \infer[\text{\small{(FIELD)}}]
+		      { ((Pair)\, \NEW Pair(\NEW A(), \NEW B())).snd \to
+			      \NEW Pair(\NEW A(), \NEW B()).snd }
+		      {
+			      \infer[\text{\small{(CASTNEW)}}]
+			      { (Pair)\, \NEW Pair(\NEW A(), \NEW B()) \to \NEW Pair(\NEW A(), \NEW B()) }
+			      { \infer{ Pair <: Pair }{ \text{\small{(REFLEX)}} } }
+		      }
+	      \]
+	      \[
+		      \infer[\text{\small{(PROJNEW)}}]
+		      { \NEW Pair(\NEW A(), \NEW B()).snd \to \NEW B() }
+		      { fields(Pair) = Object\, fst, Object\, snd & snd \in fields(Pair) }
+	      \]
+	\item $(B)\, ((A)\, \NEW C())$:
+	      \[
+		      \infer[\text{\small{(CAST)}}]
+		      { (B)\ ((A)\ \NEW C()) \to (B)\ \NEW C() }
+		      {
+			      \infer[\text{\small{(CASTNEW)}}]
+			      { (A)\ \NEW C() \to \NEW C() }
+			      {
+				      \infer{ C <: A }
+				      {
+					      \infer{ C <: B }{\texttt{class }C\texttt{ extends }B\{..\}}&
+					      \infer{ B <: A }{\texttt{class }B\texttt{ extends }A\{..\}}
+				      }
+			      }
+		      }
+	      \]
+	      \[
+		      \infer
+		      { (B)\ \NEW C() \to \NEW C()}
+		      {
+			      \infer
+			      { C <: B }
+			      { \texttt{class }C\texttt{ extends }B\{..\} }
+		      }
+	      \]
+\end{itemize}
