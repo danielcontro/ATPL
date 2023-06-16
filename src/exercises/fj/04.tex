@@ -1,0 +1,10 @@
+\subsection{}
+
+Why are there two typing rules for both upcast and downcast, while there's only one rule for
+upcast in the operational semantics?\\~\\
+Int the typing rules it is necessary to check whether the types to which terms are casted are in
+the same chain of the hierarchy in order to check if the operations make sense.
+If it was allowed downcasting in the operational semantics of an object to a subtype of its
+class, the evaluation could evolve to a stuck term in the case that methods or fields of the
+subclass, not present in the superclass, were referenced thus violating the safety theorem,
+upcasting instead can't lead to such situations hence it's allowed. 
