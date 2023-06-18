@@ -1,0 +1,41 @@
+\subsection{}
+
+Study a variant of the language that admits a default case in the
+pattern matching operation.
+
+Evaluation would be simply to add, only one rule would be needed:
+\[
+\infer[j\not\in1\dots n]
+      {
+        \MATCH{\VAR{\ell_j = v_j}}{\text{case } \ell_i = x_i \Rightarrow M_i ^{i\in 1 \dots n}, \text{default } x_{n+1} \Rightarrow M_{n+1}}
+        \to
+        M_{n+1}\SUBST{x_{n+1}}{v_j}
+      }
+      {\text{\small{(MATCH-DEFAULT)}}}
+\]
+
+For typing on the other hand, things are a little bit more
+complicated. One solution is to constrain the non-explicit cases to
+fall into the same type, otherwise we would have no guarantees for
+\(M_{n+1}\) to type:
+
+(TYPE-MATCH-2)
+\[
+\infer
+    {\Gamma \vdash
+      \MATCH{M}{\text{case } \ell_i = x_i \Rightarrow M_i,
+        \text{default } x_j \Rightarrow M_j
+        \quad ^{i\in I\quad j\not\in I}}\TYPE{T}}
+    {
+      \Gamma \vdash M \TYPE{\VAR{\ell_i \TYPE{T_i} ^{i\in I}, \ell_j : T_s ^{j\in J}}}
+      &
+      \forall i \in I \; \Gamma, x_i \TYPE{T_i} \vdash M_i \TYPE{T}
+      &
+      \Gamma, x_j \TYPE{T_s} \vdash M_j \TYPE{T}
+    }
+\]
+
+The rule says that every possibility of the variant type not
+explicitly stated in the cases, but left to the default case, must
+match the same type \(T_s\) in such a way that the statement \(M_j\)
+with free variable \(x_j\) of type \(T_s\) matches the type \(T\).
