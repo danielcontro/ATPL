@@ -1,0 +1,27 @@
+\subsection{}
+
+Prove that the term \((M_f \langle\ell_1=5\rangle)\) is well-typed
+with type Bool.
+
+\[
+\infer[\text{\small{(T-APP)}}]
+      {\emptyset \vdash (M_f \langle\ell_1=5\rangle) \TBOOL}
+      {\infer{\emptyset \vdash M_f \TYPE{\VAR{\ell_1 \TNAT, \ell_2 \TBOOL} \to Bool}}{\pi_1}
+       &
+       \infer[\text{\small{(T-VARIANT)}}]
+        {\emptyset \vdash \VAR{\ell_1 = 5} \TYPE{T_1}}
+        {\infer{\emptyset \vdash 5 \TNAT}{\text{\small{(T-INT)}}}}}
+\]
+with \(\pi_1\):
+\[
+\infer[\text{\small{(T-FUN)}}]
+        {\emptyset \vdash M_f \TYPE{\VAR{\ell_1 \TNAT, \ell_2 \TBOOL} \to Bool}}
+        {\infer[\text{\small{(T-MATCH)}}]
+          {x \TYPE{\VAR{\ell_1 \TNAT, \ell_2 \TBOOL}} \vdash \MATCH{x}{\dots}}
+          {
+            \infer{x \TYPE{\VAR{\ell_1 \TNAT, \ell_2 \TBOOL}} \vdash x \TYPE{\VAR{\ell_1 \TNAT, \ell_2 \TBOOL}}}{\text{(T-VAR)}}
+            &
+            \infer{\dots, x_1 \TNAT \vdash true \TBOOL}{\text{\small{(T-TRUE)}}}
+            &
+            \infer{\dots, x_2 \TBOOL \vdash x_2 \TBOOL}{\text{\small{(T-VAR)}}}}}
+\]

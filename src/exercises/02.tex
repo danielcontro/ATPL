@@ -1,0 +1,29 @@
+\subsection{}
+
+Think about the difference between the terms \FN{x}{\SUM{2}{x}} and
+\FN{x}{\APP{(\FN{y}{(\SUM{y}{x})})}{2}}.
+
+Mathematically they are the same function. The first one is exactly
+the second one after one derivation step, according to the (BETA)
+rule.
+
+Write a term rapresenting an higher order function, i.e. a function
+that takes a function as a parameter. Also write a program that
+somehow \textit{uses} a higher order function. And finally write a
+function that returns a function.
+
+\begin{itemize}
+\item Higher order function: \(\FN{x}{\FN{y} (\APP{x}{y})}\) (call it
+  \(F\))
+\item function that uses an higher order function
+  \(\FN{z}{\APP{(\APP{(F)}{(\FN{w}{\SUM{w}{2}})})}{(z)}}\)
+\item function that returns a function \(\FN{x}{\FN{y}{y}}\)
+\end{itemize}
+
+Find 2 terms \(M_1, M_2\) corresponding to scala \texttt{sum} and
+\texttt{sumThree}
+
+\begin{itemize}
+\item[\textbf{sum}]      \FN{x}{\FN{y}{(x + y)}}
+\item[\textbf{sumThree}] \APP{sum}{(3)}
+\end{itemize}

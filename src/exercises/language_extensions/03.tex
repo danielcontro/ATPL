@@ -1,0 +1,15 @@
+\subsection{}
+
+Formalise a statement expressing the relationship between the
+alternative operational semantics developed in the previous exercise
+and the standard semantics described above.
+
+\[M \to^* M' \Rightarrow M \leadsto^* M' \]
+
+The opposite is not true, a counterexample could be
+\(\FST{\PAIR{1}{\APP{(\FN{x}{x+3})}{(true)}}}\). According to the
+default strategy it is stuck (\(\not\to\)), but thanks to our
+(PROJ-1') and (PROJ-2'):
+
+\[\FST{\PAIR{1}{\APP{(\FN{x}{x+3})}{(true)}}} \leadsto 1\] which of
+course is not the same
