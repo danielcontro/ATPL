@@ -7,15 +7,34 @@ considering the extended language with pair terms.
 The base cases are left unchanged, only the inductive ones has to be extended with the newly
 added typing rules:
 \begin{itemize}
-	\item (T-PAIR): $M = \PAIR{M_1}{M_2}$ since $M_1, M_2$ derivation trees have height
-	      $\le k_0$ then the inductive hypothesis can be applied hence $\emptyset \vdash M_1 : T_1$
-	      and $\emptyset \vdash M_2 : T_2$ are derivable, thus the (T-PAIR) rule can be applied;
-	\item (T-PROJECT 1): $M = \FST{M_1}$, since $M_1$'s derivation tree has height $\le k_0$
-	      the inductive hyp. can be applied hence $\emptyset \vdash M_1: T_1 \ast T_2$, thus the
-	      (T-PROJECT 1) rule can be applied;
-	\item (T-PROJECT 2): $M = \SND{M_1}$, since $M_1$'s derivation tree has height $\le k_0$
-	      the inductive hyp. can be applied hence $\emptyset \vdash M_1: T_1 \ast T_2$, thus the
-	      (T-PROJECT 2) rule can be applied;
+\item (T-PAIR) was the lastly applied rule: the conclusion is
+  \(\emptyset \vdash (M_1, M_2) \TYPE{T_1 * T_2}\) and the premises
+  are \(\emptyset \vdash M_1 \TYPE{T_1}\) and \(\emptyset \vdash M_2
+  \TYPE{T_2}\), which are derivable with height at most \(k_0\). By
+  induction hypothesis \(M_1\) is either a good final value or
+  \(\exists M_1' \mid M_1 \to M_1'\), same for \(M_2\). 3 cases
+  emerge:
+  \begin{itemize}
+    \item \(M_1 = v_1, M_2 = v_2\) therefore \(\PAIR{v_1}{v_2}\) is a
+      good final value, the theorem holds
+    \item \(M_1 = v_1, \exists M_2'\mid M_2 \to M_2'\). Therefore by
+      applying (EVAL-PAIR-2) \(\PAIR{v_1}{M_2} \to \PAIR{v_1}{M_2'} =
+      M'\)
+    \item \(\exists M_1'\mid M_1 \to M_1'\). Therefore by applying
+      (EVAL-PAIR-1) \(\PAIR{M_1}{M_2} \to \PAIR{M_1'}{M_2} = M'\)
+  \end{itemize}
+\item (T-PROJ-1) was the lastly applied rule, then the conclusion is
+  \(\emptyset \vdash \FST{M_1} \TYPE{T_1}\) and the premise is
+  \(\emptyset \vdash M_1 \TYPE{T_1 * T_2}\). by induction hypothesis
+  we have 2 cases:
+  \begin{itemize}
+  \item \(M_1\) is a good value, then by canonical forms lemma \(M_1 =
+    \PAIR{v_1}{v_2}\), therefore by applying (PAIR-1)
+    \(\FST{\PAIR{v_1}{v_2}} \to v_1 = M'\)
+  \item \(\exists M_1' \mid M_1 \to M_1'\), therefore by applying
+    (PROJECT-1) \(\FST{M_1} \to \FST{M_1'}\)
+  \end{itemize}
+  So in every case the statement holds.
 \end{itemize}
 
 \subsubsection*{Substitution Lemma:}
