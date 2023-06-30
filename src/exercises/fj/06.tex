@@ -2,155 +2,155 @@
 
 Consider the following terms, discuss if they're well typed and if they reduce to a final value:
 \begin{itemize}
-	\item $((Pair)\ (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst)).snd$:
-	      \[
-		      \infer[\text{\small{(FIELD)}}]
-		      { \emptyset \vdash ((Pair)\ (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst)).snd: Object }
-		      {
-			      \vdots &
-			      fields(Pair) = Object\ fst, Object\ snd &
-			      snd \in fields(Pair)
-		      }
+\item $((Pair)\ (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst)).snd$:
+  \[
+  \infer[\text{\small{(FIELD)}}]
+	{ \emptyset \vdash ((Pair)\ (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst)).snd: Object }
+	{
+	  \vdots &
+	  fields(Pair) = Object\ fst, Object\ snd &
+	  snd \in fields(Pair)
+	}
+	\]
+	\[
+	\infer[\text{\small{(DCAST)}}]
+	      { \emptyset \vdash ((Pair)\ (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst)): Pair }
+	      {
+		\vdots &
+		\infer{ Pair <: Object }{ \texttt{class }Pair\texttt{ extends }Object\{..\} } &
+		Pair \ne Object
+	      }
 	      \]
 	      \[
-		      \infer[\text{\small{(DCAST)}}]
-		      { \emptyset \vdash ((Pair)\ (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst)): Pair }
-		      {
-			      \vdots &
-			      \infer{ Pair <: Object }{ \texttt{class }Pair\texttt{ extends }Object\{..\} } &
-			      Pair \ne Object
-		      }
-	      \]
-	      \[
-		      \infer[\text{\small{(FIELD)}}]
-		      { \emptyset \vdash \NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst: Object }
-		      {
-			      \vdots &
-			      fields(Pair) = Object\ fst, Object\ snd &
-			      fst \in fields(Pair)
-		      }
-	      \]
-	      \[
-		      \infer[\text{\small{(NEW)}}]
-		      { \emptyset \vdash \NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()): Pair }
-		      {
-			      \begin{gathered}
-				      \vdots \\
-				      \infer[\text{\small{(NEW)}}]
-				      { \emptyset \vdash \NEW A(): A }
-				      {
-					      |\emptyset| = |\emptyset| &
-					      fields(A) = \emptyset
-				      } \\
-				      \infer{ Pair <: Object }{ \texttt{class }Pair\texttt{ extends }Object\{..\} } \\
-				      \infer{ A <: Object }{ \texttt{class }A\texttt{ extends }Object\{..\} } \\
-				      |Object\ fst, Object\ snd| = |\NEW Pair(\NEW A(), \NEW B()), \NEW A()|
-			      \end{gathered}
-		      }
-	      \]
-	      \[
-		      \infer[\text{\small{(NEW)}}]
-		      { \emptyset \vdash \NEW Pair(\NEW A(), \NEW B()): Pair }
-		      {
-			      \begin{gathered}
-				      \infer{ A <: Object }{ \texttt{class }A\texttt{ extends }Object\{..\} } \\
-				      \infer{ B <: Object }{ \texttt{class }B\texttt{ extends }Object\{..\} } \\
-				      |Object\ fst, Object\ snd| = |\NEW A(), \NEW B()|
-			      \end{gathered} &
-			      \begin{gathered}
-				      \infer[\text{\small{(NEW)}}]
-				      { \emptyset \vdash \NEW A(): A }
-				      {
-					      |\emptyset| = |\emptyset| &
-					      fields(A) = \emptyset
-				      } \\
-				      \infer[\text{\small{(NEW)}}]
-				      { \emptyset \vdash \NEW B(): B }
-				      {
-					      |\emptyset| = |\emptyset| &
-					      fields(B) = \emptyset
-				      }
-			      \end{gathered}
-		      }
-	      \]
-	      The term has the following evaluation:
-	      \[
-		      \infer[\text{\small{(FIELD)}}]
-		      {
-			      \begin{gathered}
-				      ((Pair)\ (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst)).snd \to\\
-				      ((Pair)\ (\NEW Pair(\NEW A(), \NEW B()))).snd
-			      \end{gathered}
-		      }
-		      {
-			      \infer[\text{\small{(CAST)}}]
-			      {
-				      \begin{gathered}
-					      (Pair)\ (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst) \to \\
-					      (Pair)\ (\NEW Pair(\NEW A(), \NEW B()))
-				      \end{gathered}
-			      }
-			      {
-				      \infer[\text{\small{(PROJNEW)}}]
-				      {
-					      \begin{gathered}
-						      \NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst \to \\ \NEW Pair(\NEW A(), \NEW B())
-					      \end{gathered}
-				      }
-				      { fields(Pair) = Object fst, Object snd & fst \in fields(Pair) }
-			      }
-		      }
-	      \]
-	      \[
-		      \infer[\text{\small{(FIELD)}}]
-		      {((Pair)\ (\NEW Pair(\NEW A(), \NEW B()))).snd \to (\NEW Pair(\NEW A(), \NEW B())).snd}
-		      {
-			      \infer[\text{\small{(CASTNEW)}}]
-			      {((Pair)\ (\NEW Pair(\NEW A(), \NEW B()))).snd \to \NEW Pair(\NEW A(), \NEW B())}
-			      { \infer{ Pair <: Pair }{\text{\small{(REFLEX)}}} }
-		      }
-	      \]
-	      \[
-		      \infer[\text{\small{(PROJNEW)}}]
-		      {(\NEW Pair(\NEW A(), \NEW B())).snd \to \NEW B()}
-		      { fields(Pair) = Object fst, Object snd & snd \in fields(Pair) }
-	      \]
-	\item $(\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst).snd$:
-	      \[
-		      \infer[\text{\small{(FIELD)}}]
-		      { \emptyset \vdash (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst).snd: Object }
-		      {
-			      \begin{gathered}
-				      \infer[]
-				      { \emptyset \vdash \NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst: Pair }
-				      { \not\vdots } \\
-				      fields(Pair) = Object\ fst, Object\ snd \\
-				      snd \in fields(Pair)
-			      \end{gathered}
-		      }
-	      \]
-	      The term has the following evaluation:
-	      \[
-		      \infer[\text{\small{(FIELD)}}]
-		      {
-			      \begin{gathered}
-				      (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst).snd \to\\
-				      (\NEW Pair(\NEW A(), \NEW B())).snd
-			      \end{gathered}
-		      }
-		      {
-			      \infer[\text{\small{(PROJNEW)}}]
-			      {
-				      \begin{gathered}
-					      \NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst \to \\ \NEW Pair(\NEW A(), \NEW B())
-				      \end{gathered}
-			      }
-			      { fields(Pair) = Object fst, Object snd & fst \in fields(Pair) }
-		      }
-	      \]
-	      \[
-		      \infer[\text{\small{(PROJNEW)}}]
-		      {(\NEW Pair(\NEW A(), \NEW B())).snd \to \NEW B()}
-		      { fields(Pair) = Object fst, Object snd & snd \in fields(Pair) }
-	      \]
+	      \infer[\text{\small{(FIELD)}}]
+		    { \emptyset \vdash \NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst: Object }
+		    {
+		      \vdots &
+		      fields(Pair) = Object\ fst, Object\ snd &
+		      fst \in fields(Pair)
+		    }
+	            \]
+	            \[
+		    \infer[\text{\small{(NEW)}}]
+		          { \emptyset \vdash \NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()): Pair }
+		          {
+			    \begin{gathered}
+			      \vdots \\
+			      \infer[\text{\small{(NEW)}}]
+				    { \emptyset \vdash \NEW A(): A }
+				    {
+				      |\emptyset| = |\emptyset| &
+				      fields(A) = \emptyset
+				    } \\
+				    \infer{ Pair <: Object }{ \texttt{class }Pair\texttt{ extends }Object\{..\} } \\
+				    \infer{ A <: Object }{ \texttt{class }A\texttt{ extends }Object\{..\} } \\
+				    |Object\ fst, Object\ snd| = |\NEW Pair(\NEW A(), \NEW B()), \NEW A()|
+			    \end{gathered}
+		          }
+	                  \]
+	                  \[
+		          \infer[\text{\small{(NEW)}}]
+		                { \emptyset \vdash \NEW Pair(\NEW A(), \NEW B()): Pair }
+		                {
+			          \begin{gathered}
+				    \infer{ A <: Object }{ \texttt{class }A\texttt{ extends }Object\{..\} } \\
+				    \infer{ B <: Object }{ \texttt{class }B\texttt{ extends }Object\{..\} } \\
+				    |Object\ fst, Object\ snd| = |\NEW A(), \NEW B()|
+			          \end{gathered} &
+			          \begin{gathered}
+				    \infer[\text{\small{(NEW)}}]
+				          { \emptyset \vdash \NEW A(): A }
+				          {
+					    |\emptyset| = |\emptyset| &
+					    fields(A) = \emptyset
+				          } \\
+				          \infer[\text{\small{(NEW)}}]
+				                { \emptyset \vdash \NEW B(): B }
+				                {
+					          |\emptyset| = |\emptyset| &
+					          fields(B) = \emptyset
+				                }
+			          \end{gathered}
+		                }
+	                        \]
+	                        The term has the following evaluation:
+	                        \[
+		                \infer[\text{\small{(FIELD)}}]
+		                      {
+			                \begin{gathered}
+				          ((Pair)\ (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst)).snd \to\\
+				          ((Pair)\ (\NEW Pair(\NEW A(), \NEW B()))).snd
+			                \end{gathered}
+		                      }
+		                      {
+			                \infer[\text{\small{(CAST)}}]
+			                      {
+				                \begin{gathered}
+					          (Pair)\ (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst) \to \\
+					          (Pair)\ (\NEW Pair(\NEW A(), \NEW B()))
+				                \end{gathered}
+			                      }
+			                      {
+				                \infer[\text{\small{(PROJNEW)}}]
+				                      {
+					                \begin{gathered}
+						          \NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst \to \\ \NEW Pair(\NEW A(), \NEW B())
+					                \end{gathered}
+				                      }
+				                      { fields(Pair) = Object fst, Object snd & fst \in fields(Pair) }
+			                      }
+		                      }
+	                              \]
+	                              \[
+		                      \infer[\text{\small{(FIELD)}}]
+		                            {((Pair)\ (\NEW Pair(\NEW A(), \NEW B()))).snd \to (\NEW Pair(\NEW A(), \NEW B())).snd}
+		                            {
+			                      \infer[\text{\small{(CASTNEW)}}]
+			                            {((Pair)\ (\NEW Pair(\NEW A(), \NEW B()))).snd \to \NEW Pair(\NEW A(), \NEW B())}
+			                            { \infer{ Pair <: Pair }{\text{\small{(REFLEX)}}} }
+		                            }
+	                                    \]
+	                                    \[
+		                            \infer[\text{\small{(PROJNEW)}}]
+		                                  {(\NEW Pair(\NEW A(), \NEW B())).snd \to \NEW B()}
+		                                  { fields(Pair) = Object fst, Object snd & snd \in fields(Pair) }
+	                                          \]
+	                                        \item $(\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst).snd$:
+	                                          \[
+		                                  \infer[\text{\small{(FIELD)}}]
+		                                        { \emptyset \vdash (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst).snd: Object }
+		                                        {
+			                                  \begin{gathered}
+				                            \infer[]
+				                                  { \emptyset \vdash \NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst: Pair }
+				                                  { \not\vdots } \\
+				                                  fields(Pair) = Object\ fst, Object\ snd \\
+				                                  snd \in fields(Pair)
+			                                  \end{gathered}
+		                                        }
+	                                                \]
+	                                                The term has the following evaluation:
+	                                                \[
+		                                        \infer[\text{\small{(FIELD)}}]
+		                                              {
+			                                        \begin{gathered}
+				                                  (\NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst).snd \to
+				                                  (\NEW Pair(\NEW A(), \NEW B())).snd
+			                                        \end{gathered}
+		                                              }
+		                                              {
+			                                        \infer[\text{\small{(PROJNEW)}}]
+			                                              {
+				                                        \begin{gathered}
+					                                  \NEW Pair(\NEW Pair(\NEW A(), \NEW B()), \NEW A()).fst \to \NEW Pair(\NEW A(), \NEW B())
+				                                        \end{gathered}
+			                                              }
+			                                              { fields(Pair) = Object fst, Object snd & fst \in fields(Pair) }
+		                                              }
+	                                                      \]
+	                                                      \[
+		                                              \infer[\text{\small{(PROJNEW)}}]
+		                                                    {(\NEW Pair(\NEW A(), \NEW B())).snd \to \NEW B()}
+		                                                    { fields(Pair) = Object fst, Object snd & snd \in fields(Pair) }
+	                                                            \]
 \end{itemize}

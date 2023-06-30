@@ -3,19 +3,19 @@
 State the inversion lemmas for the language extended with unit, pairs and records.
 
 \begin{itemize}
-	\item ...
-	\item If $\Gamma \vdash \unit: T$ is derivable then $T = Unit$
-	\item If $\Gamma \vdash \PAIR{M_1}{M_2}: T$ is derivable then
-	      $\exists\,T_1, T_2.\, T = T_1 \ast T_2$, $\Gamma \vdash M_1: T_1$ and
-	      $\Gamma \vdash M_2: T_2$ are derivable
-	\item If $\Gamma \vdash \FST{M}: T$ is derivable then
-	      $\exists T'.\, \Gamma \vdash M: T \ast T'$ is derivable
-	\item If $\Gamma \vdash \SND{M}: T$ is derivable then
-	      $\exists T'.\, \Gamma \vdash M: T' \ast T$ is derivable
-	\item If $\Gamma \vdash \REC{l_i=M_i^{i \in 1..n}}: T$ is derivable
-	      then $\forall\, i \in 1..n \exists\, T_i. \Gamma \vdash M_i: T_i$ and
-	      $T = \TREC{l_i: T_i^{i \in 1..n}}$
-	\item If $\Gamma \vdash \SEL{M}{l_j}: T$ is derivable then $\exists\, n.\,j \in 1..n$ and
-	      $\forall\, i \in 1..n\ \exists\, l_i, T_i.\,\Gamma \vdash M: \TREC{l_i: T_i^{i \in 2..n}}$
-	      and $T = T_j$
+\item ...
+\item If $\Gamma \vdash \unit: T$ is derivable then $T = Unit$
+\item If $\Gamma \vdash \PAIR{M_1}{M_2}: T$ is derivable then
+  $\exists\,T_1, T_2.\, T = T_1 \ast T_2$, $\Gamma \vdash M_1: T_1$ and
+  $\Gamma \vdash M_2: T_2$ are derivable
+\item If $\Gamma \vdash \FST{M}: T$ is derivable then
+  $\exists T'.\, \Gamma \vdash M: T \ast T'$ is derivable
+\item If $\Gamma \vdash \SND{M}: T$ is derivable then
+  $\exists T'.\, \Gamma \vdash M: T' \ast T$ is derivable
+\item If $\Gamma \vdash \REC{l_i=M_i^{i \in 1..n}}: T$ is derivable
+  then $\forall\, i \in 1..n \exists\, T_i. \Gamma \vdash M_i: T_i$ and
+  $T = \TREC{l_i: T_i^{i \in 1..n}}$
+\item If $\Gamma \vdash \SEL{M}{l_j}: T$ is derivable then $\exists\, n.\,j \in 1..n$ and
+  $\forall\, i \in 1..n\ \exists\, l_i, T_i.\,\Gamma \vdash M: \TREC{l_i: T_i^{i \in 2..n}}$
+  and $T = T_j$
 \end{itemize}

@@ -1,13 +1,16 @@
 \subsection{}
 
-Define an alternative semantics $M \rightsquigarrow M'$ that encodes a different strategy for the
-evaluation of pairs.\\~\\
-A possible alternative semantics for the evaluation of pairs could be the following:
+Define an alternative semantics $M \rightsquigarrow M'$ that encodes a
+different strategy for the evaluation of pairs.\\~\\ A possible
+alternative semantics for the evaluation of pairs could be the
+following:
 \begin{align*}
-	\infer{\FST{\PAIR{M_1}{M_2}} \to M_1}{\text{\small{(PROJECT1')}}}                       &
-	\qquad \infer{\SND{\PAIR{M_1}{M_2}} \to M_2}{\text{\small{(PROJECT2')}}}                  \\
-	\infer[\text{\small{(EVALPAIR1')}}]{\PAIR{M_1}{M_2} \to \PAIR{M_1'}{M_2}}{M_1 \to M_1'} &
-	\qquad
-	\infer[\text{\small{(EVALPAIR2)}'}]{\PAIR{v}{M_2} \to \PAIR{v}{M_2'}}{M_2 \to M_2'}
+  \infer{\FST{\PAIR{M_1}{M_2}} \to M_1}{\text{\small{(PROJECT1')}}} &
+  \qquad \infer{\SND{\PAIR{M_1}{M_2}} \to
+    M_2}{\text{\small{(PROJECT2')}}}
+  \\ \infer[\text{\small{(EVALPAIR1')}}]{\PAIR{M_1}{M_2} \to
+    \PAIR{M_1'}{M_2}}{M_1 \to M_1'} & \qquad
+  \infer[\text{\small{(EVALPAIR2)}'}]{\PAIR{v}{M_2} \to
+    \PAIR{v}{M_2'}}{M_2 \to M_2'}
 \end{align*}
 with the operational semantic rules (PAIR 1) and (PAIR 2) removed.

@@ -2,22 +2,22 @@
 
 Consider the following function definition in Scala:
 \begin{itemize}
-	\item \texttt{def test(x:Int, y:Int):Int = x*x}
+\item \texttt{def test(x:Int, y:Int):Int = x*x}
 \end{itemize}
 Compare the speed (i.e. number of steps) of reduction of the following
 expressions according to the call-by-value and call-by-name strategies,
 indicating which is faster:
 \begin{enumerate}
-	\item \texttt{test(2, 3)}:\\
-	      call-by-value: $\texttt{test(2, 3)} \to \texttt{2*2} \to \texttt{4}$ 2 steps\\
-	      call-by-name: $\texttt{test(2, 3)} \to \texttt{2*2} \to \texttt{4}$ 2 steps
-	\item \texttt{test(3+4, 8)}:\\
-	      call-by-value: $\texttt{test(3+4, 8)} \to \texttt{test(7, 8)} \to \texttt{7*7} \to \texttt{49}$ 3 steps\\
-	      call-by-name: $\texttt{test(3+4, 8)} \to \texttt{(3+4)*(3+4)} \to \texttt{7*(3+4)} \to \texttt{7*7} \to \texttt{49}$ 4 steps
-	\item \texttt{test(7, 2*4)}:\\
-	      call-by-value: $\texttt{test(7, 2*4)} \to \texttt{test(7, 8)} \to \texttt{7 * 7} \to \texttt{49}$ 3 steps\\
-	      call-by-name: $\texttt{test(7, 2*4)} \to \texttt{7 * 7} \to \texttt{49}$ 2 steps
-	\item \texttt{test(3+4, 2*4)}:\\
-	      call-by-value: $\texttt{test(3+4, 2*4)} \to \texttt{test(7, 2*4)} \to \texttt{test(7, 8)} \to \texttt{7 * 7} \to \texttt{49}$ 4 steps\\
-	      call-by-name: $\texttt{test(3+4, 2*4)} \to \texttt{(3+4)*(3+4)} \to \texttt{7*(3+4)} \to \texttt{7 * 7} \to \texttt{49}$ 4 steps
+\item \texttt{test(2, 3)}:\\
+  call-by-value: $\texttt{test(2, 3)} \to \texttt{2*2} \to \texttt{4}$ 2 steps\\
+  call-by-name: $\texttt{test(2, 3)} \to \texttt{2*2} \to \texttt{4}$ 2 steps
+\item \texttt{test(3+4, 8)}:\\
+  call-by-value: $\texttt{test(3+4, 8)} \to \texttt{test(7, 8)} \to \texttt{7*7} \to \texttt{49}$ 3 steps\\
+  call-by-name: $\texttt{test(3+4, 8)} \to \texttt{(3+4)*(3+4)} \to \texttt{7*(3+4)} \to \texttt{7*7} \to \texttt{49}$ 4 steps
+\item \texttt{test(7, 2*4)}:\\
+  call-by-value: $\texttt{test(7, 2*4)} \to \texttt{test(7, 8)} \to \texttt{7 * 7} \to \texttt{49}$ 3 steps\\
+  call-by-name: $\texttt{test(7, 2*4)} \to \texttt{7 * 7} \to \texttt{49}$ 2 steps
+\item \texttt{test(3+4, 2*4)}:\\
+  call-by-value: $\texttt{test(3+4, 2*4)} \to \texttt{test(7, 2*4)} \to \texttt{test(7, 8)} \to \texttt{7 * 7} \to \texttt{49}$ 4 steps\\
+  call-by-name: $\texttt{test(3+4, 2*4)} \to \texttt{(3+4)*(3+4)} \to \texttt{7*(3+4)} \to \texttt{7 * 7} \to \texttt{49}$ 4 steps
 \end{enumerate}

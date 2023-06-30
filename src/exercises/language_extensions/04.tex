@@ -2,76 +2,76 @@
 
 Describe the evaluation of the following terms:
 \begin{enumerate}
-	\item $M_1 = \FST{\PAIR{\SUM{4}{1}}{\IF{true}{false}{false}}}$:
-	      \[
-		      \infer[\text{\small{(project-1)}}]
-		      { \FST{\PAIR{\SUM{4}{1}}{\IF{true}{false}{false}}} \to \FST{\PAIR{5}{\IF{true}{false}{false}}}}
-		      {
-			      \infer[\text{\small{(eval-pair 1)}}]
-			      { \PAIR{\SUM{4}{1}}{\IF{true}{false}{false}} \to \PAIR{5}{\IF{true}{false}{false}} }
-			      { \infer[\text{\small{(sum)}}]{\SUM{4}{1} \to 5}{} }
-		      }
+\item $M_1 = \FST{\PAIR{\SUM{4}{1}}{\IF{true}{false}{false}}}$:
+  \[
+  \infer[\text{\small{(project-1)}}]
+	{ \FST{\PAIR{\SUM{4}{1}}{\IF{true}{false}{false}}} \to \FST{\PAIR{5}{\IF{true}{false}{false}}}}
+	{
+	  \infer[\text{\small{(eval-pair 1)}}]
+		{ \PAIR{\SUM{4}{1}}{\IF{true}{false}{false}} \to \PAIR{5}{\IF{true}{false}{false}} }
+		{ \infer[\text{\small{(sum)}}]{\SUM{4}{1} \to 5}{} }
+	}
+	\]
+	\[
+	\infer[\text{\small{(project-1)}}]
+	      { \FST{\PAIR{5}{\IF{true}{false}{false}}} \to \FST{\PAIR{5}{false}}}
+	      {
+		\infer[\text{\small{(eval-pair 2)}}]
+		      { \PAIR{5}{\IF{true}{false}{false}} \to \PAIR{5}{false}}
+		      { \infer[\text{\small(if-true)}]{\IF{true}{false}{false} \to false}{} }
+	      }
 	      \]
 	      \[
-		      \infer[\text{\small{(project-1)}}]
-		      { \FST{\PAIR{5}{\IF{true}{false}{false}}} \to \FST{\PAIR{5}{false}}}
-		      {
-			      \infer[\text{\small{(eval-pair 2)}}]
-			      { \PAIR{5}{\IF{true}{false}{false}} \to \PAIR{5}{false}}
-			      { \infer[\text{\small(if-true)}]{\IF{true}{false}{false} \to false}{} }
-		      }
-	      \]
-	      \[
-		      \infer[\text{\small{(pair 1)}}]
-		      { \FST{\PAIR{5}{false}} \to 5}{}
-	      \]
-	\item $M_2 = \APP{(\FN{x: Nat \ast Nat}{\SND{x}})}{\PAIR{\SUM{4}{2}}{\SUM{3}{1}}}$:
-	      \[
-		      \infer[\text{\small{(app-2)}}]
-		      {\APP{(\FN{x: Nat \ast Nat}{\SND{x}})}{\PAIR{\SUM{4}{2}}{\SUM{3}{1}}} \to \APP{(\FN{x: Nat \ast Nat}{\SND{x}})}{\PAIR{6}{\SUM{3}{1}}}}
-		      {
-			      \infer[\text{\small{(eval-pair 1)}}]
-			      {\PAIR{\SUM{4}{2}}{\SUM{3}{1}} \to \PAIR{6}{\SUM{3}{1}}}
-			      {
-				      \infer[\text{\small{(sum)}}]{\SUM{4}{2} \to 6}{}
-			      }
-		      }
-	      \]
-	      \[
-		      \infer[\text{\small{(app-2)}}]
-		      {\APP{(\FN{x: Nat \ast Nat}{\SND{x}})}{\PAIR{6}{\SUM{3}{1}}} \to \APP{(\FN{x: Nat \ast Nat}{\SND{x}})}{\PAIR{6}{4}}}
-		      {
-			      \infer[\text{\small{(eval-pair 2)}}]
-			      {\PAIR{6}{\SUM{3}{1}} \to \PAIR{6}{4}}
-			      { \infer[\text{\small{(sum)}}]{\SUM{3}{1} \to 4}{} }
-		      }
-	      \]
-	      \[
-		      \infer[\text{\small{(beta)}}]
-		      {\APP{(\FN{x: Nat \ast Nat}{\SND{x}})}{\PAIR{6}{4}} \to \SND{\PAIR{6}{4}}}
-		      {}
-	      \]
-	      \[
-		      \infer[\text{\small{(pair 2)}}]{\SND{\PAIR{6}{4}} \to 4}{}
-	      \]
-	\item $M_3 = \SND{(\SUM{(\SUM{3}{2})}{1})}$:
-	      \[
-		      \infer[\text{\small{(project-2)}}]
-		      {\SND{(\SUM{(\SUM{3}{2})}{1})} \to \SND{(\SUM{5}{1})}}
-		      {
-			      \infer[\text{\small{(sum-l)}}]
-			      {\SUM{(\SUM{3}{2})}{1} \to \SUM{5}{1}}
-			      {
-				      \infer[\text{\small{(sum)}}]{\SUM{3}{2} \to 5}{}
-			      }
-		      }
-	      \]
-	      \[
-		      \infer[\text{\small{(project-2)}}]
-		      {\SND{(\SUM{5}{1})} \to \SND{(6)}}
-		      { \infer[\text{\small{(sum)}}]{\SUM{5}{1} \to 6}{} }
-	      \]
-	      \[
-		      \infer{\SND{(6)} \not\to }{}
-	      \]
+	      \infer[\text{\small{(pair 1)}}]
+		    { \FST{\PAIR{5}{false}} \to 5}{}
+	            \]
+	          \item $M_2 = \APP{(\FN{x: Nat \ast Nat}{\SND{x}})}{\PAIR{\SUM{4}{2}}{\SUM{3}{1}}}$:
+	            \[
+		    \infer[\text{\small{(app-2)}}]
+		          {\APP{(\FN{x: Nat \ast Nat}{\SND{x}})}{\PAIR{\SUM{4}{2}}{\SUM{3}{1}}} \to \APP{(\FN{x: Nat \ast Nat}{\SND{x}})}{\PAIR{6}{\SUM{3}{1}}}}
+		          {
+			    \infer[\text{\small{(eval-pair 1)}}]
+			          {\PAIR{\SUM{4}{2}}{\SUM{3}{1}} \to \PAIR{6}{\SUM{3}{1}}}
+			          {
+				    \infer[\text{\small{(sum)}}]{\SUM{4}{2} \to 6}{}
+			          }
+		          }
+	                  \]
+	                  \[
+		          \infer[\text{\small{(app-2)}}]
+		                {\APP{(\FN{x: Nat \ast Nat}{\SND{x}})}{\PAIR{6}{\SUM{3}{1}}} \to \APP{(\FN{x: Nat \ast Nat}{\SND{x}})}{\PAIR{6}{4}}}
+		                {
+			          \infer[\text{\small{(eval-pair 2)}}]
+			                {\PAIR{6}{\SUM{3}{1}} \to \PAIR{6}{4}}
+			                { \infer[\text{\small{(sum)}}]{\SUM{3}{1} \to 4}{} }
+		                }
+	                        \]
+	                        \[
+		                \infer[\text{\small{(beta)}}]
+		                      {\APP{(\FN{x: Nat \ast Nat}{\SND{x}})}{\PAIR{6}{4}} \to \SND{\PAIR{6}{4}}}
+		                      {}
+	                              \]
+	                              \[
+		                      \infer[\text{\small{(pair 2)}}]{\SND{\PAIR{6}{4}} \to 4}{}
+	                              \]
+	                            \item $M_3 = \SND{(\SUM{(\SUM{3}{2})}{1})}$:
+	                              \[
+		                      \infer[\text{\small{(project-2)}}]
+		                            {\SND{(\SUM{(\SUM{3}{2})}{1})} \to \SND{(\SUM{5}{1})}}
+		                            {
+			                      \infer[\text{\small{(sum-l)}}]
+			                            {\SUM{(\SUM{3}{2})}{1} \to \SUM{5}{1}}
+			                            {
+				                      \infer[\text{\small{(sum)}}]{\SUM{3}{2} \to 5}{}
+			                            }
+		                            }
+	                                    \]
+	                                    \[
+		                            \infer[\text{\small{(project-2)}}]
+		                                  {\SND{(\SUM{5}{1})} \to \SND{(6)}}
+		                                  { \infer[\text{\small{(sum)}}]{\SUM{5}{1} \to 6}{} }
+	                                          \]
+	                                          \[
+		                                  \infer{\SND{(6)} \not\to }{}
+	                                          \]
 \end{enumerate}
