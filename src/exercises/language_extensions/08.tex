@@ -67,7 +67,7 @@ If \(\Gamma \vdash M: T\) and \(M \to M'\) then \(\Gamma \vdash M':
 T\).  The base cases (SUM), (IF-TRUE) and (BETA) are left unchanged,
 we have to add a new base case:
 \begin{itemize}
-\item (SELECT) was the lastly pplied rule, it menas that the
+\item (SELECT) was the lastly applied rule, it menas that the
   conclusion is \(\REC{\ell_i = v_i \quad^{i\in 1\dots n}}.\ell_j \to
   v_j\) by hypothesis we know \[\Gamma \vdash \REC{\ell_i = v_i
     \quad^{i\in 1\dots n}} \TYPE{\REC{\ell_i \TYPE{T_i} \quad^{i\in

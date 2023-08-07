@@ -5,72 +5,72 @@ base language extended with records and subtyping.
 
 \paragraph*{Progress theorem:\\}
 
-If $\emptyset \vdash M: T$ then either $M$ is a value or $\exists\,
-M'.\, M \to M'$.\\ By induction on the height of the derivation of
-$\emptyset \vdash M: T$: The base cases are left unchanged since no
+If \(\emptyset \vdash M: T\) then either \(M\) is a value or \(\exists\,
+M'.\, M \to M'\).\\ By induction on the height of the derivation of
+\(\emptyset \vdash M: T\): The base cases are left unchanged since no
 new typing axiom has been added, only the inductive ones has to be
 updated, based on the last rule of the derivation applied.
 \begin{itemize}
-\item (TYPE RECORD): then $\emptyset \vdash \REC{l_i=M_i^{i \in
-    1..n}}: T$, by Inv. Lemma $\exists\, S_1..S_n.\,\forall\, i \in
-  1..n\ \emptyset \vdash M_i: S_i$ and $\TREC{l_i: S_i^{i \in 1..n}}
-  <: T$ with height of the derivation $\le k_0$ thus the inductive
-  hypothesis can be applied, obtaining that $\forall\, i \in 1..n M_i$
-  is either a value or $\exists\, M_i'.\, M_i \to M_i'$. If all $M_i$
-  are values $v_i$ then $\REC{l_i=v_i^{i \in 1..n}}$ is a value,
-  otherwise if $\exists\, k \in 1..n.\exists\, M_k'.\, M_k \to M_k'$
-  then the (EVAL RECORD) rule can be applied, hence $\exists\, M' =
+\item (TYPE RECORD): then \(\emptyset \vdash \REC{l_i=M_i^{i \in
+    1..n}}: T\), by Inv. Lemma \(\exists\, S_1..S_n.\,\forall\, i \in
+  1..n\ \emptyset \vdash M_i: S_i\) and \(\TREC{l_i: S_i^{i \in 1..n}}
+  <: T\) with height of the derivation \(\le k_0\) thus the inductive
+  hypothesis can be applied, obtaining that \(\forall\, i \in 1..n M_i\)
+  is either a value or \(\exists\, M_i'.\, M_i \to M_i'\). If all \(M_i\)
+  are values \(v_i\) then \(\REC{l_i=v_i^{i \in 1..n}}\) is a value,
+  otherwise if \(\exists\, k \in 1..n.\exists\, M_k'.\, M_k \to M_k'\)
+  then the (EVAL RECORD) rule can be applied, hence \(\exists\, M' =
   \REC{l_j=M_j^{j \in 1..k-1}, l_k = M_k', l_i = M_i^{i \in
-      k+1..n}}.\, M \to M'$
-\item (TYPE SELECT): then $\emptyset \vdash \SEL{N}{l_j}: T$, by
-  Inv. Lemma $\exists\, n.\, j \in 1..n$ and $\forall\, i \in 1..n.\,
+      k+1..n}}.\, M \to M'\)
+\item (TYPE SELECT): then \(\emptyset \vdash \SEL{N}{l_j}: T\), by
+  Inv. Lemma \(\exists\, n.\, j \in 1..n\) and \(\forall\, i \in 1..n.\,
   \exists\, l_i, T_i.\, \emptyset \vdash N: \TREC{l_i: T_i^{i \in
-      1..n}}$ and $T = T_j$ with height of the derivation $\le k_0$
-  hence the inductive hyp. can be applied obtaining that either $N$ is
+      1..n}}\) and \(T = T_j\) with height of the derivation \(\le k_0\)
+  hence the inductive hyp. can be applied obtaining that either \(N\) is
   a value, in which case the (SELECT) rule can be applied, or
-  $\exists\, N'.\, N \to N'$, hence the (EVAL SELECT) rule applies.
-\item (SUBSUMPTION): then $\emptyset \vdash M: T$, by "Inv. Lemma"
-  $\emptyset \vdash M: S$ and $S <: T$ with height of the derivation
-  $\le k_0$ hence the inductive hyp. can be applied obtaining that $M$
-  is either a value or $\exists\, M'.\, M \to M'$\qed
+  \(\exists\, N'.\, N \to N'\), hence the (EVAL SELECT) rule applies.
+\item (SUBSUMPTION): then \(\emptyset \vdash M: T\), by "Inv. Lemma"
+  \(\emptyset \vdash M: S\) and \(S <: T\) with height of the derivation
+  \(\le k_0\) hence the inductive hyp. can be applied obtaining that \(M\)
+  is either a value or \(\exists\, M'.\, M \to M'\)\qed
 \end{itemize}
 
 \paragraph*{Substitution Lemma:\\}
-If $\Gamma, x: S \vdash M: T$ and $\Gamma \vdash N: S$ then $\Gamma
-\vdash M\SUBST{x}{N}: T$.  The base cases are left unchanged, only the
+If \(\Gamma, x: S \vdash M: T\) and \(\Gamma \vdash N: S\) then \(\Gamma
+\vdash M\SUBST{x}{N}: T\).  The base cases are left unchanged, only the
 inductive ones has to be extended with the newly added typing rules.
-By induction on the height of the derivation of $\Gamma, x: S \vdash
-M: T$:
+By induction on the height of the derivation of \(\Gamma, x: S \vdash
+M: T\):
 \begin{itemize}
-\item (TYPE RECORD): then $\Gamma, x: S \vdash \REC{l_i=M_i^{i \in
-    1..n}}: T$, by Inv. Lemma $\exists\, S_1..S_n.\,\forall\, i \in
-  1..n\ \Gamma, x: S \vdash M_i: S_i$ and $\TREC{l_i: S_i^{i \in
-      1..n}} <: T$ with height of the derivation $\le k_0$ thus the
-  inductive hypothesis can be applied, obtaining that $\forall\, i \in
-  1..n \Gamma \vdash M_i\SUBST{x}{N}: S_i$, hence the (TYPE RECORD)
-  rule can be applied getting $\Gamma \vdash \REC{l_i =
-    M_i\SUBST{x}{N}^{i \in 1..n}} = M\SUBST{x}{N} : T$
-\item (TYPE SELECT): then $\Gamma, x: S \vdash \SEL{M_1}{l_j}: T$, by
-  Inv. Lemma $\exists\, n.\, j \in 1..n$ and $\forall\, i \in 1..n.\,
+\item (TYPE RECORD): then \(\Gamma, x: S \vdash \REC{l_i=M_i^{i \in
+    1..n}}: T\), by Inv. Lemma \(\exists\, S_1..S_n.\,\forall\, i \in
+  1..n\ \Gamma, x: S \vdash M_i: S_i\) and \(\TREC{l_i: S_i^{i \in
+      1..n}} <: T\) with height of the derivation \(\le k_0\) thus the
+  inductive hypothesis can be applied, obtaining that \(\forall\, i \in
+  1..n \Gamma \vdash M_i\SUBST{x}{N}: S_i\), hence the (TYPE RECORD)
+  rule can be applied getting \(\Gamma \vdash \REC{l_i =
+    M_i\SUBST{x}{N}^{i \in 1..n}} = M\SUBST{x}{N} : T\)
+\item (TYPE SELECT): then \(\Gamma, x: S \vdash \SEL{M_1}{l_j}: T\), by
+  Inv. Lemma \(\exists\, n.\, j \in 1..n\) and \(\forall\, i \in 1..n.\,
   \exists\, l_i, T_i.\, \Gamma, x: S \vdash M_1: \TREC{l_i: T_i^{i \in
-      1..n}}$ and $T = T_j$ with height of the derivation $\le k_0$
-  hence the inductive hyp. can be applied obtaining that $\Gamma
-  \vdash M_1\SUBST{x}{N}: \TREC{l_i: T_i^{i \in 1..n}}$ hence the
-  (TYPE SELECT) rule can be applied obtaining $\Gamma \vdash
-  \SEL{M_1\SUBST{x}{N}}{l_j} = M\SUBST{x}{N}: T_j$
-\item (SUBSUMPTION): then $\Gamma, x:S \vdash M: T$, by "Inv. Lemma"
-  $\Gamma, x: S \vdash M: U$ and $U <: T$ with height of the
-  derivation $\le k_0$ hence the inductive hyp. can be applied
-  obtaining $\Gamma \vdash M\SUBST{x}{N}: U$ hence the (SUBSUMPTION)
-  rule can be applied getting $\Gamma \vdash M\SUBST{x}{N}: T$\qed
+      1..n}}\) and \(T = T_j\) with height of the derivation \(\le k_0\)
+  hence the inductive hyp. can be applied obtaining that \(\Gamma
+  \vdash M_1\SUBST{x}{N}: \TREC{l_i: T_i^{i \in 1..n}}\) hence the
+  (TYPE SELECT) rule can be applied obtaining \(\Gamma \vdash
+  \SEL{M_1\SUBST{x}{N}}{l_j} = M\SUBST{x}{N}: T_j\)
+\item (SUBSUMPTION): then \(\Gamma, x:S \vdash M: T\), by "Inv. Lemma"
+  \(\Gamma, x: S \vdash M: U\) and \(U <: T\) with height of the
+  derivation \(\le k_0\) hence the inductive hyp. can be applied
+  obtaining \(\Gamma \vdash M\SUBST{x}{N}: U\) hence the (SUBSUMPTION)
+  rule can be applied getting \(\Gamma \vdash M\SUBST{x}{N}: T\)\qed
 \end{itemize}
 
 \paragraph*{Type preservation:\\}
-If $\Gamma \vdash M: T$ and $M \to M'$ then $\Gamma \vdash M': T$.
+If \(\Gamma \vdash M: T\) and \(M \to M'\) then \(\Gamma \vdash M': T\).
 The base cases (SUM), (IF-TRUE) and (BETA) are left unchanged, we have
 to add a new base case:
 \begin{itemize}
-\item (SELECT) was the lastly pplied rule, it menas that the
+\item (SELECT) was the lastly applied rule, it menas that the
   conclusion is \(\REC{\ell_i = v_i \quad^{i\in 1\dots n}}.\ell_j \to
   v_j\) by hypothesis we know \[\Gamma \vdash \REC{\ell_i = v_i
     \quad^{i\in 1\dots n}} \TYPE{\REC{\ell_i \TYPE{T_i} \quad^{i\in
@@ -82,7 +82,7 @@ to add a new base case:
 \end{itemize}
 
 Inductive cases, working by induction on the height of the derivation
-of $M \to M'$ also have to be updated with the new evaluation rules:
+of \(M \to M'\) also have to be updated with the new evaluation rules:
 \begin{itemize}
 \item (EVAL SELECT) was the lastly applied rule, therefore the
   conclusion is \[M.\ell_j \to M'.\ell_j\] and the premise is \(M\to

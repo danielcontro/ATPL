@@ -1,89 +1,150 @@
 \subsection{}
 
-Prove the theorems of type preservation, progress and safety for the language with exceptions.
+Prove the theorems of type preservation, progress and safety for the
+language with exceptions.
 
 \subsubsection*{Progress Theorem}
 
-If $\emptyset \vdash M: T$ then either $M$ is a value, or $\exists\, M'.\, M \to M'$ or
-$\exists\, v.\, M = \THROW{v}$
-By induction on the height of the derivation tree of $\emptyset \vdash M: T$:\\
-The base cases are left unchanged, only the inductive ones has to be extended with the derivation
-trees that have the newly added typing rules as first ones.
+If \(\emptyset \vdash M: T\) then either \(M\) is a value, or
+\(\exists\, M'.\, M \to M'\) or \(\exists\, v.\, M = \THROW{v}\) By
+induction on the height of the derivation tree of \(\emptyset \vdash
+M: T\):\\ The base cases are left unchanged, only the inductive ones
+has to be extended with the derivation trees that have the newly added
+typing rules as first ones.
 \begin{itemize}
-	\item (T-RAISE): then $M = \THROW{N}$, by Inv. Lemma $\exists\, T_{exn}.\, \emptyset \vdash N: T_{exn}$ with
-	      height of the derivation $\le k_0$ thus the inductive hyp. can be applied obtaining that
-	      either:
-	      \begin{itemize}
-		      \item $N \to N'$: hence by (RAISE 1) $\exists\, M'.\, M \to M'$
-		      \item $N$ is a value $v$: hence $M = \THROW{v}$
-		      \item $\exists\, v.\, N = \THROW{v}$: hence by (RAISE 2) $\exists\, M'.\, M \to M'$
-	      \end{itemize}
-	\item (T-TRY): then $M = \TRY{M_1}{M_2}$, by Inv. Lemma
-	      \begin{itemize}
-		      \item $\emptyset \vdash M_1: T$ with height of the derivation $\le k_0$
-		      \item $\exists\, T_{exn}.\, \emptyset \vdash M_2: T_{exn} \to T$ with height of the derivation $\le k_0$
-	      \end{itemize}
-	      hence the inductive hyp. can be applied to $M_1$
-	      \begin{itemize}
-		      \item $M_1 \to M_1'$: hence by (TRY) $\exists\, M'.\, M \to M'$
-		      \item $M_1$ is a value $v$: hence by (TRY VAL) $\exists\, M'.\, M \to M'$
-		      \item $\exists\, v.\, M_1 = \THROW{v}$: hence by (TRY HANDLE) $\exists\, M'.\, M \to M'$
-	      \end{itemize}
+\item (T-RAISE): then \(M = \THROW{N}\), by Inv. Lemma
+  \(\exists\, T_{exn}.\, \emptyset \vdash N: T_{exn}\) with
+  height of the derivation \(\le k_0\) thus the inductive
+  hyp. can be applied obtaining that either:
+  \begin{itemize}
+  \item \(N \to N'\): hence by (RAISE 1)
+    \(\exists\, M'.\, M \to M'\)
+  \item \(N\) is a value \(v\): hence \(M =
+    \THROW{v}\)
+  \item \(\exists\, v.\, N = \THROW{v}\): hence by
+    (RAISE 2) \(\exists\, M'.\, M \to M'\)
+  \end{itemize}
+\item (T-TRY): then \(M = \TRY{M_1}{M_2}\), by Inv. Lemma
+  \begin{itemize}
+  \item \(\emptyset \vdash M_1: T\) with height of
+    the derivation \(\le k_0\)
+  \item \(\exists\, T_{exn}.\, \emptyset \vdash
+    M_2: T_{exn} \to T\) with height of the
+    derivation \(\le k_0\)
+  \end{itemize}
+  hence the inductive hyp. can be applied to \(M_1\)
+  \begin{itemize}
+  \item \(M_1 \to M_1'\): hence by (TRY)
+    \(\exists\, M'.\, M \to M'\)
+  \item \(M_1\) is a value \(v\): hence by (TRY
+    VAL) \(\exists\, M'.\, M \to M'\)
+  \item \(\exists\, v.\, M_1 = \THROW{v}\): hence
+    by (TRY HANDLE) \(\exists\, M'.\, M \to M'\)
+  \end{itemize}
 \end{itemize}
 
 \subsubsection*{Substitution Lemma:}
 
-If $\Gamma, x: S \vdash M: T$ and $\Gamma \vdash N: S$ then $\Gamma \vdash M\SUBST{x}{N}: T$\\
-By induction on the height of the derivation of $\Gamma, x: S \vdash M: T$:\\
-The base cases are left unchanged, only the inductive ones has to be extended with the newly
+If \(\Gamma, x: S \vdash M: T\) and \(\Gamma \vdash N: S\) then
+\(\Gamma \vdash M\SUBST{x}{N}: T\)\\ By induction on the height of the
+derivation of \(\Gamma, x: S \vdash M: T\):\\ The base cases are left
+unchanged, only the inductive ones has to be extended with the newly
 added typing rules.
 \begin{itemize}
-	\item (T-RAISE): then $M = \THROW{M_1}$, by Inv. Lemma $\exists\, T_{exn}.\, \Gamma, x: S \vdash M_1: T_{exn}$ with
-	      height of the derivation $\le k_0$, hence the inductive hyp. can be applied obtaining
-	      $\Gamma \vdash M_1\SUBST{x}{N}: T_{exn}$, and by applying the (T-RAISE) rule it can be
-	      derived $\Gamma \vdash \THROW{M_1\SUBST{x}{N}} = M\SUBST{x}{N}: T$
-	\item (T-TRY): then $M = \TRY{M_1}{M_2}$ and by Inv. Lemma
-	      \begin{itemize}
-		      \item $\Gamma, x: S \vdash M_1: T$ with height of the derivation $\le k_0$
-		      \item $\exists\, T_{exn}.\, \Gamma, x: S \vdash M_2: T_{exn} \to T$ with height of the derivation $\le k_0$
-	      \end{itemize}
-	      hence the inductive hyp. can be applied to $M_1$ and $M_2$ obtaining
-	      $\Gamma \vdash M_1\SUBST{x}{N}: T$ and $\Gamma \vdash M_2\SUBST{x}{N}: T_{exn} \to T$,
-	      thus by the (T-TRY) rule
-	      $\Gamma \vdash \TRY{M_1\SUBST{x}{N}}{M_2\SUBST{x}{N}} = M\SUBST{x}{N}: T$
+\item (T-RAISE): then \(M = \THROW{M_1}\), by Inv. Lemma \(\exists\,
+  T_{exn}.\, \Gamma, x: S \vdash M_1: T_{exn}\) with height of the
+  derivation \(\le k_0\), hence the inductive hyp. can be applied
+  obtaining \(\Gamma \vdash M_1\SUBST{x}{N}: T_{exn}\), and by
+  applying the (T-RAISE) rule it can be derived \(\Gamma \vdash
+  \THROW{M_1\SUBST{x}{N}} = M\SUBST{x}{N}: T\)
+\item (T-TRY): then \(M = \TRY{M_1}{M_2}\) and by Inv. Lemma
+  \begin{itemize}
+  \item \(\Gamma, x: S \vdash M_1: T\) with height of the derivation
+    \(\le k_0\)
+  \item \(\exists\, T_{exn}.\, \Gamma, x: S \vdash M_2: T_{exn} \to
+    T\) with height of the derivation \(\le k_0\)
+  \end{itemize}
+  hence the inductive hyp. can be applied to \(M_1\) and
+  \(M_2\) obtaining \(\Gamma \vdash M_1\SUBST{x}{N}: T\)
+  and \(\Gamma \vdash M_2\SUBST{x}{N}: T_{exn} \to T\),
+  thus by the (T-TRY) rule \(\Gamma \vdash
+  \TRY{M_1\SUBST{x}{N}}{M_2\SUBST{x}{N}} = M\SUBST{x}{N}:
+  T\)
 \end{itemize}
 
 \subsubsection*{Type Preservation:}
 
-If $\Gamma \vdash M: T$ and $M \to M'$ then $\Gamma \vdash M': T$.\\
-By induction on the height of the derivation of $\Gamma \vdash M: T$:\\
-The base cases are left unchanged, only the inductive ones has to be extended with the newly
-added typing rules.
+If \(\Gamma \vdash M: T\) and \(M \to M'\) then \(\Gamma \vdash M':
+T\). We'll work by induction on the evaluation rule \(M \to M'\). We
+need to add some base cases and some inductive cases.
+
+\paragraph*{New base cases:\\}
 \begin{itemize}
-	\item (T-RAISE): then $M = \THROW{N}$ and by Inv. Lemma $\exists\, T_{exn}.\, \Gamma \vdash N: T_{exn}$.
-	      If $M \to M'$ one of the following rules has been applied:
-	      \begin{itemize}
-		      \item (RAISE 1): then $N \to N'$ and the inductive hyp can be applied obtaining
-		            $\Gamma \vdash N': T_{exn}$, hence by the (T-RAISE) rule it can be concluded
-		            $\Gamma \vdash \THROW{N'} = M': T$
-		      \item (RAISE 2): hence $\Gamma \vdash \THROW{v} = M': T_{exn}$, let $T_{exn} = T$
-	      \end{itemize}
-	\item (T-TRY): then $M = \TRY{M_1}{M_2}$ and by Inv. Lemma
-	      \begin{itemize}
-		      \item $\Gamma \vdash M_1: T$ with height of the derivation $\le k_0$
-		      \item $\exists\, T_{exn}.\, \Gamma \vdash M_2: T_{exn} \to T$ with height of the derivation $\le k_0$
-	      \end{itemize}
-	      If $M \to M'$ one of the following rules has been applied:
-	      \begin{itemize}
-		      \item (TRY): then $M_1 \to M_1'$, the inductive hyp. can be applied obtaining
-		            $\Gamma \vdash M_1': T$ hence the (T-TRY) rule can be applied
-		      \item (TRY HANDLE): $M' = \APP{M_2}{M_1}$, and by (T-APP) $\Gamma \vdash M': T$
-		      \item (TRY VAL): $\Gamma \vdash M_1 = M': T$ by Inv. Lemma
-	      \end{itemize}
+\item[(TRY HANDLE)] was the lasyly applied rule, therefore \(M =
+  \TRY{\THROW{v}}{M_1}\), \(M' = \APP{M_1}{v}\). By hypothesis
+  \(\Gamma \vdash M \TYPE{T}\), so by inversion lemma \(\exists
+  T_{exn} \mid \Gamma \vdash v \TYPE{T_{exn}}\) and \(\Gamma \vdash
+  M_1 \TYPE{T_{exn} \to T}\). Therefore \(\Gamma \vdash \APP{M_1}{v}
+  \TYPE{T}\), which is our thesis.
+\item[(TRY VAL)] was the lastly applied rule, therefore the conclusion
+  is that \(\TRY{v}{M} \to v\) and there are no hypothesis. By
+  hypothesis of the theorem \(\Gamma\vdash \TRY{v}{M}\TYPE{T}\), which
+  means (by (T-TRY)) \(\Gamma\vdash v \TYPE{T}\), which is outr
+  thesis.
+\item[(RAISE 2)] was the lastly applied rule, therefore the conclusion
+  is that \(\THROW{(\THROW{v})} \to \THROW{v}\). The hypothesis of the
+  theorem is that \(\Gamma\vdash \THROW{(\THROW{v})} \TYPE{T}\) is
+  derivable, therefore by the following tree \[\infer{\Gamma\vdash
+    \THROW{(\THROW{v})} \TYPE{T}}{\infer{\Gamma\vdash \THROW{v}
+      \TYPE{T}}{\pi_1}}\] \(\Gamma\vdash \THROW{v} \TYPE{T}\) is
+  derivable for some tree \(\pi_1\), which is our thesis.
+\item[(RAISE APP 1)] is the lastly applied rule, therefore the
+  conlcusion is that \(\APP{(\THROW{v})}{M} \to \THROW{v}\) and there
+  are no hypothesis. Since \(\Gamma\vdash \APP{(\THROW{v})}{M}
+  \TYPE{T}\) is derivable by hypothesis, but by (T RAISE)
+  \(\THROW{v}\) can match any type \(T\), therefore \(\Gamma \vdash
+  \THROW{v} \TYPE{T}\) is derivable, which is our thesis.
+\item[(RAISE APP 2)] is the lastly applied rule, the reasoning is
+  analogous to the previous case.
+\item[(RAISE IFTHENELSE)] is the lastly applied rule, the reasoning is
+  the same as before.
+\item[(RAISE SUM 1)] was the lastly applied rule, therefore the
+  conclusion is \(\THROW{v} + M \to \THROW{v}\) and there are no
+  hypothesis. Since \(\Gamma \vdash \THROW{v} + M \TYPE{T}\) is
+  derivable for some type \(T\), we can aaply the inversion lemma and
+  say that \(\Gamma \vdash \THROW{v}\TYPE{Nat}\) is derivable, which
+  is our thesis.
+\item[(RAISE SUM 1)] is analogous to the previous case.
 \end{itemize}
+
+\paragraph*{New inductive cases:\\}
+\begin{itemize}
+\item[(RAISE 1)] was the lastly applied rule, therefore the conclusion
+  is that \(\THROW{M} \to \THROW{M'}\) and the hypothesis is that
+  \(M\to M'\). By hypothesis also \(\Gamma\vdash \THROW{M} \TYPE{T}\)
+  holds. By inversion lemma we can say that \(\exists T_{exn} \mid
+  \Gamma \vdash M \TYPE{T_{exn}}\), and therefore by inductive hp
+  \(\Gamma \vdash M' \TYPE{T_{exn}}\), which means that \(\exists
+  T_{exn} \mid \Gamma \vdash M' \TYPE{T_{exn}}\) and therefore we can
+  apply (T-RAISE) and say that \(\Gamma \vdash \THROW{M'} \TYPE{T}\),
+  which is our thesis.
+\item[(TRY)] was the lastly applied rule, therefore the conclusion is
+  that \(\TRY{M}{N} \to \TRY{M'}{N}\) and the hypothesis is that \(M
+  \to M'\) is derivable with a derivation height of at most
+  \(k\). Since by hypotesis \(\Gamma \vdash \TRY{M}{N}\TYPE{T}\) by
+  inversion lemma we can say that both \(\Gamma\vdash M \TYPE{T}\) and
+  \(\Gamma\vdash N \TYPE{T_{exn} \to T}\) are derivable. In particular
+  since \(\Gamma\vdash M \TYPE{T}\) is derivable and \(M \to M'\) is
+  derivable with height at most \(k\) we can use the inductive
+  hypotesis and say \(\Gamma\vdash M' \TYPE{T}\). Beacuse of that and
+  the fact that \(\Gamma\vdash N \TYPE{T_{exn} \to T}\) we can apply
+  (T TRY) and state that \(\Gamma\vdash \TRY{M'}{N} \TYPE{T}\), which
+  is our thesis.
+\end{itemize} \qed
 
 \subsubsection*{Safety Theorem:}
 
-By Corollary of the Subject Reduction Theorem $\emptyset \vdash M': T$, by the Progress Theorem
-either $M'$ value or $\exists\, M".\, M' \to M"$ but since by hypothesis $M' \not\to$ then
-$M'$ value.\qed
+By Corollary of the Subject Reduction Theorem \(\emptyset \vdash M':
+T\), by the Progress Theorem either \(M'\) value or \(\exists\, M".\,
+M' \to M"\) but since by hypothesis \(M' \not\to\) then \(M'\)
+value.\qed
