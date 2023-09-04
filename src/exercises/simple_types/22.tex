@@ -11,6 +11,8 @@ Assume $\Gamma \vdash \IF{true}{1}{false}: T$ derivable, then by Inversion Lemma
 	\item $\Gamma \vdash 1: T$
 	\item $\Gamma \vdash false: T$
 \end{itemize}
+
+
 But applying the Inversion Lemma once again to the second and third terms would lead to $T = Nat$
 and $T = Bool$ which is a contraddiction, hence $\Gamma \vdash \IF{true}{1}{false}: T$ isn't
 derivable; thus a counter-example of the Subject Expansion, which doesn't hold, has been shown.

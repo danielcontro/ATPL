@@ -1,0 +1,18 @@
+name: Build Latest PDF
+on: [push]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+      - name: Compile Exercises
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: main.tex
+          args: -outdir=out -auxdir=aux -pdf
+      - name: Release artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Exercises.pdf
+          path: out/main.pdf

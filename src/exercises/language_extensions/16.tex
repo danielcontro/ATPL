@@ -2,75 +2,115 @@
 
 Consider the following variant and rule (TYPE MATCH):
 \[
-	\infer[\text{\small{(TYPE MATCH GEN 2)}}]
-	{ \Gamma \vdash \MATCH{M}{\CASE{l_i}{x_i}{M_i^{i \in I}}}: T }
-	{
-	\Gamma \vdash M: \TVAR{l_i: T_i^{i \in J}} &
-	J \subseteq I &
-	\forall\, i \in J.\,\Gamma, x_i: T_i \vdash M_i: T
-	}
+\infer[\text{\small{(TYPE MATCH GEN 2)}}] { \Gamma \vdash
+  \MATCH{M}{\CASE{l_i}{x_i}{M_i^{i \in I}}}: T } { \Gamma \vdash M:
+  \TVAR{l_i: T_i^{i \in J}} & J \subseteq I & \forall\, i \in
+  J.\,\Gamma, x_i: T_i \vdash M_i: T }
 \]
 
-Prove that the safety theorem still holds or give a counterexample.\\~\\
+Prove that the safety theorem still holds or give a
+counterexample.\\~\\
 
 \paragraph*{Progress theorem:\\}
 
-If $\emptyset \vdash M: T$ then either $M$ is a value or $\exists\, M'.\, M \to M'$.\\
-By induction on the height of the derivation of $\emptyset \vdash M: T$:
-The base cases are left unchanged since no new typing axiom has been added, only the inductive
-ones has to be updated with the new rule, based on the last rule of the derivation applied.
+If \(\emptyset \vdash M: T\) then either \(M\) is a value or
+\(\exists\, M'.\, M \to M'\).\\ By induction on the height of the
+derivation of \(\emptyset \vdash M: T\): The base cases are left
+unchanged since no new typing axiom has been added, only the inductive
+ones has to be updated with the new rule, based on the last rule of
+the derivation applied.
 \paragraph*{\textmd{(TYPE MATCH GEN 2):}}
-hence $M = \MATCH{N}{\CASE{l_i}{x_i}{M_i^{i \in I}}}$, by Inv. Lemma $\exists\, J, T_i^{i \in J}$:
+hence \(M = \MATCH{N}{\CASE{l_i}{x_i}{M_i^{i \in I}}}\), by Inv. Lemma
+\(\exists\, J, T_i^{i \in J}\):
 \begin{itemize}
-	\item $\emptyset \vdash N: \TVAR{l_i: T_i^{i \in J}}$ with height of the derivation $\le k_0$
-	\item $J \subseteq I$
-	\item $\forall\, i \in J.\, \emptyset, x_i: T_i \vdash M_i: T$ with height of the derivation $\le k_0$
+\item \(\emptyset \vdash N: \TVAR{l_i: T_i^{i \in J}}\) with height of
+  the derivation \(\le k_0\)
+\item \(J \subseteq I\)
+\item \(\forall\, i \in J.\, \emptyset, x_i: T_i \vdash M_i: T\) with
+  height of the derivation \(\le k_0\)
 \end{itemize}
-thus the inductive hyp. can be applied to $N$:
+thus the inductive hyp. can be applied to \(N\):
 \begin{itemize}
-	\item $N$ value: by Lemma of Canonical forms $N = \VAR{l_i = v_i}$, the (MATCH) rule can be applied
-	      hence $\exists\, M'.\, M \to M'$
-	\item $\exists\, N'.\, N \to N'$: the (RED MATCH) rule can be applied hence $\exists\, M'.\, M \to M'$
+\item \(N\) value: by Lemma of Canonical forms \(N = \VAR{l_i =
+  v_i}\), the (MATCH) rule can be applied hence \(\exists\, M'.\, M
+  \to M'\)
+\item \(\exists\, N'.\, N \to N'\): the (RED MATCH) rule can be
+  applied hence \(\exists\, M'.\, M \to M'\)
 \end{itemize}
 
 \paragraph*{Substitution Lemma:\\}
-If $\Gamma, x: S \vdash M: T$ and $\Gamma \vdash N: S$ then $\Gamma \vdash M\SUBST{x}{N}: T$.
-The base cases are left unchanged, only the inductive ones has to be extended with the newly
-added typing rules.
-By induction on the height of the derivation of $\Gamma, x: S \vdash M: T$:
+If \(\Gamma, x: S \vdash M: T\) and \(\Gamma \vdash N: S\) then
+\(\Gamma \vdash M\SUBST{x}{N}: T\).  The base cases are left
+unchanged, only the inductive ones has to be extended with the newly
+added typing rules.  By induction on the height of the derivation of
+\(\Gamma, x: S \vdash M: T\):
 \paragraph*{\textmd{(TYPE MATCH GEN 2):}}
-hence $M = \MATCH{M_a}{\CASE{l_i}{x_i}{M_i^{i \in I}}}$, by Inv. Lemma $\exists\, J, T_i^{i \in J}$:
+hence \(M = \MATCH{M_a}{\CASE{l_i}{x_i}{M_i^{i \in I}}}\), by
+Inv. Lemma \(\exists\, J, T_i^{i \in J}\):
 \begin{itemize}
-	\item $\Gamma, x: S \vdash M_a: \TVAR{l_i: T_i^{i \in J}}$ with height of the derivation $\le k_0$
-	\item $J \subseteq I$
-	\item $\forall\, i \in J.\, \Gamma, x: S, x_i: T_i \vdash M_i: T$ with height of the derivation $\le k_0$
-	      (if $\exists\, i \in 1..n.\, x = x_i$ or $x_i \in fv(N)$ apply $\alpha$-conversion)
+\item \(\Gamma, x: S \vdash M_a: \TVAR{l_i: T_i^{i \in J}}\) with
+  height of the derivation \(\le k_0\)
+\item \(J \subseteq I\)
+\item \(\forall\, i \in J.\, \Gamma, x: S, x_i: T_i \vdash M_i: T\)
+  with height of the derivation \(\le k_0\) (if \(\exists\, i \in
+  1..n.\, x = x_i\) or \(x_i \in fv(N)\) apply \(\alpha\)-conversion)
 \end{itemize}
-thus the inductive hyp. can be applied to $M_a$ and all the $M_i$ obtaining
+thus the inductive hyp. can be applied to \(M_a\) and all the \(M_i\)
+obtaining
 \begin{itemize}
-	\item $\Gamma \vdash M_a\SUBST{x}{N}: \TVAR{l_i: T_i^{i \in J}}$ with height of the derivation $\le k_0$
-	\item $\forall\, i \in J.\, \Gamma, x_i: T_i \vdash M_i\SUBST{x}{N}: T$ with height of the derivation $\le k_0$
+\item \(\Gamma \vdash M_a\SUBST{x}{N}: \TVAR{l_i: T_i^{i \in J}}\)
+  with height of the derivation \(\le k_0\)
+\item \(\forall\, i \in J.\, \Gamma, x_i: T_i \vdash M_i\SUBST{x}{N}:
+  T\) with height of the derivation \(\le k_0\)
 \end{itemize}
-hence the (TYPE MATCH GEN 2) rule can be applied to derive
-$\Gamma \vdash \MATCH{M_a\SUBST{x}{N}}{\CASE{l_i}{x_i}{M_i\SUBST{x}{N}^{i \in I}}} = M\SUBST{x}{N}: T$
+hence the (TYPE MATCH GEN 2) rule can be applied to derive \(\Gamma
+\vdash \MATCH{M_a\SUBST{x}{N}}{\CASE{l_i}{x_i}{M_i\SUBST{x}{N}^{i \in
+      I}}} = M\SUBST{x}{N}: T\)
 
 \paragraph*{Type preservation:\\}
-If $\Gamma \vdash M: T$ and $M \to M'$ then $\Gamma \vdash M': T$.
-The base cases are left unchanged, only the inductive ones has to be extended with the newly
-added typing rules.
-By induction on the height of the derivation of $\Gamma \vdash M: T$:
-\paragraph*{\textmd{(TYPE MATCH GEN 2):}}
-hence $M = \MATCH{N}{\CASE{l_i}{x_i}{M_i^{i \in I}}}$, by Inv. Lemma $\exists\, J, T_i^{i \in J}$:
+If \(\Gamma \vdash M: T\) and \(M \to M'\) then \(\Gamma \vdash M':
+T\). We'll work by induction on the height of the derivation tree of
+\(M \to M'\).
+
+\paragraph*{New base cases:\\}
 \begin{itemize}
-	\item $\Gamma \vdash N: \TVAR{l_i: T_i^{i \in J}}$ with height of the derivation $\le k_0$
-	\item $J \subseteq I$
-	\item $\forall\, i \in J.\, \Gamma, x_i: T_i \vdash M_i: T$ with height of the derivation $\le k_0$
+\item (MATCH) was the lastly applied rule. The conclusion is
+  that \[\infer[j\in 1\dots n]{\MATCH{\VAR{\ell_j = v_j} }{
+      \CASE{\ell_i}{x_i}{M_i} \quad^{i\in 1\dots n}} \to
+    M_j\SUBST{x_j}{v_j}}{}\] by hypothesis we know that \(\exists T
+  \mid \Gamma \vdash \MATCH{\VAR{\ell_j = v_j}}{
+    \CASE{\ell_i}{x_i}{M_i} \quad^{i\in 1\dots n}} \TYPE{T}\) is
+  derivable. By inversion lemma \(\Gamma, x_i \TYPE{T_i} \vdash M_i
+  \TYPE{T}\) is derivable. We can apply the substitution lemma and say
+  that \(\forall j \in 1 \dots n \quad \Gamma \vdash M_j
+  \SUBST{x_j}{N_j} \TYPE{T}\), which is our thesis.
 \end{itemize}
-since $M \to M'$ it was one of the two following op. semantics rules:
+
+\paragraph*{New inductive cases:\\}
 \begin{itemize}
-	\item (RED MATCH): then $N \to N'$ and the inductive hyp. can be applied to it, obtaining
-	      $\Gamma \vdash N': \TVAR{l_i: T_i^{i \in J}}$, hence the (TYPE MATCH GEN 2) can be applied obtaining
-	      $\Gamma \vdash \MATCH{N'}{\CASE{l_i}{x_i}{M_i^{i \in I}}}: T$
-	\item (MATCH): then $\exists\, j \in J.\, N = \VAR{l_j = v_j}$ with $l_j: T_j$ and since
-	      $\Gamma, x_j: T_j \vdash M_j: T$, by Substitution Lemma $\Gamma \vdash M_j\SUBST{x_j}{v_j} = M': T$
+\item (RED-MATCH) was the lastly applied rule. The conclusion is
+  that \[\MATCH{M}{\CASE{\ell_i}{x_i}{M_i} \quad ^{i\in 1\dots n}} \to
+  \MATCH{M'}{\CASE{\ell_i}{x_i}{M_i} \quad ^{i\in 1\dots n}}\] and the
+  hypothesis is that \[M\to M'\] we also know by hypothesis
+  that \[\Gamma \vdash \MATCH{M}{\CASE{\ell_i}{x_i}{M_i} \quad ^{i\in
+      1\dots n}} \TYPE{T}\] for some T. This means by inversion lemma
+  that \(\Gamma \vdash M: \TVAR{l_i: T_i^{i \in J}}\) and \(\forall\,
+  i \in J.\,\Gamma, x_i: T_i \vdash M_i: T\) are both derivable for
+  some \(J\subseteq I\), with \(I\) the set of all labels in the
+  original match statement. Since \(M\to M'\) with a derivation tree
+  of height at most \(k\) we can apply the inductive hypothesis and
+  say that \(\Gamma \vdash M' \TYPE{\TVAR{l_i: T_i^{i \in J}}}\),
+  therefore by applying (TYPE MATCH GEN 2) we can say that
+  \(\Gamma\vdash \MATCH{M'}{\CASE{\ell_i}{x_i}{M_i} \quad ^{i\in
+      1\dots n}} \TYPE{T}\), which is our thesis.
+\item (VARIANT) was the lastly applied rule. Therefore the conclusion
+  is \[\VAR{\ell = M} \to \VAR{\ell = M'}\] and the hypothesis is that
+  \(M\to M'\). We know by hypothesis that \(\Gamma \vdash \VAR{\ell =
+    M} \TYPE{T}\) is derivable for some type T. By lemma of canonical
+  forms the term has type \(T = \VAR{\ell_i \TYPE{T_i} \quad^{i\in
+      1\dots n}} \mid \ell = \ell_i\) for some \(i\in 1\dots n\). By
+  inversion lemma \(\Gamma \vdash M \TYPE{T_j}\). We can then apply
+  the inductive hypothesis and say \(\Gamma \vdash M' \TYPE{T_j}\),
+  and therefore \(\Gamma \vdash \VAR{\ell = M'}\TYPE{\VAR{\ell_i
+      \TYPE{T_i} \quad^{i\in 1\dots n}}}\) which is our thesis.
 \end{itemize}

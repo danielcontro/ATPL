@@ -70,40 +70,48 @@ The inductive hypothesis can be applied to both the premises obtaining
 hence the (T-APP') rule can be applied obtaining
 $\Gamma \vdash \APP{M_1\SUBST{x}{N}}{M_2\SUBST{x}{N}}: T$\qed
 
+\subsubsection*{Inversion Lemma}
+
+In order to properly prove this statement we have to firstly change a
+bit the inversion lemma about the (T-APP) rule,
+\begin{itemize}
+\item[\textbf{from}] If \(\Gamma \vdash M N \TYPE{T}\) is derivable,
+  then \(\exists T_1\) s.t. \(\Gamma \vdash M \TYPE{T_1 \to T}\) and
+  \(\Gamma \vdash N \TYPE{T_1}\) are derivable
+\item[\textbf{to}] If \(\Gamma \vdash M N \TYPE{T}\) is derivable,
+  then \(\Gamma \vdash M \TYPE{T \to T}\) and \(\Gamma \vdash N
+  \TYPE{T}\) are derivable
+\end{itemize}
+
 \subsubsection*{Subject Reduction Theorem:}
 
 If $\Gamma \vdash M: T$ and $M \to M'$ then $\Gamma \vdash M': T$.
-By induction on the height of the derivation of $\Gamma \vdash M: T$:
+By induction on the height of the derivation of $M \to M'$:
 
 \paragraph*{Base cases:\\}
 
 Analogous to the original proof
 
-\paragraph*{Inductive cases $h = h_0 + 1$:\\}
-The inductive hypothesis is that for all the derivations of height $h \le h_0$ if
-$\Gamma \vdash M: T$ and $M \to M'$ then $\Gamma \vdash M':T$ is derivable. The only case which
-differs is if the last rule in the derivation is (T-APP') with $M = \APP{M_1}{M_2}$ thus the
-conclusion of the rule is $\Gamma \vdash \APP{M_1}{M_2}: T$, and the premises are
+\paragraph*{Inductive cases:\\}
+We have to edit the 2 cases in which in the orginal proof we needed
+the (T-APP) rule, and show that the theorem still works even when
+using the (APP') rule. The 2 cases are (APP 1) and (APP 2) were the
+lastly appllied rule:
 \begin{itemize}
-	\item $\Gamma \vdash M_1 : T \to T$
-	\item $\Gamma \vdash M_2: T$
+\item[(APP 1)] was the lastly applied rules in the derivation: the
+  conclusion must be the judgment \(\APP{M_1}{M_2} \to
+  \APP{M_1'}{M_2}\) and the premise \(M_1 \to M_1'\) has derivation of
+  height \(k\). From the hypothesis \(\Gamma \vdash M \TYPE{T}\), by
+  inversion lemma we have that \(\Gamma \vdash M_1 \TYPE{T \to T}\)
+  and \(\Gamma \vdash M_2 \TYPE{T}\). From \(\Gamma \vdash M_1 \TYPE{T
+    \to T}\) and \(M_1 \to M_1'\), which has a derivation height of
+  \(k\) and the inductive hypothesis we can conclude that \(\Gamma
+  \vdash M_1' \TYPE{T \to T}\). We can therefore apply (T-APP) rule
+  and say \(\Gamma \vdash \APP{M_1'}{M_2} \TYPE{T}\), which is our
+  thesis
+\item[(APP 2)] This case is again similar to the previous one
 \end{itemize}
-if $M \to M'$ to get $M'$ it was applied one of the following operational semantics rules:
-\begin{itemize}
-	\item (BETA): $M = \APP{(\FN{x: T}{M_{1_1}})}{v} \to M\SUBST{x}{v}$, by Inversion
-	      Lemma'\\
-	      $\Gamma \vdash \FN{x:T}{M_{1_1}}: T \to T$ and $\Gamma \vdash v: T$.
-	      By Inversion Lemma' once again on $M_1$ $\Gamma, x: T \vdash M_{1_1}: T$.
-	      Now by Substitution Lemma' $\Gamma \vdash M\SUBST{x}{v}\;(= M'): T$
-	\item (APP1): $M \to \APP{M_1'}{M_2} = M'$ since $\Gamma \vdash M_1: T \to T$
-	      derivable by Inv. Lemma' with height $h_0$ the inductive hypothesis can be applied,
-	      hence $\Gamma \vdash M_1': T \to T$ derivable. Thus by (T-APP') rule
-	      $\Gamma \vdash M': T$ derivable
-	\item (APP2) $M \to \APP{v}{M_2'} = M'$ since $\Gamma \vdash M_2: T$ derivable by
-	      Inv. Lemma with height $h_0$ the inductive hypothesis can be applied,
-	      hence $\Gamma \vdash M_2': T$ derivable. Thus by (T-APP') rule
-	      $\Gamma \vdash M': T$ derivable
-\end{itemize}
+
 
 \subsubsection*{Corollary of Subject Reduction Theorem:}
 
