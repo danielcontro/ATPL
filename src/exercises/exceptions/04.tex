@@ -89,15 +89,14 @@ need to add some base cases and some inductive cases.
 \item[(TRY VAL)] was the lastly applied rule, therefore the conclusion
   is that \(\TRY{v}{M} \to v\) and there are no hypothesis. By
   hypothesis of the theorem \(\Gamma\vdash \TRY{v}{M}\TYPE{T}\), which
-  means (by (T-TRY)) \(\Gamma\vdash v \TYPE{T}\), which is outr
-  thesis.
+  means (by inversion lemma) \(\Gamma\vdash v \TYPE{T}\), which is
+  outr thesis.
 \item[(RAISE 2)] was the lastly applied rule, therefore the conclusion
   is that \(\THROW{(\THROW{v})} \to \THROW{v}\). The hypothesis of the
   theorem is that \(\Gamma\vdash \THROW{(\THROW{v})} \TYPE{T}\) is
-  derivable, therefore by the following tree \[\infer{\Gamma\vdash
-    \THROW{(\THROW{v})} \TYPE{T}}{\infer{\Gamma\vdash \THROW{v}
-      \TYPE{T}}{\pi_1}}\] \(\Gamma\vdash \THROW{v} \TYPE{T}\) is
-  derivable for some tree \(\pi_1\), which is our thesis.
+  derivable, therefore by inversion lemma \(\Gamma\vdash \THROW{v}
+  \TYPE{T}\) is derivable for some tree \(\pi_1\), which is our
+  thesis.
 \item[(RAISE APP 1)] is the lastly applied rule, therefore the
   conlcusion is that \(\APP{(\THROW{v})}{M} \to \THROW{v}\) and there
   are no hypothesis. Since \(\Gamma\vdash \APP{(\THROW{v})}{M}
